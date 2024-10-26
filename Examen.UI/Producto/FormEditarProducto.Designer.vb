@@ -82,6 +82,7 @@ Partial Class FormEditarProducto
         '
         'cbCategoria
         '
+        Me.cbCategoria.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbCategoria.FormattingEnabled = True
         Me.cbCategoria.Location = New System.Drawing.Point(65, 102)
         Me.cbCategoria.Name = "cbCategoria"

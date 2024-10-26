@@ -118,8 +118,24 @@ Public Class Cliente
         Return cliente
     End Function
 
+    ''' <summary>
+    '''  Metodo que obtiene un string para la consulta de para obtener todos los clientes en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un string con la consulta para obtener todos los clientes</returns>
+
     Public Function ObtenerTodosLosClientes() As String
         Dim cmd = "SELECT c.ID AS IDCLIENTE, c.Cliente AS CLIENTE, c.Telefono as TELEFONO, c.Correo AS CORREO, c.Activo AS ACTIVO FROM clientes AS c where c.Activo = 1"
+
+        Return cmd
+    End Function
+
+    ''' <summary>
+    '''  Metodo que obtiene un string para la consulta de para obtener el ID y Nombre de los clientes en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un string con la consulta para obtener todos los clientes</returns>
+
+    Public Function ObtenerIDYNombreDelCliente() As String
+        Dim cmd = "SELECT c.ID AS IDCLIENTE, c.Cliente AS CLIENTE FROM clientes AS c where c.Activo = 1"
 
         Return cmd
     End Function

@@ -22,88 +22,88 @@ Partial Class FormVentaPrincial
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.lbIdProducto = New System.Windows.Forms.Label()
-        Me.txtIdProducto = New System.Windows.Forms.TextBox()
-        Me.lbNombre = New System.Windows.Forms.Label()
-        Me.ComboBox1 = New System.Windows.Forms.ComboBox()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.TextBox2 = New System.Windows.Forms.TextBox()
+        Me.lbIdCliente = New System.Windows.Forms.Label()
+        Me.txtIdCliente = New System.Windows.Forms.TextBox()
+        Me.lbCliente = New System.Windows.Forms.Label()
+        Me.cbCliente = New System.Windows.Forms.ComboBox()
+        Me.lbFechaDesde = New System.Windows.Forms.Label()
+        Me.txtFechaDesde = New System.Windows.Forms.TextBox()
+        Me.LbFechaHasta = New System.Windows.Forms.Label()
+        Me.txtFechaHasta = New System.Windows.Forms.TextBox()
         Me.btnBuscarProducto = New System.Windows.Forms.Button()
         Me.dgvProducto = New System.Windows.Forms.DataGridView()
         Me.btnRealizarVenta = New System.Windows.Forms.Button()
         CType(Me.dgvProducto, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'lbIdProducto
+        'lbIdCliente
         '
-        Me.lbIdProducto.AutoSize = True
-        Me.lbIdProducto.Location = New System.Drawing.Point(12, 15)
-        Me.lbIdProducto.Name = "lbIdProducto"
-        Me.lbIdProducto.Size = New System.Drawing.Size(18, 13)
-        Me.lbIdProducto.TabIndex = 3
-        Me.lbIdProducto.Text = "ID"
+        Me.lbIdCliente.AutoSize = True
+        Me.lbIdCliente.Location = New System.Drawing.Point(12, 15)
+        Me.lbIdCliente.Name = "lbIdCliente"
+        Me.lbIdCliente.Size = New System.Drawing.Size(18, 13)
+        Me.lbIdCliente.TabIndex = 3
+        Me.lbIdCliente.Text = "ID"
         '
-        'txtIdProducto
+        'txtIdCliente
         '
-        Me.txtIdProducto.Location = New System.Drawing.Point(36, 12)
-        Me.txtIdProducto.Name = "txtIdProducto"
-        Me.txtIdProducto.Size = New System.Drawing.Size(100, 20)
-        Me.txtIdProducto.TabIndex = 4
+        Me.txtIdCliente.Location = New System.Drawing.Point(36, 11)
+        Me.txtIdCliente.Name = "txtIdCliente"
+        Me.txtIdCliente.Size = New System.Drawing.Size(100, 20)
+        Me.txtIdCliente.TabIndex = 4
         '
-        'lbNombre
+        'lbCliente
         '
-        Me.lbNombre.AutoSize = True
-        Me.lbNombre.Location = New System.Drawing.Point(142, 15)
-        Me.lbNombre.Name = "lbNombre"
-        Me.lbNombre.Size = New System.Drawing.Size(44, 13)
-        Me.lbNombre.TabIndex = 5
-        Me.lbNombre.Text = "Nombre"
+        Me.lbCliente.AutoSize = True
+        Me.lbCliente.Location = New System.Drawing.Point(142, 15)
+        Me.lbCliente.Name = "lbCliente"
+        Me.lbCliente.Size = New System.Drawing.Size(39, 13)
+        Me.lbCliente.TabIndex = 5
+        Me.lbCliente.Text = "Cliente"
         '
-        'ComboBox1
+        'cbCliente
         '
-        Me.ComboBox1.FormattingEnabled = True
-        Me.ComboBox1.Location = New System.Drawing.Point(192, 12)
-        Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(121, 21)
-        Me.ComboBox1.TabIndex = 6
+        Me.cbCliente.FormattingEnabled = True
+        Me.cbCliente.Location = New System.Drawing.Point(192, 12)
+        Me.cbCliente.Name = "cbCliente"
+        Me.cbCliente.Size = New System.Drawing.Size(121, 21)
+        Me.cbCliente.TabIndex = 6
         '
-        'Label1
+        'lbFechaDesde
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(319, 15)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(44, 13)
-        Me.Label1.TabIndex = 7
-        Me.Label1.Text = "Nombre"
+        Me.lbFechaDesde.AutoSize = True
+        Me.lbFechaDesde.Location = New System.Drawing.Point(319, 15)
+        Me.lbFechaDesde.Name = "lbFechaDesde"
+        Me.lbFechaDesde.Size = New System.Drawing.Size(69, 13)
+        Me.lbFechaDesde.TabIndex = 7
+        Me.lbFechaDesde.Text = "Fecha desde"
         '
-        'TextBox1
+        'txtFechaDesde
         '
-        Me.TextBox1.Location = New System.Drawing.Point(369, 12)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(100, 20)
-        Me.TextBox1.TabIndex = 8
+        Me.txtFechaDesde.Location = New System.Drawing.Point(394, 12)
+        Me.txtFechaDesde.Name = "txtFechaDesde"
+        Me.txtFechaDesde.Size = New System.Drawing.Size(100, 20)
+        Me.txtFechaDesde.TabIndex = 8
         '
-        'Label2
+        'LbFechaHasta
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(475, 15)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(44, 13)
-        Me.Label2.TabIndex = 9
-        Me.Label2.Text = "Nombre"
+        Me.LbFechaHasta.AutoSize = True
+        Me.LbFechaHasta.Location = New System.Drawing.Point(500, 15)
+        Me.LbFechaHasta.Name = "LbFechaHasta"
+        Me.LbFechaHasta.Size = New System.Drawing.Size(66, 13)
+        Me.LbFechaHasta.TabIndex = 9
+        Me.LbFechaHasta.Text = "Fecha hasta"
         '
-        'TextBox2
+        'txtFechaHasta
         '
-        Me.TextBox2.Location = New System.Drawing.Point(525, 12)
-        Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(100, 20)
-        Me.TextBox2.TabIndex = 10
+        Me.txtFechaHasta.Location = New System.Drawing.Point(572, 12)
+        Me.txtFechaHasta.Name = "txtFechaHasta"
+        Me.txtFechaHasta.Size = New System.Drawing.Size(100, 20)
+        Me.txtFechaHasta.TabIndex = 10
         '
         'btnBuscarProducto
         '
-        Me.btnBuscarProducto.Location = New System.Drawing.Point(631, 12)
+        Me.btnBuscarProducto.Location = New System.Drawing.Point(713, 11)
         Me.btnBuscarProducto.Name = "btnBuscarProducto"
         Me.btnBuscarProducto.Size = New System.Drawing.Size(75, 23)
         Me.btnBuscarProducto.TabIndex = 11
@@ -125,7 +125,7 @@ Partial Class FormVentaPrincial
         Me.btnRealizarVenta.Name = "btnRealizarVenta"
         Me.btnRealizarVenta.Size = New System.Drawing.Size(120, 23)
         Me.btnRealizarVenta.TabIndex = 14
-        Me.btnRealizarVenta.Text = "Realizar venta"
+        Me.btnRealizarVenta.Text = "Realizar nueva venta"
         Me.btnRealizarVenta.UseVisualStyleBackColor = True
         '
         'FormVentaPrincial
@@ -136,14 +136,14 @@ Partial Class FormVentaPrincial
         Me.Controls.Add(Me.btnRealizarVenta)
         Me.Controls.Add(Me.dgvProducto)
         Me.Controls.Add(Me.btnBuscarProducto)
-        Me.Controls.Add(Me.TextBox2)
-        Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.TextBox1)
-        Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.ComboBox1)
-        Me.Controls.Add(Me.lbNombre)
-        Me.Controls.Add(Me.txtIdProducto)
-        Me.Controls.Add(Me.lbIdProducto)
+        Me.Controls.Add(Me.txtFechaHasta)
+        Me.Controls.Add(Me.LbFechaHasta)
+        Me.Controls.Add(Me.txtFechaDesde)
+        Me.Controls.Add(Me.lbFechaDesde)
+        Me.Controls.Add(Me.cbCliente)
+        Me.Controls.Add(Me.lbCliente)
+        Me.Controls.Add(Me.txtIdCliente)
+        Me.Controls.Add(Me.lbIdCliente)
         Me.Name = "FormVentaPrincial"
         Me.Text = "Ventas"
         CType(Me.dgvProducto, System.ComponentModel.ISupportInitialize).EndInit()
@@ -152,14 +152,14 @@ Partial Class FormVentaPrincial
 
     End Sub
 
-    Friend WithEvents lbIdProducto As Label
-    Friend WithEvents txtIdProducto As TextBox
-    Friend WithEvents lbNombre As Label
-    Friend WithEvents ComboBox1 As ComboBox
-    Friend WithEvents Label1 As Label
-    Friend WithEvents TextBox1 As TextBox
-    Friend WithEvents Label2 As Label
-    Friend WithEvents TextBox2 As TextBox
+    Friend WithEvents lbIdCliente As Label
+    Friend WithEvents txtIdCliente As TextBox
+    Friend WithEvents lbCliente As Label
+    Friend WithEvents cbCliente As ComboBox
+    Friend WithEvents lbFechaDesde As Label
+    Friend WithEvents txtFechaDesde As TextBox
+    Friend WithEvents LbFechaHasta As Label
+    Friend WithEvents txtFechaHasta As TextBox
     Friend WithEvents btnBuscarProducto As Button
     Friend WithEvents dgvProducto As DataGridView
     Friend WithEvents btnRealizarVenta As Button

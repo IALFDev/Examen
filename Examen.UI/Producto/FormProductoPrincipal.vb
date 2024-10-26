@@ -24,10 +24,6 @@ Public Class FormProductoPrincipal
         End If
     End Sub
 
-    Private Sub txtRangoDesde_TextChanged(sender As Object, e As EventArgs) Handles txtRangoDesde.TextChanged
-
-    End Sub
-
     Private Sub txtRangoDesde_LostFocus(sender As Object, e As EventArgs) Handles txtRangoDesde.LostFocus
         If Not IsNumeric(txtRangoHasta.Text) And Trim(txtRangoHasta.Text) <> "" Then 'Verifico que sea numerico, que no tenga espacios al principio ni al final, y no este vació
             MessageBox.Show("Debes ingresar solamente valores numéricos.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)

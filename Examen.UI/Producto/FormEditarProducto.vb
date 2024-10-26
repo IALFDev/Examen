@@ -15,7 +15,6 @@ Public Class FormEditarProducto
         ActivarComboBoxCategoria()
 
         txtPrecio.Text = Format(txtPrecio.Text, "Currency") 'Convierto el tipo de dato a tipo "Currency" que es tipo de dato moneda al iniciar la ventana
-        cbCategoria.DropDownStyle = ComboBoxStyle.DropDownList 'Convierto el campo Categoria en un DropDownList para que no se peuda escribir en el
     End Sub
 
     Private Sub txtPrecio_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtPrecio.KeyPress

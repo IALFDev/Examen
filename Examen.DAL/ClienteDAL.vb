@@ -83,12 +83,28 @@ Public Class ClienteDAL
         Return resultado
     End Function
 
+    ''' <summary>
+    '''  Método que obtiene una collecion del tipo ArrayList con el ID y Nombre de los clientes en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un Arraylist de objetos tipo Cliente</returns>
+    Public Function ObtenerIDYNombreDelCliente() As ArrayList
+        commandText = New Cliente().ObtenerIDYNombreDelCliente()
+
+        tipoOp = 2
+
+        Dim resultado = AbstractFindAll()
+
+        Return resultado
+    End Function
+
     Public Overrides Function DoLoad(registers As IDataReader) As Object
         Select Case tipoOp
             Case 0
                 Return VerificarSiYaExisteElCliente(registers)
             Case 1
                 Return ObtenerTodosLosProductos(registers)
+            Case 2
+                Return ObtenerIDYNombreDelCliente(registers)
         End Select
 
         Return New Object
@@ -117,6 +133,19 @@ Public Class ClienteDAL
         cliente.Cliente = registers("CLIENTE").ToString
         cliente.Telefono = Integer.Parse(registers("TELEFONO").ToString)
         cliente.Correo = registers("CORREO").ToString
+
+        Return cliente
+    End Function
+
+    ''' <summary>
+    '''  Método que almacena el Id y el Nombre en el objeto del tipo Cliente
+    ''' </summary>
+    ''' <returns>Devuelve un objeto del tipo Cliente</returns>
+    Protected Function ObtenerIDYNombreDelCliente(registers As IDataReader) As Cliente
+        Dim cliente = New Cliente()
+
+        cliente.Id = Long.Parse(registers("IDCLIENTE").ToString)
+        cliente.Cliente = registers("CLIENTE").ToString
 
         Return cliente
     End Function

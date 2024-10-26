@@ -131,6 +131,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Venta\FormRealizarVenta.Designer.vb">
+      <DependentUpon>FormRealizarVenta.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Venta\FormRealizarVenta.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Venta\FormVentaPrincial.Designer.vb">
       <DependentUpon>FormVentaPrincial.vb</DependentUpon>
     </Compile>
@@ -165,6 +171,9 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Venta\FormRealizarVenta.resx">
+      <DependentUpon>FormRealizarVenta.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Venta\FormVentaPrincial.resx">
       <DependentUpon>FormVentaPrincial.vb</DependentUpon>

@@ -57,11 +57,23 @@ Public Class ManagerCliente
     ''' <summary>
     '''  Método que obtiene una collecion tipo ArrayList de todos los clientes desde la capa de conexion a la base de datos
     ''' </summary>
-    ''' <returns>Devuelve un Arraylist de objetos tipo Cliebte</returns>
+    ''' <returns>Devuelve un Arraylist de objetos tipo Cliente</returns>
     Public Function ObtenerTodosLosClientes() As ArrayList
         Dim clienteDAL = New ClienteDAL()
 
         Dim resultado = clienteDAL.ObtenerTodosLosClientes()
+
+        Return resultado
+    End Function
+
+    ''' <summary>
+    '''  Método que obtiene una collecion del tipo ArrayList con el ID y Nombre de los clientes desde la capa de conexion a la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un Arraylist de objetos tipo Cliente</returns>
+    Public Function ObtenerIDYNombreDelCliente() As ArrayList
+        Dim clienteDAL = New ClienteDAL()
+
+        Dim resultado = clienteDAL.ObtenerIDYNombreDelCliente()
 
         Return resultado
     End Function

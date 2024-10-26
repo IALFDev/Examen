@@ -99,6 +99,7 @@ Partial Class FormProductoPrincipal
         '
         'cbCategoriaProducto
         '
+        Me.cbCategoriaProducto.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbCategoriaProducto.FormattingEnabled = True
         Me.cbCategoriaProducto.Location = New System.Drawing.Point(356, 4)
         Me.cbCategoriaProducto.Name = "cbCategoriaProducto"

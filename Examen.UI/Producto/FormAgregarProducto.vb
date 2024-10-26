@@ -9,8 +9,6 @@ Public Class FormAgregarProducto
 
     Protected Sub ConfigurarContenido()
         ActivarComboBoxCategoria()
-
-        cbCategoria.DropDownStyle = ComboBoxStyle.DropDownList 'Convierto el campo Categoria en un DropDownList para que no se peuda escribir en el
     End Sub
 
     Private Sub txtPrecio_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtPrecio.KeyPress
