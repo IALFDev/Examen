@@ -22,86 +22,95 @@ Partial Class FormAgregarProducto
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.TextBox2 = New System.Windows.Forms.TextBox()
-        Me.Label3 = New System.Windows.Forms.Label()
+        Me.lbNombre = New System.Windows.Forms.Label()
+        Me.txtNombre = New System.Windows.Forms.TextBox()
+        Me.lbPrecio = New System.Windows.Forms.Label()
+        Me.txtPrecio = New System.Windows.Forms.TextBox()
+        Me.lbCategoria = New System.Windows.Forms.Label()
         Me.btnAgregarProducto = New System.Windows.Forms.Button()
-        Me.ComboBox1 = New System.Windows.Forms.ComboBox()
+        Me.cbCategoria = New System.Windows.Forms.ComboBox()
+        Me.txtCategoria = New System.Windows.Forms.TextBox()
         Me.SuspendLayout()
         '
-        'Label1
+        'lbNombre
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(12, 12)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(39, 13)
-        Me.Label1.TabIndex = 0
-        Me.Label1.Text = "Label1"
+        Me.lbNombre.AutoSize = True
+        Me.lbNombre.Location = New System.Drawing.Point(12, 12)
+        Me.lbNombre.Name = "lbNombre"
+        Me.lbNombre.Size = New System.Drawing.Size(44, 13)
+        Me.lbNombre.TabIndex = 0
+        Me.lbNombre.Text = "Nombre"
         '
-        'TextBox1
+        'txtNombre
         '
-        Me.TextBox1.Location = New System.Drawing.Point(58, 9)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(251, 20)
-        Me.TextBox1.TabIndex = 1
+        Me.txtNombre.Location = New System.Drawing.Point(58, 9)
+        Me.txtNombre.Name = "txtNombre"
+        Me.txtNombre.Size = New System.Drawing.Size(296, 20)
+        Me.txtNombre.TabIndex = 1
         '
-        'Label2
+        'lbPrecio
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(12, 48)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(39, 13)
-        Me.Label2.TabIndex = 2
-        Me.Label2.Text = "Label2"
+        Me.lbPrecio.AutoSize = True
+        Me.lbPrecio.Location = New System.Drawing.Point(12, 48)
+        Me.lbPrecio.Name = "lbPrecio"
+        Me.lbPrecio.Size = New System.Drawing.Size(37, 13)
+        Me.lbPrecio.TabIndex = 2
+        Me.lbPrecio.Text = "Precio"
         '
-        'TextBox2
+        'txtPrecio
         '
-        Me.TextBox2.Location = New System.Drawing.Point(58, 45)
-        Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(251, 20)
-        Me.TextBox2.TabIndex = 3
+        Me.txtPrecio.Location = New System.Drawing.Point(58, 45)
+        Me.txtPrecio.Name = "txtPrecio"
+        Me.txtPrecio.Size = New System.Drawing.Size(296, 20)
+        Me.txtPrecio.TabIndex = 3
         '
-        'Label3
+        'lbCategoria
         '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(12, 83)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(39, 13)
-        Me.Label3.TabIndex = 4
-        Me.Label3.Text = "Label3"
+        Me.lbCategoria.AutoSize = True
+        Me.lbCategoria.Location = New System.Drawing.Point(12, 83)
+        Me.lbCategoria.Name = "lbCategoria"
+        Me.lbCategoria.Size = New System.Drawing.Size(52, 13)
+        Me.lbCategoria.TabIndex = 4
+        Me.lbCategoria.Text = "Categoria"
         '
         'btnAgregarProducto
         '
         Me.btnAgregarProducto.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnAgregarProducto.Location = New System.Drawing.Point(15, 136)
+        Me.btnAgregarProducto.Location = New System.Drawing.Point(15, 154)
         Me.btnAgregarProducto.Name = "btnAgregarProducto"
-        Me.btnAgregarProducto.Size = New System.Drawing.Size(294, 70)
+        Me.btnAgregarProducto.Size = New System.Drawing.Size(339, 70)
         Me.btnAgregarProducto.TabIndex = 6
         Me.btnAgregarProducto.Text = "Agregar producto"
         Me.btnAgregarProducto.UseVisualStyleBackColor = True
         '
-        'ComboBox1
+        'cbCategoria
         '
-        Me.ComboBox1.FormattingEnabled = True
-        Me.ComboBox1.Location = New System.Drawing.Point(58, 80)
-        Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(251, 21)
-        Me.ComboBox1.TabIndex = 7
+        Me.cbCategoria.FormattingEnabled = True
+        Me.cbCategoria.Location = New System.Drawing.Point(70, 118)
+        Me.cbCategoria.Name = "cbCategoria"
+        Me.cbCategoria.Size = New System.Drawing.Size(284, 21)
+        Me.cbCategoria.TabIndex = 7
+        '
+        'txtCategoria
+        '
+        Me.txtCategoria.Location = New System.Drawing.Point(70, 83)
+        Me.txtCategoria.Name = "txtCategoria"
+        Me.txtCategoria.Size = New System.Drawing.Size(284, 20)
+        Me.txtCategoria.TabIndex = 8
         '
         'FormAgregarProducto
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(321, 256)
-        Me.Controls.Add(Me.ComboBox1)
+        Me.ClientSize = New System.Drawing.Size(366, 236)
+        Me.Controls.Add(Me.txtCategoria)
+        Me.Controls.Add(Me.cbCategoria)
         Me.Controls.Add(Me.btnAgregarProducto)
-        Me.Controls.Add(Me.Label3)
-        Me.Controls.Add(Me.TextBox2)
-        Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.TextBox1)
-        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.lbCategoria)
+        Me.Controls.Add(Me.txtPrecio)
+        Me.Controls.Add(Me.lbPrecio)
+        Me.Controls.Add(Me.txtNombre)
+        Me.Controls.Add(Me.lbNombre)
         Me.Name = "FormAgregarProducto"
         Me.Text = "Agregar producto"
         Me.ResumeLayout(False)
@@ -109,11 +118,12 @@ Partial Class FormAgregarProducto
 
     End Sub
 
-    Friend WithEvents Label1 As Label
-    Friend WithEvents TextBox1 As TextBox
-    Friend WithEvents Label2 As Label
-    Friend WithEvents TextBox2 As TextBox
-    Friend WithEvents Label3 As Label
+    Friend WithEvents lbNombre As Label
+    Friend WithEvents txtNombre As TextBox
+    Friend WithEvents lbPrecio As Label
+    Friend WithEvents txtPrecio As TextBox
+    Friend WithEvents lbCategoria As Label
     Friend WithEvents btnAgregarProducto As Button
-    Friend WithEvents ComboBox1 As ComboBox
+    Friend WithEvents cbCategoria As ComboBox
+    Friend WithEvents txtCategoria As TextBox
 End Class

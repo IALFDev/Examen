@@ -1,8 +1,10 @@
 ﻿Imports Examen.BLL
+Imports Examen.Entidad
 
 Public Class FormProducto
     Private Sub FormProducto_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        ActivarDataGridView()
+        ActivarDataGridViewProducto()
+        ActivarComboBoxCategoria()
     End Sub
 
     Private Sub btnBuscar_Click(sender As Object, e As EventArgs) Handles btnBuscar.Click
@@ -11,7 +13,7 @@ Public Class FormProducto
     Private Sub txtIdProducto_LostFocus(sender As Object, e As EventArgs) Handles txtIdProducto.LostFocus
         If Not IsNumeric(txtIdProducto.Text) And Trim(txtIdProducto.Text) <> "" Then 'Verifico que sea numerico, que no tenga espacios al principio ni al final, y no este vació'
             MessageBox.Show("Debes ingresar solamente valores numericos", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            txtIdProducto.Text = "" 'Elimino el dato ingresado incorrecto'
+            txtIdProducto.Clear() 'Limpio el campo con el dato ingresado incorrecto'
         End If
     End Sub
 
@@ -22,7 +24,7 @@ Public Class FormProducto
     Private Sub txtRangoDesde_LostFocus(sender As Object, e As EventArgs) Handles txtRangoDesde.LostFocus
         If Not IsNumeric(txtRangoHasta.Text) And Trim(txtRangoHasta.Text) <> "" Then 'Verifico que sea numerico, que no tenga espacios al principio ni al final, y no este vació'
             MessageBox.Show("Debes ingresar solamente valores numericos", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            txtRangoHasta.Text = "" 'Elimino el dato ingresado incorrecto'
+            txtRangoHasta.Clear() 'Limpio el campo con el dato ingresado incorrecto'
         End If
 
     End Sub
@@ -34,7 +36,7 @@ Public Class FormProducto
     Private Sub txtRangoHasta_LostFocus(sender As Object, e As EventArgs) Handles txtRangoHasta.LostFocus
         If Not IsNumeric(txtRangoHasta.Text) And Trim(txtRangoHasta.Text) <> "" Then 'Verifico que sea numerico, que no tenga espacios al principio ni al final, y no este vació'
             MessageBox.Show("Debes ingresar solamente valores numericos", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            txtRangoHasta.Text = "" 'Elimino el dato ingresado incorrecto'
+            txtRangoHasta.Clear() 'Limpio el campo con el dato ingresado incorrecto'
         End If
     End Sub
 
@@ -45,7 +47,7 @@ Public Class FormProducto
     ''' <summary>
     '''  Metodo que rellena una Grilla (DataGridView)
     ''' </summary>'' 
-    Protected Sub ActivarDataGridView()
+    Public Sub ActivarDataGridViewProducto()
         Dim productos = ObtenerTodosLosProductos()
 
         If Not productos.Count <= 0 Then
@@ -55,15 +57,42 @@ Public Class FormProducto
     End Sub
 
     ''' <summary>
-    '''  Metodo que obtiene una collecion de todos los productos desde el "gestor" o "manager" de la capa de negocios
-    '''  Procedure, una colección del Tipo Producto
-    ''' </summary>
-    ''' <returns>Devuelve un Arraylis del Tipo Producto</returns>
+    '''  Metodo que rellena una Grilla (DataGridView)
+    ''' </summary>'' 
+    Protected Sub ActivarComboBoxCategoria()
+        Dim categorias = ObtenerCategoriaProducto()
+        Dim producto = New Producto
+        producto.Categoria = "Seleccione una categoria"
 
+        categorias.Insert(0, producto)
+
+        If Not categorias.Count <= 0 Then
+            cbCategoria.DataSource = categorias
+            cbCategoria.DisplayMember = "Categoria"
+            cbCategoria.ValueMember = "Categoria"
+        End If
+    End Sub
+
+    ''' <summary>
+    '''  Metodo que obtiene una collecion de todos los productos desde el "gestor" o "manager" de la capa de negocios
+    ''' </summary>
+    ''' <returns>Devuelve un Arraylist de objetos tipo Producto</returns>
     Protected Function ObtenerTodosLosProductos() As ArrayList
         Dim manager = New ManagerProducto()
 
         Dim resultado = manager.ObtenerTodosLosProductos
+
+        Return resultado
+    End Function
+
+    ''' <summary>
+    '''  Metodo que obtiene una collecion de la categoria de todos los productos desde el "gestor" o "manager" de la capa de negocios
+    ''' </summary>
+    ''' <returns>Devuelve un Arraylist de objetos tipo Producto</returns>
+    Protected Function ObtenerCategoriaProducto() As ArrayList
+        Dim manager = New ManagerProducto()
+
+        Dim resultado = manager.ObtenerCategoriaProducto
 
         Return resultado
     End Function

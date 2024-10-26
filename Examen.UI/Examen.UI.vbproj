@@ -79,11 +79,11 @@
     <Compile Include="FormAgregarProducto.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormPrinciapal.vb">
+    <Compile Include="FormPrincipal.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormPrinciapal.Designer.vb">
-      <DependentUpon>FormPrinciapal.vb</DependentUpon>
+    <Compile Include="FormPrincipal.Designer.vb">
+      <DependentUpon>FormPrincipal.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormProducto.Designer.vb">
@@ -112,8 +112,8 @@
     <EmbeddedResource Include="FormAgregarProducto.resx">
       <DependentUpon>FormAgregarProducto.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormPrinciapal.resx">
-      <DependentUpon>FormPrinciapal.vb</DependentUpon>
+    <EmbeddedResource Include="FormPrincipal.resx">
+      <DependentUpon>FormPrincipal.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormProducto.resx">
       <DependentUpon>FormProducto.vb</DependentUpon>
@@ -141,6 +141,10 @@
     <ProjectReference Include="..\Examen.BLL\Examen.BLL.vbproj">
       <Project>{8CC7EF44-6B29-4560-A449-96CA146A3E66}</Project>
       <Name>Examen.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Examen.Entidad\Examen.Entidad.vbproj">
+      <Project>{DEC1078D-20C0-4979-8F86-1BCECA50A454}</Project>
+      <Name>Examen.Entidad</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
