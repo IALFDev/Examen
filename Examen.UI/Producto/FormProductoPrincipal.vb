@@ -48,11 +48,11 @@ Public Class FormProductoPrincipal
     End Sub
 
     ''' <summary>
-    '''  Metodo que rellena una Grilla (DataGridView)
+    '''  Método que rellena una Grilla (DataGridView)
     ''' </summary>'' 
     Public Sub ActivarDataGridViewProducto()
         Dim productos = ObtenerTodosLosProductos()
-        If productos IsNot Nothing AndAlso productos.Count > 0 Then
+        If productos IsNot Nothing AndAlso productos.Count > 0 Then 'Verifico que "productos" no este vacío y no sea nulo
             dgvProducto.DataSource = productos
             dgvProducto.Visible = True
 
@@ -117,9 +117,7 @@ Public Class FormProductoPrincipal
 
                 FormEditarProducto.ShowDialog() 'Muesto el form donde se puede editar los datos del producto
 
-                ' Determinar si se hizo clic en el botón "Eliminar"
-            ElseIf dgvProducto.Columns(e.ColumnIndex).Name = "Eliminar" Then
-                ' Llamar al método de eliminación aquí, pasando el ID del producto
+            ElseIf dgvProducto.Columns(e.ColumnIndex).Name = "Eliminar" Then 'Verifico si se hizo click en el botón "Eliminar"
                 Dim result As DialogResult = MessageBox.Show("¿Estás seguro de eliminar el producto " + nombreProducto + " ?", "Atención", MessageBoxButtons.YesNo) 'Verifico si es correcto que quiere eliminar el producto
                 If result = DialogResult.Yes Then
                     If Not EliminarProductoEnBd(New Producto().GenerarObjetoProductoParaEliminarEnBd(idProducto)).Excepcion.Error Then 'Verifico que la eliminación en la base sea correcto de lo contrario muestro un MessageBox de error
@@ -134,16 +132,16 @@ Public Class FormProductoPrincipal
     End Sub
 
     ''' <summary>
-    '''  Metodo que rellena una Grilla (DataGridView)
+    '''  Método que rellena una Grilla (DataGridView)
     ''' </summary>'' 
     Protected Sub ActivarComboBoxCategoria()
         Dim categorias = ObtenerCategoriaProducto()
         Dim producto = New Producto
-        producto.Categoria = "Seleccione una categoría"
+        producto.Categoria = "Seleccione una categoría" 'Agrego una opción nueva primera en lista
 
         categorias.Insert(0, producto)
 
-        If categorias IsNot Nothing AndAlso categorias.Count > 0 Then
+        If categorias IsNot Nothing AndAlso categorias.Count > 0 Then 'Verifico que "categorias" no este vacío y no sea nulo
             cbCategoriaProducto.DataSource = categorias
             cbCategoriaProducto.DisplayMember = "Categoria"
             cbCategoriaProducto.ValueMember = "Categoria"
@@ -151,7 +149,7 @@ Public Class FormProductoPrincipal
     End Sub
 
     ''' <summary>
-    '''  Metodo que elimina el producto de manera logica en la base datos desde el "gestor" o "manager" de la capa de negocios
+    '''  Método que elimina el producto de manera logica en la base datos desde el "gestor" o "manager" de la capa de negocios
     ''' </summary>
     ''' <returns>Devuelve un objeto tipo Producto con el resultado de la operación de eliminación del producto en la base datos</returns>
     Protected Function EliminarProductoEnBd(producto As Producto) As Producto
@@ -163,7 +161,7 @@ Public Class FormProductoPrincipal
     End Function
 
     ''' <summary>
-    '''  Metodo que obtiene una collecion de todos los productos desde el "gestor" o "manager" de la capa de negocios
+    '''  Método que obtiene una collecion de todos los productos desde el "gestor" o "manager" de la capa de negocios
     ''' </summary>
     ''' <returns>Devuelve un Arraylist de objetos tipo Producto</returns>
     Protected Function ObtenerTodosLosProductos() As ArrayList
@@ -175,13 +173,13 @@ Public Class FormProductoPrincipal
     End Function
 
     ''' <summary>
-    '''  Metodo que obtiene una collecion de la categoria de todos los productos desde el "gestor" o "manager" de la capa de negocios
+    '''  Método que obtiene una collecion de la categoria de todos los productos desde el "gestor" o "manager" de la capa de negocios
     ''' </summary>
     ''' <returns>Devuelve un Arraylist de objetos tipo Producto</returns>
     Protected Function ObtenerCategoriaProducto() As ArrayList
         Dim manager = New ManagerProducto()
 
-        Dim resultado = manager.ObtenerCategoriaProducto
+        Dim resultado = manager.ObtenerCategoriaProducto()
 
         Return resultado
     End Function

@@ -65,7 +65,7 @@
     End Property
 
     ''' <summary>
-    '''  Metodo que devuelve un objeto del tipo Producto con los datos necesarios para guardar el producto  en la base datos
+    '''  Metodo que devuelve un objeto del tipo Producto con los datos necesarios para guardar el producto en la base datos
     ''' </summary>
     ''' <returns>Devuelve un string para guardar los datos del producto en la base de datos</returns>
     Public Function GenerarObjetoProductoParaGuardarEnBd(nombre As String, precio As Decimal, categoria As String) As Producto
@@ -111,23 +111,23 @@
     ''' </summary>
     ''' <returns>Devuelve un string con la consulta para obtener todos los productos</returns>
     Public Function ObtenerTodosLosProductos() As String
-        Dim cmd = String.Format("SELECT p.ID AS IDPRODUCTO, p.Nombre AS NOMBRE, p.Precio AS PRECIO, p.Categoria AS CATEGORIA, p.Activo AS ACTIVO FROM dbo.productos AS p WHERE p.Activo = 1")
+        Dim cmd = "SELECT p.ID AS IDPRODUCTO, p.Nombre AS NOMBRE, p.Precio AS PRECIO, p.Categoria AS CATEGORIA, p.Activo AS ACTIVO FROM dbo.productos AS p WHERE p.Activo = 1"
 
         Return cmd
     End Function
 
     ''' <summary>
-    '''  Metodo que obtiene un string para la consulta de para obtener la categoria de los productos en la base de datos
+    '''  Método que obtiene un string para la consulta de para obtener la categoria de los productos en la base de datos
     ''' </summary>
     ''' <returns>Devuelve un string con la consulta para obtener la categoria de los productos</returns>
     Public Function ObtenerCategoriaProducto() As String
-        Dim cmd = String.Format("SELECT DISTINCT p.Categoria AS CATEGORIA FROM dbo.productos AS p WHERE p.Activo = 1")
+        Dim cmd = "SELECT DISTINCT p.Categoria AS CATEGORIA FROM dbo.productos AS p WHERE p.Activo = 1"
 
         Return cmd
     End Function
 
     ''' <summary>
-    '''  Metodo que obtiene un string para guardar los datos del producto en la base de datos
+    '''  Método que obtiene un string para guardar los datos del producto en la base de datos
     ''' </summary>
     ''' <returns>Devuelve un string para guardar los datos del producto en la base de datos</returns>
     Public Function GuardarProductoEnBd() As String
@@ -138,10 +138,10 @@
     End Function
 
     ''' <summary>
-    '''  Metodo que obtiene un string para guardar la edicion de los datos del producto ya existente en la base de datos
+    '''  Método que obtiene un string para guardar la edicion de los datos del producto ya existente en la base de datos
     ''' </summary>
     ''' <returns>Devuelve un string para guardar la edicion de los datos del producto ya existente la base de datos</returns>
-    Public Function EditarProducto() As String
+    Public Function EditarProductoEnBd() As String
         Dim precioFormateado As String = Precio.ToString(System.Globalization.CultureInfo.InvariantCulture) 'Formateo el nuemro para poder ser guardado en la base de datos como Float'
         Dim cmd = String.Format("UPDATE productos SET Nombre = '{0}' ,Precio = {1},Categoria = '{2}' WHERE productos.ID = {3}", Nombre, precioFormateado, Categoria, Id)
 
@@ -149,10 +149,10 @@
     End Function
 
     ''' <summary>
-    '''  Metodo que obtiene un string para eliminar de manera logica el producto en la base de datos
+    '''  Método que obtiene un string para eliminar de manera logica el producto en la base de datos
     ''' </summary>
     ''' <returns>Devuelve un string para eliminar de manera logica el producto en la base de datos</returns>
-    Public Function EliminarProducto() As String
+    Public Function EliminarProductoEnBd() As String
         Dim cmd = String.Format("UPDATE productos SET Activo = 0 WHERE productos.ID = {0}", Id)
 
         Return cmd

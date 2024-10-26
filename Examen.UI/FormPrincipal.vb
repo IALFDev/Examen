@@ -6,4 +6,8 @@
     Private Sub btnCliente_Click(sender As Object, e As EventArgs) Handles btnCliente.Click
         FormClientePrincipal.ShowDialog() 'Muesto el form donde se puede ver los clientes
     End Sub
+
+    Private Sub btnVentas_Click(sender As Object, e As EventArgs) Handles btnVentas.Click
+        FormVentaPrincial.ShowDialog() 'Muesto el form donde se puede ver las ventas
+    End Sub
 End Class

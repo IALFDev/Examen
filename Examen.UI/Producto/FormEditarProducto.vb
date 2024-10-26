@@ -58,7 +58,7 @@ Public Class FormEditarProducto
     End Sub
 
     ''' <summary>
-    '''  Metodo que verifica que los campos Nombre Precio y Categoria no esten vacíos al mento de querer guardarlos en la base de datos
+    '''  Método que verifica que los campos Nombre Precio y Categoria no esten vacíos al mento de querer guardarlos en la base de datos
     ''' </summary>
     ''' <returns>Devuelve bool de acuerdo a la verificación</returns>
     Protected Function VerificarCampos() As Boolean
@@ -117,7 +117,7 @@ Public Class FormEditarProducto
     End Function
 
     ''' <summary>
-    '''  Metodo que verifica dos campos txtCategoria y cbCategoria si uno de los dos esta activo se toma la categoria del mismo
+    '''  Método que verifica dos campos txtCategoria y cbCategoria si uno de los dos esta activo se toma la categoria del mismo
     ''' </summary>''
     Protected Function SeleccionarCategoria() As String
         If txtCategoria.Enabled Then
@@ -128,8 +128,9 @@ Public Class FormEditarProducto
 
         Return ""
     End Function
+
     ''' <summary>
-    '''  Metodo que obtiene un objeto tipo Producto para rellenar los camplos con la informacion a editar del misno
+    '''  Método que obtiene un objeto tipo Producto para rellenar los camplos con la informacion a editar del misno
     ''' </summary>''
     Public Sub RellenarDatosProducto(producto As Producto)
         idProducto = producto.Id
@@ -139,16 +140,16 @@ Public Class FormEditarProducto
     End Sub
 
     ''' <summary>
-    '''  Metodo que rellena una Grilla (DataGridView)
+    '''  Método que rellena una Grilla (DataGridView)
     ''' </summary>'' 
     Protected Sub ActivarComboBoxCategoria()
         Dim categorias = ObtenerCategoriaProducto()
         Dim producto = New Producto
-        producto.Categoria = "Seleccione una categoría"
+        producto.Categoria = "Seleccione una categoría" 'Agrego una opción nueva primera en lista
 
         categorias.Insert(0, producto)
 
-        If categorias IsNot Nothing AndAlso categorias.Count > 0 Then
+        If categorias IsNot Nothing AndAlso categorias.Count > 0 Then 'Verifico que "categorias" no este vacío y no sea nulo
             cbCategoria.DataSource = categorias
             cbCategoria.DisplayMember = "Categoria"
             cbCategoria.ValueMember = "Categoria"
@@ -156,7 +157,7 @@ Public Class FormEditarProducto
     End Sub
 
     ''' <summary>
-    '''  Metodo que guarda la edicion de los datos del producto ya existente en la base de datos desde el "gestor" o "manager" de la capa de negocios
+    '''  Método que guarda la edicion de los datos del producto ya existente en la base de datos desde el "gestor" o "manager" de la capa de negocios
     ''' </summary>
     ''' <returns>Devuelve un objeto tipo Producto con el resultado de la operacion de guardado en la base datos</returns>
     Protected Function GuardarEdicionProductoEnBd(producto As Producto) As Producto
@@ -168,7 +169,7 @@ Public Class FormEditarProducto
     End Function
 
     ''' <summary>
-    '''  Metodo que obtiene una collecion tipo ArrayList de la categoria de todos los productos desde el "gestor" o "manager" de la capa de negocios
+    '''  Método que obtiene una collecion tipo ArrayList de la categoria de todos los productos desde el "gestor" o "manager" de la capa de negocios
     ''' </summary>
     ''' <returns>Devuelve un Arraylist de objetos tipo Producto</returns>
     Protected Function ObtenerCategoriaProducto() As ArrayList

@@ -58,7 +58,7 @@ Public Class FormAgregarProducto
     End Sub
 
     ''' <summary>
-    '''  Metodo que verifica que los campos Nombre Precio y Categoria no esten vacíos al mento de querer guardarlos en la base de datos
+    '''  Método que verifica que los campos Nombre Precio y Categoria no esten vacíos al mento de querer guardarlos en la base de datos
     ''' </summary>
     ''' <returns>Devuelve bool de acuerdo a la verificación</returns>
     Protected Function VerificarCampos() As Boolean
@@ -117,7 +117,7 @@ Public Class FormAgregarProducto
     End Function
 
     ''' <summary>
-    '''  Metodo que verifica dos campos txtCategoria y cbCategoria si uno de los dos esta activo se toma la categoria del mismo
+    '''  Método que verifica dos campos txtCategoria y cbCategoria si uno de los dos esta activo se toma la categoria del mismo
     ''' </summary>''
     Protected Function SeleccionarCampoCategoria() As String
         If txtCategoria.Enabled Then
@@ -130,16 +130,16 @@ Public Class FormAgregarProducto
     End Function
 
     ''' <summary>
-    '''  Metodo que rellena una Grilla (DataGridView)
+    '''  Método que rellena una Grilla (DataGridView)
     ''' </summary>'' 
     Protected Sub ActivarComboBoxCategoria()
         Dim categorias = ObtenerCategoriaProducto()
         Dim producto = New Producto
         producto.Categoria = "Seleccione una categoría"
 
-        categorias.Insert(0, producto)
+        categorias.Insert(0, producto) 'Agrego una opción nueva primera en lista'
 
-        If categorias IsNot Nothing AndAlso categorias.Count > 0 Then
+        If categorias IsNot Nothing AndAlso categorias.Count > 0 Then 'Verifico que "categorias" no este vacío y no sea nulo
             cbCategoria.DataSource = categorias
             cbCategoria.DisplayMember = "Categoria"
             cbCategoria.ValueMember = "Categoria"
@@ -147,7 +147,7 @@ Public Class FormAgregarProducto
     End Sub
 
     ''' <summary>
-    '''  Metodo que guarda en la base datos los datos del objeto Producto desde el "gestor" o "manager" de la capa de negocios
+    '''  Método que guarda en la base datos los datos del objeto Producto desde el "gestor" o "manager" de la capa de negocios
     ''' </summary>
     ''' <returns>Devuelve un objeto tipo Producto con el resultado de la operacion de guardado en la base datos</returns>
     Public Function GuardarProductoEnBd(producto As Producto) As Producto
@@ -159,7 +159,7 @@ Public Class FormAgregarProducto
     End Function
 
     ''' <summary>
-    '''  Metodo que obtiene una collecion tipo ArrayList de la categoria de todos los productos desde el "gestor" o "manager" de la capa de negocios
+    '''  Método que obtiene una collecion tipo ArrayList de la categoria de todos los productos desde el "gestor" o "manager" de la capa de negocios
     ''' </summary>
     ''' <returns>Devuelve un Arraylist de objetos tipo Producto</returns>
     Protected Function ObtenerCategoriaProducto() As ArrayList

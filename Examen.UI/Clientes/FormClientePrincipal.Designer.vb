@@ -24,16 +24,16 @@ Partial Class FormClientePrincipal
     Private Sub InitializeComponent()
         Me.lbIdCliente = New System.Windows.Forms.Label()
         Me.txtIdCliente = New System.Windows.Forms.TextBox()
-        Me.lbNombre = New System.Windows.Forms.Label()
+        Me.lbCliente = New System.Windows.Forms.Label()
         Me.txtNombreCliente = New System.Windows.Forms.TextBox()
         Me.lbCategoria = New System.Windows.Forms.Label()
         Me.txtTelefonoCliente = New System.Windows.Forms.TextBox()
         Me.lbCorreoCliente = New System.Windows.Forms.Label()
         Me.txtCorreoCliente = New System.Windows.Forms.TextBox()
-        Me.dgvProducto = New System.Windows.Forms.DataGridView()
+        Me.dgvCliente = New System.Windows.Forms.DataGridView()
         Me.btnBuscar = New System.Windows.Forms.Button()
         Me.btnAgregarCliente = New System.Windows.Forms.Button()
-        CType(Me.dgvProducto, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dgvCliente, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'lbIdCliente
@@ -52,14 +52,14 @@ Partial Class FormClientePrincipal
         Me.txtIdCliente.Size = New System.Drawing.Size(100, 20)
         Me.txtIdCliente.TabIndex = 4
         '
-        'lbNombre
+        'lbCliente
         '
-        Me.lbNombre.AutoSize = True
-        Me.lbNombre.Location = New System.Drawing.Point(142, 9)
-        Me.lbNombre.Name = "lbNombre"
-        Me.lbNombre.Size = New System.Drawing.Size(44, 13)
-        Me.lbNombre.TabIndex = 5
-        Me.lbNombre.Text = "Nombre"
+        Me.lbCliente.AutoSize = True
+        Me.lbCliente.Location = New System.Drawing.Point(142, 9)
+        Me.lbCliente.Name = "lbCliente"
+        Me.lbCliente.Size = New System.Drawing.Size(39, 13)
+        Me.lbCliente.TabIndex = 5
+        Me.lbCliente.Text = "Cliente"
         '
         'txtNombreCliente
         '
@@ -100,14 +100,14 @@ Partial Class FormClientePrincipal
         Me.txtCorreoCliente.Size = New System.Drawing.Size(100, 20)
         Me.txtCorreoCliente.TabIndex = 13
         '
-        'dgvProducto
+        'dgvCliente
         '
-        Me.dgvProducto.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvProducto.Location = New System.Drawing.Point(12, 69)
-        Me.dgvProducto.Name = "dgvProducto"
-        Me.dgvProducto.Size = New System.Drawing.Size(772, 369)
-        Me.dgvProducto.TabIndex = 14
-        Me.dgvProducto.Visible = False
+        Me.dgvCliente.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvCliente.Location = New System.Drawing.Point(12, 69)
+        Me.dgvCliente.Name = "dgvCliente"
+        Me.dgvCliente.Size = New System.Drawing.Size(772, 369)
+        Me.dgvCliente.TabIndex = 14
+        Me.dgvCliente.Visible = False
         '
         'btnBuscar
         '
@@ -134,18 +134,18 @@ Partial Class FormClientePrincipal
         Me.ClientSize = New System.Drawing.Size(800, 450)
         Me.Controls.Add(Me.btnAgregarCliente)
         Me.Controls.Add(Me.btnBuscar)
-        Me.Controls.Add(Me.dgvProducto)
+        Me.Controls.Add(Me.dgvCliente)
         Me.Controls.Add(Me.txtCorreoCliente)
         Me.Controls.Add(Me.lbCorreoCliente)
         Me.Controls.Add(Me.txtTelefonoCliente)
         Me.Controls.Add(Me.lbCategoria)
         Me.Controls.Add(Me.txtNombreCliente)
-        Me.Controls.Add(Me.lbNombre)
+        Me.Controls.Add(Me.lbCliente)
         Me.Controls.Add(Me.txtIdCliente)
         Me.Controls.Add(Me.lbIdCliente)
         Me.Name = "FormClientePrincipal"
         Me.Text = "Clientes"
-        CType(Me.dgvProducto, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgvCliente, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -153,13 +153,13 @@ Partial Class FormClientePrincipal
 
     Friend WithEvents lbIdCliente As Label
     Friend WithEvents txtIdCliente As TextBox
-    Friend WithEvents lbNombre As Label
+    Friend WithEvents lbCliente As Label
     Friend WithEvents txtNombreCliente As TextBox
     Friend WithEvents lbCategoria As Label
     Friend WithEvents txtTelefonoCliente As TextBox
     Friend WithEvents lbCorreoCliente As Label
     Friend WithEvents txtCorreoCliente As TextBox
-    Friend WithEvents dgvProducto As DataGridView
+    Friend WithEvents dgvCliente As DataGridView
     Friend WithEvents btnBuscar As Button
     Friend WithEvents btnAgregarCliente As Button
 End Class

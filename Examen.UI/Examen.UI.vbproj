@@ -85,6 +85,12 @@
     <Compile Include="Clientes\FormClientePrincipal.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Clientes\FormEditarCliente.Designer.vb">
+      <DependentUpon>FormEditarCliente.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Clientes\FormEditarCliente.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Producto\FormAgregarProducto.Designer.vb">
       <DependentUpon>FormAgregarProducto.vb</DependentUpon>
     </Compile>
@@ -125,6 +131,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Venta\FormVentaPrincial.Designer.vb">
+      <DependentUpon>FormVentaPrincial.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Venta\FormVentaPrincial.vb">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Clientes\FormAgregarCliente.resx">
@@ -132,6 +144,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Clientes\FormClientePrincipal.resx">
       <DependentUpon>FormClientePrincipal.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Clientes\FormEditarCliente.resx">
+      <DependentUpon>FormEditarCliente.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Producto\FormAgregarProducto.resx">
       <DependentUpon>FormAgregarProducto.vb</DependentUpon>
@@ -150,6 +165,9 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Venta\FormVentaPrincial.resx">
+      <DependentUpon>FormVentaPrincial.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

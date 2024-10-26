@@ -26,7 +26,6 @@ Public MustInherit Class AbstractMapper
     '''  Metodo generico para obtener, mediante la ejecucion de un stored
     '''  Procedure, una colección del Tipo TEntidad
     ''' </summary>
-    ''' <param name="parameters">Colección de parametros</param>
     ''' <returns>Devuelve una coleccion Tipo TEntidad</returns>
     Protected Function AbstractFindAll() As ArrayList
         Dim dataReader As IDataReader = Nothing

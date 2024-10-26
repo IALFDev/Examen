@@ -5,7 +5,7 @@ Public Class ProductoDAL
     Private tipoOp As Integer
 
     ''' <summary>
-    '''  Metodo que guarda en la base datos un nuevo producto en la datos del objeto Producto
+    '''  Método que guarda en la base datos un nuevo producto en la datos del objeto Producto
     ''' </summary>
     ''' <returns>Devuelve un objeto tipo Producto con el resultado de la operacion de guardado en la base datos</returns>
     Public Function GuardarProductoEnBd(producto As Producto) As Producto
@@ -21,13 +21,12 @@ Public Class ProductoDAL
         Return producto
     End Function
 
-
     ''' <summary>
-    '''  Metodo que guarda la edicion de los datos del producto ya existente en la base de datos
+    '''  Método que guarda la edicion de los datos del producto ya existente en la base de datos
     ''' </summary>
-    ''' <returns>Devuelve un objeto tipo Producto con el resultado de la operación de guardado del producto en la base datos</returns>
+    ''' <returns>Devuelve un objeto tipo Producto con el resultado de la operación de guardado del producto en la base de datos</returns>
     Public Function GuardarEdicionProductoEnBd(producto As Producto) As Producto
-        commandText = producto.EditarProducto()
+        commandText = producto.EditarProductoEnBd()
 
         Try
             ExecuteNonQuery()
@@ -40,11 +39,11 @@ Public Class ProductoDAL
     End Function
 
     ''' <summary>
-    '''  Metodo que elimina el producto de manera logica en la base datos
+    '''  Método que elimina el producto de manera logica en la base datos
     ''' </summary>
     ''' <returns>Devuelve un objeto tipo Producto con el resultado de la operación de eliminación del producto en la base datos</returns>
     Public Function EliminarProductoEnBd(producto As Producto) As Producto
-        commandText = producto.EliminarProducto()
+        commandText = producto.EliminarProductoEnBd()
 
         Try
             ExecuteNonQuery()
@@ -57,7 +56,7 @@ Public Class ProductoDAL
     End Function
 
     ''' <summary>
-    '''  Metodo que obtiene una collecion del tipo ArrayList de todos los productos de la base de datos
+    '''  Método que obtiene una collecion del tipo ArrayList de todos los productos en la base de datos
     ''' </summary>
     ''' <returns>Devuelve un Arraylist de objetos tipo Producto</returns>
     Public Function ObtenerTodosLosProductos() As ArrayList
@@ -68,11 +67,10 @@ Public Class ProductoDAL
         Dim resultado = AbstractFindAll()
 
         Return resultado
-
     End Function
 
     ''' <summary>
-    '''  Metodo que obtiene una collecion del tipo ArrayList de la categoria de todos los productos de la base de datos
+    '''  Método que obtiene una collecion del tipo ArrayList de la categoria de todos los productos en la base de datos
     ''' </summary>
     ''' <returns>Devuelve un Arraylist de objetos tipo Producto</returns>
     Public Function ObtenerCategoriaProducto() As ArrayList
@@ -97,10 +95,9 @@ Public Class ProductoDAL
     End Function
 
     ''' <summary>
-    '''  Metodo que almacena todos los datos obtenidos en el objeto del tipo Producto
+    '''  Método que almacena todos los datos obtenidos en el objeto del tipo Producto
     ''' </summary>
     ''' <returns>Devuelve un objeto del tipo Producto</returns>
-
     Protected Function ObtenerTodosLosProductos(registers As IDataReader) As Producto
         Dim producto = New Producto()
 
@@ -108,13 +105,12 @@ Public Class ProductoDAL
         producto.Nombre = registers("NOMBRE").ToString
         producto.Precio = Decimal.Parse(registers("PRECIO").ToString)
         producto.Categoria = registers("CATEGORIA").ToString
-        producto.Activo = Boolean.Parse(registers("ACTIVO").ToString)
 
         Return producto
     End Function
 
     ''' <summary>
-    '''  Metodo que almacena la categoria obtenida en el objeto del tipo Producto
+    '''  Método que almacena la categoria obtenida en el objeto del tipo Producto
     ''' </summary>
     ''' <returns>Devuelve un objeto del tipo Producto</returns>
     Protected Function ObtenerCategoriaProducto(registers As IDataReader) As Producto

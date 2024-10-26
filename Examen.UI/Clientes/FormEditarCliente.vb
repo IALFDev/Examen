@@ -1,9 +1,10 @@
-﻿Imports System.Text.RegularExpressions
-Imports System.Windows.Forms.VisualStyles.VisualStyleElement
-Imports Examen.BLL
+﻿Imports Examen.BLL
 Imports Examen.Entidad
 
-Public Class FormAgregarCliente
+Public Class FormEditarCliente
+    Protected idCliente As Long 'Variable para almacenar el Id del cliente a editar
+    Protected correo As String 'Variable para almacenar el correo del cliente a editar
+
     Private Sub txtTelefono_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtTelefono.KeyPress
         If Asc(e.KeyChar) <> 13 AndAlso Asc(e.KeyChar) <> 8 AndAlso Not IsNumeric(e.KeyChar) Then 'Verifico que el campo Teléfono solo se ingrese numeros'
             MessageBox.Show("Debes ingresar solamente valores numéricos.", "Atención")
@@ -24,10 +25,14 @@ Public Class FormAgregarCliente
         End If
     End Sub
 
-    Private Sub btnAgregarCliente_Click(sender As Object, e As EventArgs) Handles btnAgregarCliente.Click
-        If VerificarCampos() Then 'Verifico que los Cliente, Teléfono y Correo no esten vacíos'
-            If Not VerificarSiYaExisteElCliente(New Cliente().GenerarObjetoClienteParaVerificarSiExiste(txtCorreo.Text)) Then 'Verifico si el cliente ya existe en la base de datos
-                If Not GuardarClienteEnBd(New Cliente().GenerarObjetoClienteParaGuardarEnBd(txtCliente.Text, Integer.Parse(txtTelefono.Text), txtCorreo.Text)).Excepcion.Error Then 'Verifico que el guardado en la base sea correcto de lo contrario muestro un MessageBox de error
+    Private Sub btnEditarCliente_Click(sender As Object, e As EventArgs) Handles btnEditarCliente.Click
+        If VerificarCampos() Then 'Verifico que los campos Cliente, Teléfono y Correo no esten vacíos'
+            Dim correoNuevo As String = txtCorreo.Text
+            Dim correoRegistrado As String = correo
+
+
+            If correoNuevo = correoRegistrado OrElse Not VerificarSiYaExisteElCliente(New Cliente().GenerarObjetoClienteParaVerificarSiExiste(correoNuevo)) Then ' Verifico si el correo fue modificado o si el cliente no existe en la base de datos
+                If Not GuardarEdicionProductoEnBd(New Cliente().GenerarObjetoClienteParaGuardarEnBd(idCliente, txtCliente.Text, Integer.Parse(txtTelefono.Text), correoNuevo)).Excepcion.Error Then 'Verifico que el guardado en la base sea correcto de lo contrario muestro un MessageBox de error
                     MessageBox.Show("Cliente guardado.", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si todo salio correcto muestro un MessageBox diciendo que el cliente se guardo correctamente'
 
                     txtCliente.Clear()
@@ -40,8 +45,9 @@ Public Class FormAgregarCliente
                     MessageBox.Show("Error al guardar el cliente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que el cliente no se guardar correctamente'
                 End If
             Else
-                MessageBox.Show("El cliente ya existe", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si el cliente ya existe muestro un MessageBox'
+                MessageBox.Show("Ya existe un cliente con el email " + correoNuevo, "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si el cliente ya existe muestro un MessageBox'
             End If
+
         End If
     End Sub
     Protected Function VerificarCampos() As Boolean
@@ -116,16 +122,15 @@ Public Class FormAgregarCliente
     End Function
 
     ''' <summary>
-    '''  Método que guarda en la base datos los datos del objeto Cliente desde el "gestor" o "manager" de la capa de negocios
-    ''' </summary>
-    ''' <returns>Devuelve un objeto tipo Cliente con el resultado de la operacion de guardado en la base datos</returns>
-    Public Function GuardarClienteEnBd(cliente As Cliente) As Cliente
-        Dim manager = New ManagerCliente()
-
-        cliente = manager.GuardarClienteEnBd(cliente)
-
-        Return cliente
-    End Function
+    '''  Método que obtiene un objeto tipo Cliente para rellenar los camplos con la información a editar del misno
+    ''' </summary>''
+    Public Sub RellenarDatosCliente(cliente As Cliente)
+        idCliente = cliente.Id
+        txtCliente.Text = cliente.Cliente
+        txtTelefono.Text = cliente.Telefono
+        txtCorreo.Text = cliente.Correo
+        correo = cliente.Correo
+    End Sub
 
     ''' <summary>
     '''  Método que verifica si el cliente ya existe en la base de datos desde el "gestor" o "manager" de la capa de negocios
@@ -138,5 +143,17 @@ Public Class FormAgregarCliente
         existe = manager.VerificarSiYaExisteElCliente(cliente)
 
         Return existe
+    End Function
+
+    ''' <summary>
+    '''  Método que guarda la edicion de los datos del cliente ya existente en la base de datos desde el "gestor" o "manager" de la capa de negocios
+    ''' </summary>
+    ''' <returns>Devuelve un objeto tipo Cliente con el resultado de la operacion de guardado en la base datos</returns>
+    Protected Function GuardarEdicionProductoEnBd(cliente As Cliente) As Cliente
+        Dim manager = New ManagerCliente()
+
+        cliente = manager.GuardarEdicionProductoEnBd(cliente)
+
+        Return cliente
     End Function
 End Class

@@ -24,6 +24,7 @@ Partial Class FormPrincipal
     Private Sub InitializeComponent()
         Me.btnProducto = New System.Windows.Forms.Button()
         Me.btnCliente = New System.Windows.Forms.Button()
+        Me.btnVentas = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'btnProducto
@@ -44,11 +45,21 @@ Partial Class FormPrincipal
         Me.btnCliente.Text = "Clientes"
         Me.btnCliente.UseVisualStyleBackColor = True
         '
+        'btnVentas
+        '
+        Me.btnVentas.Location = New System.Drawing.Point(174, 12)
+        Me.btnVentas.Name = "btnVentas"
+        Me.btnVentas.Size = New System.Drawing.Size(75, 30)
+        Me.btnVentas.TabIndex = 2
+        Me.btnVentas.Text = "Ventas"
+        Me.btnVentas.UseVisualStyleBackColor = True
+        '
         'FormPrincipal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.Controls.Add(Me.btnVentas)
         Me.Controls.Add(Me.btnCliente)
         Me.Controls.Add(Me.btnProducto)
         Me.Name = "FormPrincipal"
@@ -59,4 +70,5 @@ Partial Class FormPrincipal
 
     Friend WithEvents btnProducto As Button
     Friend WithEvents btnCliente As Button
+    Friend WithEvents btnVentas As Button
 End Class
