@@ -4,12 +4,18 @@ Imports Examen.Entidad
 
 Public Class FormAgregarProducto
     Private Sub FormAgregarProducto_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        ConfigurarContenido()
+    End Sub
+
+    Protected Sub ConfigurarContenido()
         ActivarComboBoxCategoria()
+
+        cbCategoria.DropDownStyle = ComboBoxStyle.DropDownList 'Convierto el campo Categoria en un DropDownList para que no se peuda escribir en el
     End Sub
 
     Private Sub txtPrecio_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtPrecio.KeyPress
         If Asc(e.KeyChar) <> 13 AndAlso Asc(e.KeyChar) <> 8 AndAlso Not IsNumeric(e.KeyChar) Then 'Verifico que el campo Precio solo se ingrese numeros'
-            MessageBox.Show("Por favor solo ingresar numeros", "Atención")
+            MessageBox.Show("Debes ingresar solamente valores numéricos.", "Atención")
             e.Handled = True
         End If
     End Sub
@@ -35,20 +41,20 @@ Public Class FormAgregarProducto
 
     Private Sub btnAgregarProducto_Click(sender As Object, e As EventArgs) Handles btnAgregarProducto.Click
         If VerificarCampos() Then 'Verifico que los campos Nombre, Precio y Categoria no esten vacíos'
-            If Not GuardarProductoEnBd(New Producto().GenerarObjetoProductoParaGuardarEnBd(txtNombre.Text, txtPrecio.Text, SeleccionarCategoria())).Excepcion.Error Then 'Verifico que el guardado en la base sea correcto de lo contrario muestro un MessageBox de error
-                MessageBox.Show("Producto guardado", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation) 'Si todo salio correcto muestro un MessageBox diciendo que el producto se guardo correctamente'
+
+            If Not GuardarProductoEnBd(New Producto().GenerarObjetoProductoParaGuardarEnBd(txtNombre.Text, txtPrecio.Text, SeleccionarCampoCategoria())).Excepcion.Error Then 'Verifico que el guardado en la base sea correcto de lo contrario muestro un MessageBox de error
+                MessageBox.Show("Producto guardado", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si todo salio correcto muestro un MessageBox diciendo que el producto se guardo correctamente'
 
                 txtNombre.Clear()
                 txtPrecio.Clear() 'Limpio los campos Nombre, Precio y Categoria para que no quede con datos reciduales'
                 txtCategoria.Clear()
                 cbCategoria.Refresh()
 
+                FormProductoPrincipal.ActivarDataGridViewProducto() 'Refresco la grilla cada vez que haga click en el botón'
             Else
-                MessageBox.Show("Error al guardar el producto", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que el producto no pudo se guardado'
+                MessageBox.Show("Error al guardar el producto", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que el producto no se guardar correctamente'
             End If
         End If
-
-        FormProductoPrincipal.ActivarDataGridViewProducto() 'Refresco la grilla cada vez que haga click en el boton'
     End Sub
 
     ''' <summary>
@@ -59,9 +65,17 @@ Public Class FormAgregarProducto
         Dim validado As Boolean
 
         If Not String.IsNullOrEmpty(txtNombre.Text) Then 'Verifico que el campo Nombre no este vacío'
-            validado = True
+            If Not txtNombre.Text.Length > 255 Then 'Verifico que el campo no tenga más de 255 caracteres'
+                validado = True
+            Else
+                MessageBox.Show("El campo Nombre no debe tener más de 255 caracteres.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+
+                validado = False
+
+                Return validado
+            End If
         Else
-            MessageBox.Show("El campo Nombre no debe estar vacío", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            MessageBox.Show("El campo Nombre no debe estar vacío.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
 
             validado = False
 
@@ -71,11 +85,32 @@ Public Class FormAgregarProducto
         If Not String.IsNullOrEmpty(txtPrecio.Text) Then 'Verifico que el campo Precio no este vacío'
             validado = True
         Else
-            MessageBox.Show("El campo Precio no debe estar vacío", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            MessageBox.Show("El campo Precio no debe estar vacío.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
 
             validado = False
 
             Return validado
+        End If
+
+        If txtCategoria.Enabled Then 'Verifico que el campo Categoria(TextBox) este activo'
+            If Not String.IsNullOrEmpty(txtCategoria.Text) Then
+                If Not txtCategoria.Text.Length > 255 Then 'Verifico que el Categoria(TextBox) no tenga más de 255 caracteres'
+                    validado = True
+                Else
+                    MessageBox.Show("El campo Categoria no debe tener más de 255 caracteres.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+
+                    validado = False
+
+                    Return validado
+                End If
+            Else
+                MessageBox.Show("El campo Categoria no debe estar vacío.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+
+                validado = False
+
+                Return validado
+            End If
+
         End If
 
         Return validado = True
@@ -84,7 +119,7 @@ Public Class FormAgregarProducto
     ''' <summary>
     '''  Metodo que verifica dos campos txtCategoria y cbCategoria si uno de los dos esta activo se toma la categoria del mismo
     ''' </summary>''
-    Protected Function SeleccionarCategoria() As String
+    Protected Function SeleccionarCampoCategoria() As String
         If txtCategoria.Enabled Then
             Return txtCategoria.Text
         ElseIf cbCategoria.Enabled Then
@@ -100,11 +135,11 @@ Public Class FormAgregarProducto
     Protected Sub ActivarComboBoxCategoria()
         Dim categorias = ObtenerCategoriaProducto()
         Dim producto = New Producto
-        producto.Categoria = "Seleccione una categoria"
+        producto.Categoria = "Seleccione una categoría"
 
         categorias.Insert(0, producto)
 
-        If Not categorias.Count <= 0 Then
+        If categorias IsNot Nothing AndAlso categorias.Count > 0 Then
             cbCategoria.DataSource = categorias
             cbCategoria.DisplayMember = "Categoria"
             cbCategoria.ValueMember = "Categoria"
@@ -114,7 +149,7 @@ Public Class FormAgregarProducto
     ''' <summary>
     '''  Metodo que guarda en la base datos los datos del objeto Producto desde el "gestor" o "manager" de la capa de negocios
     ''' </summary>
-    ''' <returns>Devuelve un objeto tipo Producto</returns>
+    ''' <returns>Devuelve un objeto tipo Producto con el resultado de la operacion de guardado en la base datos</returns>
     Public Function GuardarProductoEnBd(producto As Producto) As Producto
         Dim manager = New ManagerProducto()
 
@@ -130,7 +165,7 @@ Public Class FormAgregarProducto
     Protected Function ObtenerCategoriaProducto() As ArrayList
         Dim manager = New ManagerProducto()
 
-        Dim resultado = manager.ObtenerCategoriaProducto
+        Dim resultado = manager.ObtenerCategoriaProducto()
 
         Return resultado
     End Function

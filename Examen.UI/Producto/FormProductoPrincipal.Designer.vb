@@ -23,13 +23,13 @@ Partial Class FormProductoPrincipal
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.lbNombre = New System.Windows.Forms.Label()
-        Me.txtNombre = New System.Windows.Forms.TextBox()
+        Me.txtNombreProducto = New System.Windows.Forms.TextBox()
         Me.lbIdProducto = New System.Windows.Forms.Label()
         Me.txtIdProducto = New System.Windows.Forms.TextBox()
         Me.lbCategoria = New System.Windows.Forms.Label()
-        Me.btnBuscar = New System.Windows.Forms.Button()
+        Me.btnBuscarProducto = New System.Windows.Forms.Button()
         Me.dgvProducto = New System.Windows.Forms.DataGridView()
-        Me.cbCategoria = New System.Windows.Forms.ComboBox()
+        Me.cbCategoriaProducto = New System.Windows.Forms.ComboBox()
         Me.lbRango = New System.Windows.Forms.Label()
         Me.txtRangoDesde = New System.Windows.Forms.TextBox()
         Me.txtRangoHasta = New System.Windows.Forms.TextBox()
@@ -47,12 +47,12 @@ Partial Class FormProductoPrincipal
         Me.lbNombre.TabIndex = 0
         Me.lbNombre.Text = "Nombre"
         '
-        'txtNombre
+        'txtNombreProducto
         '
-        Me.txtNombre.Location = New System.Drawing.Point(192, 4)
-        Me.txtNombre.Name = "txtNombre"
-        Me.txtNombre.Size = New System.Drawing.Size(100, 20)
-        Me.txtNombre.TabIndex = 1
+        Me.txtNombreProducto.Location = New System.Drawing.Point(192, 4)
+        Me.txtNombreProducto.Name = "txtNombreProducto"
+        Me.txtNombreProducto.Size = New System.Drawing.Size(100, 20)
+        Me.txtNombreProducto.TabIndex = 1
         '
         'lbIdProducto
         '
@@ -79,14 +79,14 @@ Partial Class FormProductoPrincipal
         Me.lbCategoria.TabIndex = 4
         Me.lbCategoria.Text = "Categoria"
         '
-        'btnBuscar
+        'btnBuscarProducto
         '
-        Me.btnBuscar.Location = New System.Drawing.Point(483, 4)
-        Me.btnBuscar.Name = "btnBuscar"
-        Me.btnBuscar.Size = New System.Drawing.Size(75, 23)
-        Me.btnBuscar.TabIndex = 6
-        Me.btnBuscar.Text = "Buscar"
-        Me.btnBuscar.UseVisualStyleBackColor = True
+        Me.btnBuscarProducto.Location = New System.Drawing.Point(483, 4)
+        Me.btnBuscarProducto.Name = "btnBuscarProducto"
+        Me.btnBuscarProducto.Size = New System.Drawing.Size(75, 23)
+        Me.btnBuscarProducto.TabIndex = 6
+        Me.btnBuscarProducto.Text = "Buscar"
+        Me.btnBuscarProducto.UseVisualStyleBackColor = True
         '
         'dgvProducto
         '
@@ -97,13 +97,13 @@ Partial Class FormProductoPrincipal
         Me.dgvProducto.TabIndex = 7
         Me.dgvProducto.Visible = False
         '
-        'cbCategoria
+        'cbCategoriaProducto
         '
-        Me.cbCategoria.FormattingEnabled = True
-        Me.cbCategoria.Location = New System.Drawing.Point(356, 4)
-        Me.cbCategoria.Name = "cbCategoria"
-        Me.cbCategoria.Size = New System.Drawing.Size(121, 21)
-        Me.cbCategoria.TabIndex = 8
+        Me.cbCategoriaProducto.FormattingEnabled = True
+        Me.cbCategoriaProducto.Location = New System.Drawing.Point(356, 4)
+        Me.cbCategoriaProducto.Name = "cbCategoriaProducto"
+        Me.cbCategoriaProducto.Size = New System.Drawing.Size(121, 21)
+        Me.cbCategoriaProducto.TabIndex = 8
         '
         'lbRango
         '
@@ -143,10 +143,10 @@ Partial Class FormProductoPrincipal
         Me.btnAgregarProducto.Name = "btnAgregarProducto"
         Me.btnAgregarProducto.Size = New System.Drawing.Size(120, 23)
         Me.btnAgregarProducto.TabIndex = 13
-        Me.btnAgregarProducto.Text = "Agregar Producto"
+        Me.btnAgregarProducto.Text = "Agregar producto"
         Me.btnAgregarProducto.UseVisualStyleBackColor = True
         '
-        'FormProducto
+        'FormProductoPrincipal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -156,16 +156,16 @@ Partial Class FormProductoPrincipal
         Me.Controls.Add(Me.txtRangoHasta)
         Me.Controls.Add(Me.txtRangoDesde)
         Me.Controls.Add(Me.lbRango)
-        Me.Controls.Add(Me.cbCategoria)
+        Me.Controls.Add(Me.cbCategoriaProducto)
         Me.Controls.Add(Me.dgvProducto)
-        Me.Controls.Add(Me.btnBuscar)
+        Me.Controls.Add(Me.btnBuscarProducto)
         Me.Controls.Add(Me.lbCategoria)
         Me.Controls.Add(Me.txtIdProducto)
         Me.Controls.Add(Me.lbIdProducto)
-        Me.Controls.Add(Me.txtNombre)
+        Me.Controls.Add(Me.txtNombreProducto)
         Me.Controls.Add(Me.lbNombre)
-        Me.Name = "FormProducto"
-        Me.Text = "FormProducto"
+        Me.Name = "FormProductoPrincipal"
+        Me.Text = "Productos"
         CType(Me.dgvProducto, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -173,13 +173,13 @@ Partial Class FormProductoPrincipal
     End Sub
 
     Friend WithEvents lbNombre As Label
-    Friend WithEvents txtNombre As TextBox
+    Friend WithEvents txtNombreProducto As TextBox
     Friend WithEvents lbIdProducto As Label
     Friend WithEvents txtIdProducto As TextBox
     Friend WithEvents lbCategoria As Label
-    Friend WithEvents btnBuscar As Button
+    Friend WithEvents btnBuscarProducto As Button
     Friend WithEvents dgvProducto As DataGridView
-    Friend WithEvents cbCategoria As ComboBox
+    Friend WithEvents cbCategoriaProducto As ComboBox
     Friend WithEvents lbRango As Label
     Friend WithEvents txtRangoDesde As TextBox
     Friend WithEvents txtRangoHasta As TextBox

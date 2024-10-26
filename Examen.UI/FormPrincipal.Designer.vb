@@ -23,22 +23,33 @@ Partial Class FormPrincipal
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.btnProducto = New System.Windows.Forms.Button()
+        Me.btnCliente = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'btnProducto
         '
-        Me.btnProducto.Location = New System.Drawing.Point(13, 13)
+        Me.btnProducto.Location = New System.Drawing.Point(12, 12)
         Me.btnProducto.Name = "btnProducto"
-        Me.btnProducto.Size = New System.Drawing.Size(75, 23)
+        Me.btnProducto.Size = New System.Drawing.Size(75, 30)
         Me.btnProducto.TabIndex = 0
         Me.btnProducto.Text = "Productos"
         Me.btnProducto.UseVisualStyleBackColor = True
+        '
+        'btnCliente
+        '
+        Me.btnCliente.Location = New System.Drawing.Point(93, 12)
+        Me.btnCliente.Name = "btnCliente"
+        Me.btnCliente.Size = New System.Drawing.Size(75, 30)
+        Me.btnCliente.TabIndex = 1
+        Me.btnCliente.Text = "Clientes"
+        Me.btnCliente.UseVisualStyleBackColor = True
         '
         'FormPrincipal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.Controls.Add(Me.btnCliente)
         Me.Controls.Add(Me.btnProducto)
         Me.Name = "FormPrincipal"
         Me.Text = "Examen"
@@ -47,4 +58,5 @@ Partial Class FormPrincipal
     End Sub
 
     Friend WithEvents btnProducto As Button
+    Friend WithEvents btnCliente As Button
 End Class

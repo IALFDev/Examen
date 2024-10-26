@@ -73,6 +73,18 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Clientes\FormAgregarCliente.Designer.vb">
+      <DependentUpon>FormAgregarCliente.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Clientes\FormAgregarCliente.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Clientes\FormClientePrincipal.Designer.vb">
+      <DependentUpon>FormClientePrincipal.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Clientes\FormClientePrincipal.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Producto\FormAgregarProducto.Designer.vb">
       <DependentUpon>FormAgregarProducto.vb</DependentUpon>
     </Compile>
@@ -115,6 +127,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Clientes\FormAgregarCliente.resx">
+      <DependentUpon>FormAgregarCliente.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Clientes\FormClientePrincipal.resx">
+      <DependentUpon>FormClientePrincipal.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Producto\FormAgregarProducto.resx">
       <DependentUpon>FormAgregarProducto.vb</DependentUpon>
     </EmbeddedResource>

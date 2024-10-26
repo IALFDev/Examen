@@ -65,14 +65,43 @@
     End Property
 
     ''' <summary>
-    '''  Metodo que devuelve un objeto del tipo Producto con los datos necesarios para guardar en la base datos
+    '''  Metodo que devuelve un objeto del tipo Producto con los datos necesarios para guardar el producto  en la base datos
     ''' </summary>
     ''' <returns>Devuelve un string para guardar los datos del producto en la base de datos</returns>
     Public Function GenerarObjetoProductoParaGuardarEnBd(nombre As String, precio As Decimal, categoria As String) As Producto
         Dim producto = New Producto()
+
+        producto.Id = Id
         producto.Nombre = nombre
         producto.Precio = precio
         producto.Categoria = categoria
+
+        Return producto
+    End Function
+
+    ''' <summary>
+    '''  Metodo que devuelve un objeto del tipo Producto con los datos necesarios para guardar el producto en la base datos, este caso recibe una sobrecarga más para poder editar el producto en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un string para guardar los datos del producto en la base de datos</returns>
+    Public Function GenerarObjetoProductoParaGuardarEnBd(id As Long, nombre As String, precio As Decimal, categoria As String) As Producto
+        Dim producto = New Producto()
+
+        producto.Id = id
+        producto.Nombre = nombre
+        producto.Precio = precio
+        producto.Categoria = categoria
+
+        Return producto
+    End Function
+
+    ''' <summary>
+    '''  Metodo que devuelve un objeto del tipo Producto con los datos necesarios para eliminar de manera logica el producto en la base datos
+    ''' </summary>
+    ''' <returns>Devuelve un string para guardar los datos del producto en la base de datos</returns>
+    Public Function GenerarObjetoProductoParaEliminarEnBd(id As Long) As Producto
+        Dim producto = New Producto()
+
+        producto.Id = id
 
         Return producto
     End Function
@@ -89,7 +118,6 @@
 
     ''' <summary>
     '''  Metodo que obtiene un string para la consulta de para obtener la categoria de los productos en la base de datos
-    '''  Procedure, un string de consulta
     ''' </summary>
     ''' <returns>Devuelve un string con la consulta para obtener la categoria de los productos</returns>
     Public Function ObtenerCategoriaProducto() As String
@@ -100,12 +128,32 @@
 
     ''' <summary>
     '''  Metodo que obtiene un string para guardar los datos del producto en la base de datos
-    '''  Procedure, un string de consulta
     ''' </summary>
     ''' <returns>Devuelve un string para guardar los datos del producto en la base de datos</returns>
     Public Function GuardarProductoEnBd() As String
-        Dim precioFormateado As String = Precio.ToString(System.Globalization.CultureInfo.InvariantCulture)
+        Dim precioFormateado As String = Precio.ToString(System.Globalization.CultureInfo.InvariantCulture) 'Formateo el nuemro para poder ser guardado en la base de datos como Float'
         Dim cmd = String.Format("INSERT INTO dbo.productos (Nombre, Precio, Categoria) VALUES ('{0}', {1}, '{2}')", Nombre, precioFormateado, Categoria)
+
+        Return cmd
+    End Function
+
+    ''' <summary>
+    '''  Metodo que obtiene un string para guardar la edicion de los datos del producto ya existente en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un string para guardar la edicion de los datos del producto ya existente la base de datos</returns>
+    Public Function EditarProducto() As String
+        Dim precioFormateado As String = Precio.ToString(System.Globalization.CultureInfo.InvariantCulture) 'Formateo el nuemro para poder ser guardado en la base de datos como Float'
+        Dim cmd = String.Format("UPDATE productos SET Nombre = '{0}' ,Precio = {1},Categoria = '{2}' WHERE productos.ID = {3}", Nombre, precioFormateado, Categoria, Id)
+
+        Return cmd
+    End Function
+
+    ''' <summary>
+    '''  Metodo que obtiene un string para eliminar de manera logica el producto en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un string para eliminar de manera logica el producto en la base de datos</returns>
+    Public Function EliminarProducto() As String
+        Dim cmd = String.Format("UPDATE productos SET Activo = 0 WHERE productos.ID = {0}", Id)
 
         Return cmd
     End Function

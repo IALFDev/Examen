@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class FormEditarProducto
     Inherits System.Windows.Forms.Form
 
     'Form reemplaza a Dispose para limpiar la lista de componentes.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class FormEditarProducto
     'NOTA: el Diseñador de Windows Forms necesita el siguiente procedimiento
     'Se puede modificar usando el Diseñador de Windows Forms.  
     'No lo modifique con el editor de código.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.txtNombre = New System.Windows.Forms.TextBox()
         Me.lbNombre = New System.Windows.Forms.Label()
@@ -30,7 +30,6 @@ Partial Class FormEditarProducto
         Me.lbCategoria = New System.Windows.Forms.Label()
         Me.cbCategoria = New System.Windows.Forms.ComboBox()
         Me.btnEditar = New System.Windows.Forms.Button()
-        Me.lbIdProducto = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'txtNombre
@@ -99,22 +98,11 @@ Partial Class FormEditarProducto
         Me.btnEditar.Text = "Editar producto"
         Me.btnEditar.UseVisualStyleBackColor = True
         '
-        'lbIdProducto
-        '
-        Me.lbIdProducto.AutoSize = True
-        Me.lbIdProducto.Location = New System.Drawing.Point(8, 110)
-        Me.lbIdProducto.Name = "lbIdProducto"
-        Me.lbIdProducto.Size = New System.Drawing.Size(39, 13)
-        Me.lbIdProducto.TabIndex = 13
-        Me.lbIdProducto.Text = "Label1"
-        Me.lbIdProducto.Visible = False
-        '
         'FormEditarProducto
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(361, 226)
-        Me.Controls.Add(Me.lbIdProducto)
         Me.Controls.Add(Me.btnEditar)
         Me.Controls.Add(Me.cbCategoria)
         Me.Controls.Add(Me.lbCategoria)
@@ -138,5 +126,4 @@ Partial Class FormEditarProducto
     Friend WithEvents lbCategoria As Label
     Friend WithEvents cbCategoria As ComboBox
     Friend WithEvents btnEditar As Button
-    Friend WithEvents lbIdProducto As Label
 End Class

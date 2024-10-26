@@ -1,4 +1,6 @@
-﻿Public Class Cliente
+﻿Imports System.Text.RegularExpressions
+
+Public Class Cliente
     Private _id As Long
     Private _cliente As String
     Private _telefono As Integer
@@ -39,4 +41,28 @@
             _correo = value
         End Set
     End Property
+
+    ''' <summary>
+    '''  Metodo que obtiene un string para guardar los datos del cliente en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un string para guardar los datos del cliente en la base de datos</returns>
+    Public Function GuardarClienteEnBd() As String
+        Dim cmd = String.Format("INSERT INTO dbo.clientes (Cliente, Telefono, Correo) VALUES ('{0}', {1}, '{2}')", Cliente, Telefono, Correo)
+
+        Return cmd
+    End Function
+
+    ''' <summary>
+    '''  Metodo que obtiene un bool al validar si el string ingresado tiene el formato correcto para un correo electrónico
+    ''' </summary>
+    ''' <returns>Devuelve un bool si el correo es valido o no</returns>
+    Public Function Verificarcorreo() As Boolean
+        Dim patronRegex As String = "^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$" 'Patron para validar si el string ingresado es un correo
+        Dim emailAddressMatch As Match = Regex.Match(Correo, patronRegex)
+        If emailAddressMatch.Success Then 'Verifica si el string ingresado es un correo
+            Verificarcorreo = True
+        Else
+            Verificarcorreo = False
+        End If
+    End Function
 End Class

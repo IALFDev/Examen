@@ -5,15 +5,50 @@ Public Class ProductoDAL
     Private tipoOp As Integer
 
     ''' <summary>
-    '''  Metodo que guarda en la base datos los datos del objeto Producto
+    '''  Metodo que guarda en la base datos un nuevo producto en la datos del objeto Producto
     ''' </summary>
-    ''' <returns>Devuelve un objeto tipo Producto</returns>
+    ''' <returns>Devuelve un objeto tipo Producto con el resultado de la operacion de guardado en la base datos</returns>
     Public Function GuardarProductoEnBd(producto As Producto) As Producto
         commandText = producto.GuardarProductoEnBd()
 
         Try
             ExecuteNonQuery()
-        Catch ex As Exception
+        Catch ex As Exception 'Si hay un error lo almaceno en la variable producto.Excepcion.Mensaje el mensaje de la Excepcion ocurrida para si se quiere mostrar en pantalla o guardar en una tabla si se quiere
+            producto.Excepcion.Error = True
+            producto.Excepcion.Mensaje = ex.Message.ToString
+        End Try
+
+        Return producto
+    End Function
+
+
+    ''' <summary>
+    '''  Metodo que guarda la edicion de los datos del producto ya existente en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un objeto tipo Producto con el resultado de la operación de guardado del producto en la base datos</returns>
+    Public Function GuardarEdicionProductoEnBd(producto As Producto) As Producto
+        commandText = producto.EditarProducto()
+
+        Try
+            ExecuteNonQuery()
+        Catch ex As Exception 'Si hay un error lo almaceno en la variable producto.Excepcion.Mensaje el mensaje de la Excepcion ocurrida para si se quiere mostrar en pantalla o guardar en una tabla si se quiere
+            producto.Excepcion.Error = True
+            producto.Excepcion.Mensaje = ex.Message.ToString
+        End Try
+
+        Return producto
+    End Function
+
+    ''' <summary>
+    '''  Metodo que elimina el producto de manera logica en la base datos
+    ''' </summary>
+    ''' <returns>Devuelve un objeto tipo Producto con el resultado de la operación de eliminación del producto en la base datos</returns>
+    Public Function EliminarProductoEnBd(producto As Producto) As Producto
+        commandText = producto.EliminarProducto()
+
+        Try
+            ExecuteNonQuery()
+        Catch ex As Exception 'Si hay un error lo almaceno en la variable producto.Excepcion.Mensaje el mensaje de la Excepcion ocurrida para si se quiere mostrar en pantalla o guardar en una tabla si se quiere
             producto.Excepcion.Error = True
             producto.Excepcion.Mensaje = ex.Message.ToString
         End Try
