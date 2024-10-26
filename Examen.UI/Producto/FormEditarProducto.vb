@@ -1,8 +1,7 @@
-﻿Imports System.Windows.Forms.VisualStyles.VisualStyleElement
-Imports Examen.BLL
+﻿Imports Examen.BLL
 Imports Examen.Entidad
 
-Public Class FormAgregarProducto
+Public Class FormEditarProducto
     Private Sub FormAgregarProducto_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ActivarComboBoxCategoria()
     End Sub
@@ -33,22 +32,8 @@ Public Class FormAgregarProducto
         End If
     End Sub
 
-    Private Sub btnAgregarProducto_Click(sender As Object, e As EventArgs) Handles btnAgregarProducto.Click
-        If VerificarCampos() Then 'Verifico que los campos Nombre, Precio y Categoria no esten vacíos'
-            If Not GuardarProductoEnBd(New Producto().GenerarObjetoProductoParaGuardarEnBd(txtNombre.Text, txtPrecio.Text, SeleccionarCategoria())).Excepcion.Error Then 'Verifico que el guardado en la base sea correcto de lo contrario muestro un MessageBox de error
-                MessageBox.Show("Producto guardado", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation) 'Si todo salio correcto muestro un MessageBox diciendo que el producto se guardo correctamente'
-
-                txtNombre.Clear()
-                txtPrecio.Clear() 'Limpio los campos Nombre, Precio y Categoria para que no quede con datos reciduales'
-                txtCategoria.Clear()
-                cbCategoria.Refresh()
-
-            Else
-                MessageBox.Show("Error al guardar el producto", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que el producto no pudo se guardado'
-            End If
-        End If
-
-        FormProducto.ActivarDataGridViewProducto() 'Refresco la grilla cada vez que haga click en el boton'
+    Private Sub btnEditar_Click(sender As Object, e As EventArgs) Handles btnEditar.Click
+        'Hacer funcionar la edicion del producto'
     End Sub
 
     ''' <summary>
@@ -93,6 +78,15 @@ Public Class FormAgregarProducto
 
         Return ""
     End Function
+    ''' <summary>
+    '''  Metodo que obtiene un objeto tipo Producto para rellenar los camplos con la informacion a editar del misno
+    ''' </summary>''
+    Public Sub RellenarDatosProducto(producto As Producto)
+        lbIdProducto.Text = producto.Id
+        txtNombre.Text = producto.Nombre
+        txtPrecio.Text = producto.Precio
+        txtCategoria.Text = producto.Categoria
+    End Sub
 
     ''' <summary>
     '''  Metodo que rellena una Grilla (DataGridView)
@@ -110,18 +104,6 @@ Public Class FormAgregarProducto
             cbCategoria.ValueMember = "Categoria"
         End If
     End Sub
-
-    ''' <summary>
-    '''  Metodo que guarda en la base datos los datos del objeto Producto desde el "gestor" o "manager" de la capa de negocios
-    ''' </summary>
-    ''' <returns>Devuelve un objeto tipo Producto</returns>
-    Public Function GuardarProductoEnBd(producto As Producto) As Producto
-        Dim manager = New ManagerProducto()
-
-        producto = manager.GuardarProductoEnBd(producto)
-
-        Return producto
-    End Function
 
     ''' <summary>
     '''  Metodo que obtiene una collecion tipo ArrayList de la categoria de todos los productos desde el "gestor" o "manager" de la capa de negocios

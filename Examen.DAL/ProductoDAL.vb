@@ -73,6 +73,7 @@ Public Class ProductoDAL
         producto.Nombre = registers("NOMBRE").ToString
         producto.Precio = Decimal.Parse(registers("PRECIO").ToString)
         producto.Categoria = registers("CATEGORIA").ToString
+        producto.Activo = Boolean.Parse(registers("ACTIVO").ToString)
 
         Return producto
     End Function

@@ -76,7 +76,7 @@ Partial Class FormAgregarProducto
         'btnAgregarProducto
         '
         Me.btnAgregarProducto.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnAgregarProducto.Location = New System.Drawing.Point(15, 154)
+        Me.btnAgregarProducto.Location = New System.Drawing.Point(15, 159)
         Me.btnAgregarProducto.Name = "btnAgregarProducto"
         Me.btnAgregarProducto.Size = New System.Drawing.Size(339, 70)
         Me.btnAgregarProducto.TabIndex = 6
@@ -102,7 +102,7 @@ Partial Class FormAgregarProducto
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(366, 236)
+        Me.ClientSize = New System.Drawing.Size(369, 241)
         Me.Controls.Add(Me.txtCategoria)
         Me.Controls.Add(Me.cbCategoria)
         Me.Controls.Add(Me.btnAgregarProducto)

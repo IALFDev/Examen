@@ -82,7 +82,7 @@
     ''' </summary>
     ''' <returns>Devuelve un string con la consulta para obtener todos los productos</returns>
     Public Function ObtenerTodosLosProductos() As String
-        Dim cmd = String.Format("SELECT p.ID AS IDPRODUCTO, p.Nombre AS NOMBRE, p.Precio AS PRECIO, p.Categoria AS CATEGORIA FROM dbo.productos AS p WHERE p.Activo = 1")
+        Dim cmd = String.Format("SELECT p.ID AS IDPRODUCTO, p.Nombre AS NOMBRE, p.Precio AS PRECIO, p.Categoria AS CATEGORIA, p.Activo AS ACTIVO FROM dbo.productos AS p WHERE p.Activo = 1")
 
         Return cmd
     End Function

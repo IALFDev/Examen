@@ -1,5 +1,5 @@
 ﻿Public Class FormPrincipal
     Private Sub btnProducto_Click(sender As Object, e As EventArgs) Handles btnProducto.Click
-        FormProducto.ShowDialog()
+        FormProductoPrincipal.ShowDialog()
     End Sub
 End Class
