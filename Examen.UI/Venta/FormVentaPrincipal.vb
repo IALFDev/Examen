@@ -1,8 +1,13 @@
-﻿Imports Examen.BLL
+﻿Imports System.ComponentModel
+Imports Examen.BLL
+Imports Examen.Entidad
 
-Public Class FormVentaPrincial
+Public Class FormVentaPrincipal
     Private Sub FormVentaPrincial_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ConfigurarContenido()
+    End Sub
+    Private Sub FormVentaPrincial_Closed(sender As Object, e As EventArgs) Handles Me.Closed
+        LimpiarControles()
     End Sub
 
     ''' <summary>
@@ -76,7 +81,62 @@ Public Class FormVentaPrincial
                 dgvVenta.Columns.Add(btnEliminar)
             End If
         End If
+    End Sub
 
+    Protected Sub dgvProducto_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvVenta.CellClick
+
+        If e.RowIndex >= 0 Then 'Verifico si es una fila válida
+            Dim idVenta As Long = Long.Parse(dgvVenta.Rows(e.RowIndex).Cells("ID").Value.ToString())
+            Dim nombreCliente As String = dgvVenta.Rows(e.RowIndex).Cells("NombreCliente").Value.ToString()
+            Dim fechaVenta As DateTime = dgvVenta.Rows(e.RowIndex).Cells("Fecha").Value.ToString()
+            Dim TotalVenta As Decimal = dgvVenta.Rows(e.RowIndex).Cells("Total").Value.ToString()
+
+
+            If dgvVenta.Columns(e.ColumnIndex).Name = "Detalles" Then 'Verifico si se hizo click en el botón "Editar"
+                Dim venta = New Venta() 'Creo un objeto Venta para almacenar los datos de la venta que quiere editar
+
+                venta.Id = idVenta
+                venta.Cliente.Cliente = nombreCliente
+                venta.Fecha = fechaVenta
+                venta.Total = TotalVenta
+
+                FormDetalleVenta.RellenarDatosVenta(venta) 'llamo al metodo en el otro form para ir almacenando los datos de la venta 
+
+                FormDetalleVenta.ShowDialog() 'Muesto el form donde se puede editar los datos de la venta
+
+            ElseIf dgvVenta.Columns(e.ColumnIndex).Name = "Editar" Then 'Verifico si se hizo click en el botón "Editar"
+                Dim venta = New Venta() 'Creo un objeto Venta para almacenar los datos de la venta que quiere editar
+
+                venta.Id = idVenta
+                venta.Cliente.Cliente = nombreCliente
+                venta.Fecha = fechaVenta
+                venta.Total = TotalVenta
+
+                FormEditarVenta.RellenarDatosVenta(venta) 'llamo al metodo en el otro form para ir almacenando los datos de la venta 
+
+                FormEditarVenta.ShowDialog() 'Muesto el form donde se puede editar los datos de la venta
+
+            ElseIf dgvVenta.Columns(e.ColumnIndex).Name = "Eliminar" Then 'Verifico si se hizo click en el botón "Eliminar"
+                Dim result As DialogResult = MessageBox.Show("¿Estás seguro de eliminar el cliente " + nombreCliente + " ?", "Atención", MessageBoxButtons.YesNo) 'Verifico si es correcto que quiere eliminar el cliente
+                If result = DialogResult.Yes Then
+                    'If Not EliminarClienteEnBd(New Cliente().GenerarObjetoClienteParaEliminarEnBd(idCliente)).Excepcion.Error Then 'Verifico que la eliminación en la base sea correcto de lo contrario muestro un MessageBox de error
+                    '    MessageBox.Show("Cliente eliminado.", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si todo salio correcto muestro un MessageBox diciendo que el cliente se elimino correctamente'
+                    '    ConfigurarContenido()
+                    'Else
+                    '    MessageBox.Show("Error al eliminar el cliente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que el cliente no se guardar correctamente'
+                    'End If
+                End If
+            End If
+        End If
+    End Sub
+
+    ''' <summary>
+    '''  Método que limpia controles despues de realizar alguna acción
+    ''' </summary>''
+    Protected Sub LimpiarControles()
+        dgvVenta.Columns.Clear() 'Limpio las columnas de la grilla
+        dgvVenta.DataSource = Nothing 'Limpio el datasourse de la grilla
+        dgvVenta.Rows.Clear() ''Limpio las filas de la grilla
     End Sub
 
     ''' <summary>

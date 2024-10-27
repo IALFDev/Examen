@@ -8,6 +8,6 @@
     End Sub
 
     Private Sub btnVentas_Click(sender As Object, e As EventArgs) Handles btnVentas.Click
-        FormVentaPrincial.ShowDialog() 'Muesto el form donde se puede ver las ventas
+        FormVentaPrincipal.ShowDialog() 'Muesto el form donde se puede ver las ventas
     End Sub
 End Class

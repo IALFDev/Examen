@@ -122,7 +122,7 @@ Public Class FormEditarCliente
     End Function
 
     ''' <summary>
-    '''  Método que obtiene un objeto tipo Cliente para rellenar los camplos con la información a editar del misno
+    '''  Método que obtiene un objeto tipo Cliente para rellenar los camplos con la información a editar del mismo
     ''' </summary>''
     Public Sub RellenarDatosCliente(cliente As Cliente)
         idCliente = cliente.Id
@@ -156,4 +156,8 @@ Public Class FormEditarCliente
 
         Return cliente
     End Function
+
+    Private Sub FormEditarCliente_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
 End Class

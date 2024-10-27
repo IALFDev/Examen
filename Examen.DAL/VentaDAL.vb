@@ -22,9 +22,9 @@ Public Class VentaDAL
     End Function
 
     ''' <summary>
-    '''  Método que obtiene una collecion del tipo ArrayList de todos los productos en la base de datos
+    '''  Método que obtiene una collecion del tipo ArrayList de todos las ventas en la base de datos
     ''' </summary>
-    ''' <returns>Devuelve un Arraylist de objetos tipo Producto</returns>
+    ''' <returns>Devuelve un Arraylist de objetos tipo Venta</returns>
     Public Function ObtenerTodasLasVentas() As ArrayList
         commandText = New Venta().ObtenerTodasLasVentas()
 

@@ -137,16 +137,22 @@
     <Compile Include="Venta\FormDetalleVenta.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Venta\FormEditarVenta.Designer.vb">
+      <DependentUpon>FormEditarVenta.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Venta\FormEditarVenta.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Venta\FormRealizarVenta.Designer.vb">
       <DependentUpon>FormRealizarVenta.vb</DependentUpon>
     </Compile>
     <Compile Include="Venta\FormRealizarVenta.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Venta\FormVentaPrincial.Designer.vb">
-      <DependentUpon>FormVentaPrincial.vb</DependentUpon>
+    <Compile Include="Venta\FormVentaPrincipal.Designer.vb">
+      <DependentUpon>FormVentaPrincipal.vb</DependentUpon>
     </Compile>
-    <Compile Include="Venta\FormVentaPrincial.vb">
+    <Compile Include="Venta\FormVentaPrincipal.vb">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
@@ -181,11 +187,14 @@
     <EmbeddedResource Include="Venta\FormDetalleVenta.resx">
       <DependentUpon>FormDetalleVenta.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Venta\FormEditarVenta.resx">
+      <DependentUpon>FormEditarVenta.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Venta\FormRealizarVenta.resx">
       <DependentUpon>FormRealizarVenta.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Venta\FormVentaPrincial.resx">
-      <DependentUpon>FormVentaPrincial.vb</DependentUpon>
+    <EmbeddedResource Include="Venta\FormVentaPrincipal.resx">
+      <DependentUpon>FormVentaPrincipal.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

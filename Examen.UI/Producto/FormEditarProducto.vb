@@ -129,7 +129,7 @@ Public Class FormEditarProducto
     End Function
 
     ''' <summary>
-    '''  Método que obtiene un objeto tipo Producto para rellenar los camplos con la informacion a editar del misno
+    '''  Método que obtiene un objeto tipo Producto para rellenar los camplos con la informacion a editar del mismo
     ''' </summary>''
     Public Sub RellenarDatosProducto(producto As Producto)
         idProducto = producto.Id

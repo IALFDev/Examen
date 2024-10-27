@@ -95,4 +95,14 @@
 
         Return cmd
     End Function
+
+    ''' <summary>
+    '''  Metodo que obtiene un string para la consulta de para obtener todos las ventasItem en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un string con la consulta para obtener todos los ventasItem</returns>
+    Public Function ObtenerTodasLasVentasItem() As String
+        Dim cmd = "SELECT vi.ID AS IDVENTAITEM, p.Nombre AS PRODUCTO, vi.PrecioUnitario AS PRECIOUNITARIO, vi.Cantidad AS CANTIDAD, vi.PrecioTotal AS PRECIOTOTAL FROM ventasitems vi INNER JOIN productos AS p ON vi.IDProducto = p.ID WHERE vi.IDVenta = 1 AND vi.Activo = 1"
+
+        Return cmd
+    End Function
 End Class

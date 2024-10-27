@@ -67,6 +67,7 @@
     <Compile Include="ManagerCliente.vb" />
     <Compile Include="ManagerProducto.vb" />
     <Compile Include="ManagerVenta.vb" />
+    <Compile Include="ManagerVentaItem.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

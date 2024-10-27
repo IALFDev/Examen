@@ -8,7 +8,7 @@ Public Class ManagerVenta
     ''' </summary>
     ''' <returns>Devuelve un objeto tipo Venta con el resultado de la operacion de guardado en la base datos</returns>
     Public Function GuardarVentaEnBD(venta As Venta) As Venta
-        Dim ventaDAL = New DAL.VentaDAL()
+        Dim ventaDAL = New VentaDAL()
 
         venta = ventaDAL.GuardarVentaEnBD(venta)
 

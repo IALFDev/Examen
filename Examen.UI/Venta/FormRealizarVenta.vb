@@ -47,13 +47,12 @@ Public Class FormRealizarVenta
                     .Producto = New Producto() With {.Id = Long.Parse(cbProducto.SelectedValue.ToString())},
                     .Cantidad = Long.Parse(txtCantidad.Text)
                 })
+
+                cbProducto.SelectedIndex = 0
+                txtCantidad.Text = "1"
             Else
                 MessageBox.Show("Ya has agregado el producto " + cbProducto.GetItemText(cbProducto.SelectedItem) + " a lista.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             End If
-
-
-            cbProducto.SelectedIndex = 0
-            txtCantidad.Text = "1"
 
             ActivarDataGridViewVentaItemProducto()
         End If
@@ -231,18 +230,27 @@ Public Class FormRealizarVenta
     Private Sub btnAgregarProducto_Click(sender As Object, e As EventArgs) Handles btnAgregarProducto.Click
         If VerificarCamposVenta() Then
             If listVentaItemProductos.Count <> 0 Then
-                Dim venta As Venta = New Venta().GenerarObjetoVentaParaGuardarEnBd(cbCliente.SelectedValue, If(chkbHoy.Checked, DateTime.Now, dtpFecha.Value), totalGeneral)
+                Dim venta As Venta = New Venta().GenerarObjetoVentaParaGuardarEnBd(cbCliente.SelectedValue, If(chkbHoy.Checked, DateTime.Now, dtpFecha.Value), totalGeneral) 'Asigno guardo la venta en la base de datos y recupero el Id de esa venta
 
                 If Not GuardarVentaEnBD(venta).Excepcion.Error Then 'Verifico que el guardado en la base sea correcto de lo contrario muestro un MessageBox de error
-                    MessageBox.Show("Venta guardada con éxito.", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si todo salio correcto muestro un MessageBox diciendo que el cliente se guardo correctamente'
+                    For Each item As VentaItem In listVentaItemProductos 'Asigno el id de la venta a toda la lista
+                        item.Venta.Id = venta.Id
+                    Next
 
-                    LimpiarControles() 'Limpio los campos Cliente, Teléfono y Correo para que no quede con datos reciduales'
+                    Dim ventaItem As List(Of VentaItem) = listVentaItemProductos.ToList()
 
-                    FormClientePrincipal.ActivarDataGridViewProducto() 'Refresco la grilla cada vez que haga click en el botón'
+                    If Not GuardarVentaItemEnBD(ventaItem).Excepcion.Error Then
+                        MessageBox.Show("Venta guardada con éxito.", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si todo salio correcto muestro un MessageBox diciendo que el cliente se guardo correctamente'
+
+                        LimpiarControles() 'Limpio los campos Cliente, Teléfono y Correo para que no quede con datos reciduales'
+
+                        FormVentaPrincipal.ActivarDataGridViewProducto() 'Refresco la grilla cada vez que haga click en el botón'
+                    Else
+                        MessageBox.Show("Error al guardar los ItemVenta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que el cliente no se guardar correctamente'
+                    End If
                 Else
                     MessageBox.Show("Error al guardar la venta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que el cliente no se guardar correctamente'
                 End If
-
             Else
                 MessageBox.Show("No has agregado productos a la lista.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             End If
@@ -320,6 +328,19 @@ Public Class FormRealizarVenta
         venta = manager.GuardarVentaEnBD(venta)
 
         Return venta
+    End Function
+
+    ''' <summary>
+    '''  Método que guarda en la base datos los datos del objeto VentaItem desde el "gestor" o "manager" de la capa de negocios
+    ''' </summary>
+    ''' <returns>Devuelve un objeto tipo VentaItem con el resultado de la operacion de guardado en la base datos</returns>
+    Public Function GuardarVentaItemEnBD(listVemtaItem As List(Of VentaItem)) As VentaItem
+        Dim manager = New ManagerVentaItem()
+        Dim ventaItem = New VentaItem()
+
+        ventaItem = manager.GuardarVentaItemEnBD(listVemtaItem)
+
+        Return ventaItem
     End Function
 
     ''' <summary>
