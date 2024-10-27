@@ -1,5 +1,6 @@
 ﻿Imports System.ComponentModel
 Imports System.Net.Mime.MediaTypeNames
+Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 Imports Examen.BLL
 Imports Examen.Entidad
 
@@ -41,6 +42,9 @@ Public Class FormRealizarVenta
                 .Cantidad = Long.Parse(txtCantidad.Text)
             })
 
+            cbProducto.Refresh()
+            txtCantidad.Text = "1"
+
             ActivarDataGridViewProducto()
         End If
     End Sub
@@ -56,7 +60,7 @@ Public Class FormRealizarVenta
             Dim productoCoincidente = productoDatos.Cast(Of Producto)().FirstOrDefault(Function(pd) pd.Id = dato.Producto.Id) 'Buscar el producto correspondiente en el ArrayList
 
             If productoCoincidente IsNot Nothing Then
-                dato.Producto.Precio = productoCoincidente.Precio
+                dato.PrecioUnitario = productoCoincidente.Precio
                 dato.Producto.Nombre = productoCoincidente.Nombre
             End If
         Next
@@ -88,10 +92,21 @@ Public Class FormRealizarVenta
                 dgvVentaProducto.Columns("Producto").Visible = False ' Elimina la columna de objeto Producto
             End If
 
-            Dim colNombreProducto As New DataGridViewTextBoxColumn() 'Agrego una nueva columna que muestre el nombre del producto
-            colNombreProducto.DataPropertyName = "NombreProducto" ' Propiedad en VentaItem
-            colNombreProducto.HeaderText = "Producto"
-            dgvVentaProducto.Columns.Add(colNombreProducto)
+            If dgvVentaProducto.Columns.Contains("NombreProducto") Then 'Si la grilla contiene la columna "Producto" la oculto
+                dgvVentaProducto.Columns("NombreProducto").HeaderText = "Producto" 'Renombro la columna "NombreProducto" por "Producto"
+            End If
+
+            If dgvVentaProducto.Columns.Contains("Producto") Then 'Si la grilla contiene la columna "Producto" la oculto
+                dgvVentaProducto.Columns("Producto").Visible = False ' Elimina la columna de objeto Producto
+            End If
+
+            If dgvVentaProducto.Columns.Contains("PrecioUnitario") Then
+                dgvVentaProducto.Columns("PrecioUnitario").DefaultCellStyle.Format = "C" 'Convierto el tipo de dato a tipo "C" que es tipo de dato moneda como "Currency"'
+            End If
+
+            If dgvVentaProducto.Columns.Contains("PrecioTotal") Then
+                dgvVentaProducto.Columns("PrecioTotal").DefaultCellStyle.Format = "C" 'Convierto el tipo de dato a tipo "C" que es tipo de dato moneda como "Currency"'
+            End If
 
             If dgvVentaProducto.Columns.Contains("Activo") Then 'Si la grilla contiene la columna "Excepcion" la oculto
                 dgvVentaProducto.Columns("Activo").Visible = False
@@ -109,10 +124,24 @@ Public Class FormRealizarVenta
                 btnEliminar.Text = "Eliminar"
                 btnEliminar.UseColumnTextForButtonValue = True
                 dgvVentaProducto.Columns.Add(btnEliminar)
-            End If
+             End If
 
-            dgvVentaProducto.AllowUserToAddRows = False ' Desactivar la fila de nueva fila
-        End If
+                dgvVentaProducto.AllowUserToAddRows = False ' Desactivar la fila de nueva fila
+
+                CalcularTotalGeneral()
+            End If
+    End Sub
+
+    Protected Sub CalcularTotalGeneral()
+        Dim decValue As Decimal
+        Dim total As Decimal
+        For Each row As DataGridViewRow In dgvVentaProducto.Rows
+            If Decimal.TryParse(row.Cells(4).Value, decValue) Then
+                total += decValue
+            End If
+        Next
+
+        lbNumTotalGeneral.Text = total.ToString()
     End Sub
 
     ''' <summary>
@@ -168,7 +197,7 @@ Public Class FormRealizarVenta
     Protected Sub ActivarComboBoxProducto()
         Dim productos = ObtenerIDYNombreDelProducto()
         Dim producto = New Producto
-        producto.Nombre = "Seleccione un cliente" 'Agrego una opción nueva primera en lista
+        producto.Nombre = "Seleccione un producto" 'Agrego una opción nueva primera en lista
 
         productos.Insert(0, producto)
 
@@ -214,4 +243,5 @@ Public Class FormRealizarVenta
 
         Return resultado
     End Function
+
 End Class

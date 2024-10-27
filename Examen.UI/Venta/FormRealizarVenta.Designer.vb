@@ -34,6 +34,8 @@ Partial Class FormRealizarVenta
         Me.lbCantidad = New System.Windows.Forms.Label()
         Me.txtCantidad = New System.Windows.Forms.TextBox()
         Me.btnAgregar = New System.Windows.Forms.Button()
+        Me.lbTotalGeneral = New System.Windows.Forms.Label()
+        Me.lbNumTotalGeneral = New System.Windows.Forms.Label()
         CType(Me.dgvVentaProducto, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -84,7 +86,7 @@ Partial Class FormRealizarVenta
         'btnAgregarProducto
         '
         Me.btnAgregarProducto.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnAgregarProducto.Location = New System.Drawing.Point(12, 447)
+        Me.btnAgregarProducto.Location = New System.Drawing.Point(12, 478)
         Me.btnAgregarProducto.Name = "btnAgregarProducto"
         Me.btnAgregarProducto.Size = New System.Drawing.Size(776, 70)
         Me.btnAgregarProducto.TabIndex = 14
@@ -147,11 +149,33 @@ Partial Class FormRealizarVenta
         Me.btnAgregar.Text = "Agregar"
         Me.btnAgregar.UseVisualStyleBackColor = True
         '
+        'lbTotalGeneral
+        '
+        Me.lbTotalGeneral.AutoSize = True
+        Me.lbTotalGeneral.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbTotalGeneral.Location = New System.Drawing.Point(13, 448)
+        Me.lbTotalGeneral.Name = "lbTotalGeneral"
+        Me.lbTotalGeneral.Size = New System.Drawing.Size(105, 20)
+        Me.lbTotalGeneral.TabIndex = 20
+        Me.lbTotalGeneral.Text = "Total general:"
+        '
+        'lbNumTotalGeneral
+        '
+        Me.lbNumTotalGeneral.AutoSize = True
+        Me.lbNumTotalGeneral.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbNumTotalGeneral.Location = New System.Drawing.Point(124, 446)
+        Me.lbNumTotalGeneral.Name = "lbNumTotalGeneral"
+        Me.lbNumTotalGeneral.Size = New System.Drawing.Size(20, 22)
+        Me.lbNumTotalGeneral.TabIndex = 21
+        Me.lbNumTotalGeneral.Text = "1"
+        '
         'FormRealizarVenta
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(800, 529)
+        Me.ClientSize = New System.Drawing.Size(800, 560)
+        Me.Controls.Add(Me.lbNumTotalGeneral)
+        Me.Controls.Add(Me.lbTotalGeneral)
         Me.Controls.Add(Me.btnAgregar)
         Me.Controls.Add(Me.txtCantidad)
         Me.Controls.Add(Me.lbCantidad)
@@ -184,4 +208,6 @@ Partial Class FormRealizarVenta
     Friend WithEvents lbCantidad As Label
     Friend WithEvents txtCantidad As TextBox
     Friend WithEvents btnAgregar As Button
+    Friend WithEvents lbTotalGeneral As Label
+    Friend WithEvents lbNumTotalGeneral As Label
 End Class
