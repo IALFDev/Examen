@@ -51,6 +51,30 @@ Public Class ManagerProducto
     End Function
 
     ''' <summary>
+    '''  Método que obtiene una collecion tipo ArrayList con ID y Nombre de los productos desde la capa de conexion a la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un Arraylist de objetos tipo Producto</returns>
+    Public Function ObtenerIDYNombreDelProducto() As ArrayList
+        Dim productoDAL = New ProductoDAL()
+
+        Dim resultado = productoDAL.ObtenerIDYNombreDelProducto()
+
+        Return resultado
+    End Function
+
+    ''' <summary>
+    '''  Método que obtiene una collecion tipo ArrayList con todos los datos de un producto desde la capa de conexion a la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un Arraylist de objetos tipo Producto</returns>
+    Public Function ObtenerDatosDeProducto(producto As Producto) As ArrayList
+        Dim productoDAL = New ProductoDAL()
+
+        Dim resultado = productoDAL.ObtenerDatosDeProducto(producto)
+
+        Return resultado
+    End Function
+
+    ''' <summary>
     '''  Método que obtiene una collecion tipo ArrayList de la categoria de todos los productos desde la capa de conexion a la base de datos
     ''' </summary>
     ''' <returns>Devuelve un Arraylist de objetos tipo Producto</returns>

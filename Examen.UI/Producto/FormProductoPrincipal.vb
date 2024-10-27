@@ -69,8 +69,6 @@ Public Class FormProductoPrincipal
             End If
 
             If dgvProducto.Columns("Editar") Is Nothing Then 'Verifico de que solo se configuren una vez las columnas adicionales
-                'Configurar la columna "Activo" como de solo lectura
-
 
                 'Creo y agrego la columna y el botón "Editar"'
                 Dim btnEditar As New DataGridViewButtonColumn()
@@ -93,8 +91,8 @@ Public Class FormProductoPrincipal
     End Sub
 
     Protected Sub dgvProducto_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvProducto.CellClick
-        ' Verificar si es una fila válida
-        If e.RowIndex >= 0 Then
+
+        If e.RowIndex >= 0 Then 'Verifica si es una fila válida
             Dim idProducto As Long = Long.Parse(dgvProducto.Rows(e.RowIndex).Cells("ID").Value.ToString())
             Dim nombreProducto As String = dgvProducto.Rows(e.RowIndex).Cells("Nombre").Value.ToString()
             Dim precioProducto As Decimal = dgvProducto.Rows(e.RowIndex).Cells("Precio").Value.ToString()
@@ -128,7 +126,7 @@ Public Class FormProductoPrincipal
     End Sub
 
     ''' <summary>
-    '''  Método que rellena una Grilla (DataGridView)
+    '''  Método que rellena el ComboBox de Categoría
     ''' </summary>'' 
     Protected Sub ActivarComboBoxCategoria()
         Dim categorias = ObtenerCategoriaProducto()

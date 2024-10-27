@@ -4,7 +4,6 @@
     Private _producto As Producto
     Private _precioUnitario As Decimal
     Private _cantidad As Integer
-    Private _precioTotal As Decimal
 
     Public Property Id As Long
         Get
@@ -41,6 +40,12 @@
         End Set
     End Property
 
+    Public ReadOnly Property NombreProducto As String 'Propiedad adicional para poder mostrarla en la grilla
+        Get
+            Return If(_producto IsNot Nothing, _producto.Nombre, String.Empty)
+        End Get
+    End Property
+
     Public Property PrecioUnitario As Decimal
         Get
             Return _precioUnitario
@@ -59,12 +64,9 @@
         End Set
     End Property
 
-    Public Property PrecioTotal As Decimal
+    Public ReadOnly Property PrecioTotal As Decimal
         Get
-            Return _precioTotal
+            Return _precioUnitario * _cantidad
         End Get
-        Set(value As Decimal)
-            _precioTotal = value
-        End Set
     End Property
 End Class

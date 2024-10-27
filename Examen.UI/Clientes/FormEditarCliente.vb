@@ -50,6 +50,11 @@ Public Class FormEditarCliente
 
         End If
     End Sub
+
+    ''' <summary>
+    '''  Método que verifica que los campos Cliente, Teléfono y Coreo no esten vacíos al momento de querer guardarlos en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve bool de acuerdo a la verificación</returns>
     Protected Function VerificarCampos() As Boolean
         Dim validado As Boolean
 

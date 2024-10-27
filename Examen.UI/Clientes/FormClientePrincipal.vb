@@ -44,8 +44,6 @@ Public Class FormClientePrincipal
             End If
 
             If dgvCliente.Columns("Editar") Is Nothing Then 'Verifico de que solo se configuren una vez las columnas adicionales
-                'Configurar la columna "Activo" como de solo lectura
-
 
                 'Creo y agrego la columna y el botón "Editar"'
                 Dim btnEditar As New DataGridViewButtonColumn()

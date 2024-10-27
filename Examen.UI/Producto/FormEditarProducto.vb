@@ -57,7 +57,7 @@ Public Class FormEditarProducto
     End Sub
 
     ''' <summary>
-    '''  Método que verifica que los campos Nombre Precio y Categoria no esten vacíos al mento de querer guardarlos en la base de datos
+    '''  Método que verifica que los campos Nombre Precio y Categoria no esten vacíos al momento de querer guardarlos en la base de datos
     ''' </summary>
     ''' <returns>Devuelve bool de acuerdo a la verificación</returns>
     Protected Function VerificarCampos() As Boolean
@@ -139,7 +139,7 @@ Public Class FormEditarProducto
     End Sub
 
     ''' <summary>
-    '''  Método que rellena una Grilla (DataGridView)
+    '''  Método que rellena el ComboBox de Categoría
     ''' </summary>'' 
     Protected Sub ActivarComboBoxCategoria()
         Dim categorias = ObtenerCategoriaProducto()

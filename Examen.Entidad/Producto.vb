@@ -65,7 +65,7 @@
     End Property
 
     ''' <summary>
-    '''  Metodo que devuelve un objeto del tipo Producto con los datos necesarios para guardar el producto en la base datos
+    '''  Método que devuelve un objeto del tipo Producto con los datos necesarios para guardar el producto en la base datos
     ''' </summary>
     ''' <returns>Devuelve un string para guardar los datos del producto en la base de datos</returns>
     Public Function GenerarObjetoProductoParaGuardarEnBd(nombre As String, precio As Decimal, categoria As String) As Producto
@@ -80,7 +80,7 @@
     End Function
 
     ''' <summary>
-    '''  Metodo que devuelve un objeto del tipo Producto con los datos necesarios para guardar el producto en la base datos, este caso recibe una sobrecarga más para poder editar el producto en la base de datos
+    '''  Método que devuelve un objeto del tipo Producto con los datos necesarios para guardar el producto en la base datos, este caso recibe una sobrecarga más para poder editar el producto en la base de datos
     ''' </summary>
     ''' <returns>Devuelve un string para guardar los datos del producto en la base de datos</returns>
     Public Function GenerarObjetoProductoParaGuardarEnBd(id As Long, nombre As String, precio As Decimal, categoria As String) As Producto
@@ -95,7 +95,7 @@
     End Function
 
     ''' <summary>
-    '''  Metodo que devuelve un objeto del tipo Producto con los datos necesarios para eliminar de manera logica el producto en la base datos
+    '''  Método que devuelve un objeto del tipo Producto con los datos necesarios para eliminar de manera logica el producto en la base datos
     ''' </summary>
     ''' <returns>Devuelve un string para guardar los datos del producto en la base de datos</returns>
     Public Function GenerarObjetoProductoParaEliminarEnBd(id As Long) As Producto
@@ -107,11 +107,31 @@
     End Function
 
     ''' <summary>
-    '''  Metodo que obtiene un string para la consulta de para obtener todos los productos de la base de datos
+    '''  Método que obtiene un string para la consulta de para obtener todos los productos en la base de datos
     ''' </summary>
     ''' <returns>Devuelve un string con la consulta para obtener todos los productos</returns>
     Public Function ObtenerTodosLosProductos() As String
         Dim cmd = "SELECT p.ID AS IDPRODUCTO, p.Nombre AS NOMBRE, p.Precio AS PRECIO, p.Categoria AS CATEGORIA, p.Activo AS ACTIVO FROM dbo.productos AS p WHERE p.Activo = 1"
+
+        Return cmd
+    End Function
+
+    ''' <summary>
+    '''  Método que obtiene un string para la consulta de para obtener el ID y Nombre de los productos en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un string con la consulta para obtener todos los productos</returns>
+    Public Function ObtenerIDYNombreDelProducto() As String
+        Dim cmd = "SELECT p.ID AS IDPRODUCTO, p.Nombre AS NOMBRE FROM dbo.productos AS p WHERE p.Activo = 1"
+
+        Return cmd
+    End Function
+
+    ''' <summary>
+    '''  Método que obtiene un string para la consulta de para obtener los datos de un producto en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un string con la consulta para obtener los datos de un producto</returns>
+    Public Function ObtenerDatosDeProducto(producto As Producto) As String
+        Dim cmd = String.Format("SELECT p.ID AS IDPRODUCTO, p.Nombre AS NOMBRE, p.Precio AS PRECIO, p.Categoria AS CATEGORIA FROM dbo.productos AS p WHERE p.ID = {0} AND p.Activo = 1", producto.Id)
 
         Return cmd
     End Function

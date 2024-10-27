@@ -133,7 +133,6 @@ Public Class Cliente
     '''  Metodo que obtiene un string para la consulta de para obtener el ID y Nombre de los clientes en la base de datos
     ''' </summary>
     ''' <returns>Devuelve un string con la consulta para obtener todos los clientes</returns>
-
     Public Function ObtenerIDYNombreDelCliente() As String
         Dim cmd = "SELECT c.ID AS IDCLIENTE, c.Cliente AS CLIENTE FROM clientes AS c where c.Activo = 1"
 

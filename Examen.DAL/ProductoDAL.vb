@@ -83,12 +83,42 @@ Public Class ProductoDAL
         Return resultado
     End Function
 
+    ''' <summary>
+    '''  Método que obtiene una collecion del tipo ArrayList con ID y Nombre de los productos en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un Arraylist de objetos tipo Producto</returns>
+    Public Function ObtenerIDYNombreDelProducto() As ArrayList
+        commandText = New Producto().ObtenerIDYNombreDelProducto()
+
+        tipoOp = 2
+
+        Dim resultado = AbstractFindAll()
+
+        Return resultado
+    End Function
+
+    ''' <summary>
+    '''  Método que obtiene una collecion del tipo ArrayList con todos los datos de un producto en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un Arraylist de objetos tipo Producto</returns>
+    Public Function ObtenerDatosDeProducto(producto As Producto) As ArrayList
+        commandText = New Producto().ObtenerDatosDeProducto(producto)
+
+        tipoOp = 0
+
+        Dim resultado = AbstractFindAll()
+
+        Return resultado
+    End Function
+
     Public Overrides Function DoLoad(registers As IDataReader) As Object
         Select Case tipoOp
             Case 0
                 Return ObtenerTodosLosProductos(registers)
             Case 1
                 Return ObtenerCategoriaProducto(registers)
+            Case 2
+                Return ObtenerIDYNombreDelProducto(registers)
         End Select
 
         Return New Object
@@ -117,6 +147,19 @@ Public Class ProductoDAL
         Dim producto = New Producto()
 
         producto.Categoria = registers("CATEGORIA").ToString
+
+        Return producto
+    End Function
+
+    ''' <summary>
+    '''  Método que almacena la ID y Nombre obtenida en el objeto del tipo Producto
+    ''' </summary>
+    ''' <returns>Devuelve un objeto del tipo Producto</returns>
+    Protected Function ObtenerIDYNombreDelProducto(registers As IDataReader) As Producto
+        Dim producto = New Producto()
+
+        producto.Id = Long.Parse(registers("IDPRODUCTO").ToString)
+        producto.Nombre = registers("NOMBRE").ToString
 
         Return producto
     End Function
