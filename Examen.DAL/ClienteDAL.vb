@@ -30,7 +30,7 @@ Public Class ClienteDAL
 
         Try
             ExecuteNonQuery()
-        Catch ex As Exception 'Si hay un error lo almaceno en la variable producto.Excepcion.Mensaje el mensaje de la Excepcion ocurrida para si se quiere mostrar en pantalla o guardar en una tabla si se quiere
+        Catch ex As Exception 'Si hay un error lo almaceno en la variable cliente.Excepcion.Mensaje el mensaje de la Excepcion ocurrida para si se quiere mostrar en pantalla o guardar en una tabla si se quiere
             cliente.Excepcion.Error = True
             cliente.Excepcion.Mensaje = ex.Message.ToString
         End Try
@@ -47,7 +47,7 @@ Public Class ClienteDAL
 
         Try
             ExecuteNonQuery()
-        Catch ex As Exception 'Si hay un error lo almaceno en la variable producto.Excepcion.Mensaje el mensaje de la Excepcion ocurrida para si se quiere mostrar en pantalla o guardar en una tabla si se quiere
+        Catch ex As Exception 'Si hay un error lo almaceno en la variable cliente.Excepcion.Mensaje el mensaje de la Excepcion ocurrida para si se quiere mostrar en pantalla o guardar en una tabla si se quiere
             cliente.Excepcion.Error = True
             cliente.Excepcion.Mensaje = ex.Message.ToString
         End Try

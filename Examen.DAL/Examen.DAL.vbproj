@@ -86,6 +86,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="ProductoDAL.vb" />
+    <Compile Include="VentaDAL.vb" />
+    <Compile Include="VentaItemDAL.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

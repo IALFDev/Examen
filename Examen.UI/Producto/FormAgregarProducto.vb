@@ -43,10 +43,7 @@ Public Class FormAgregarProducto
             If Not GuardarProductoEnBd(New Producto().GenerarObjetoProductoParaGuardarEnBd(txtNombre.Text, txtPrecio.Text, SeleccionarCampoCategoria())).Excepcion.Error Then 'Verifico que el guardado en la base sea correcto de lo contrario muestro un MessageBox de error
                 MessageBox.Show("Producto guardado", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si todo salio correcto muestro un MessageBox diciendo que el producto se guardo correctamente'
 
-                txtNombre.Clear()
-                txtPrecio.Clear() 'Limpio los campos Nombre, Precio y Categoria para que no quede con datos reciduales'
-                txtCategoria.Clear()
-                cbCategoria.Refresh()
+                LimpiarControles() 'Limpio los campos Nombre, Precio y Categoria para que no quede con datos reciduales'
 
                 FormProductoPrincipal.ActivarDataGridViewProducto() 'Refresco la grilla cada vez que haga click en el botón'
             Else
@@ -142,6 +139,16 @@ Public Class FormAgregarProducto
             cbCategoria.DisplayMember = "Categoria"
             cbCategoria.ValueMember = "Categoria"
         End If
+    End Sub
+
+    ''' <summary>
+    '''  Método que limpia controles despues de realizar alguna acción
+    ''' </summary>''
+    Protected Sub LimpiarControles()
+        txtNombre.Clear()
+        txtPrecio.Clear()
+        txtCategoria.Clear()
+        cbCategoria.Refresh()
     End Sub
 
     ''' <summary>

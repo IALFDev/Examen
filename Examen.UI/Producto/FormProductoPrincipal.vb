@@ -92,7 +92,7 @@ Public Class FormProductoPrincipal
 
     Protected Sub dgvProducto_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvProducto.CellClick
 
-        If e.RowIndex >= 0 Then 'Verifica si es una fila válida
+        If e.RowIndex >= 0 Then 'Verifico si es una fila válida
             Dim idProducto As Long = Long.Parse(dgvProducto.Rows(e.RowIndex).Cells("ID").Value.ToString())
             Dim nombreProducto As String = dgvProducto.Rows(e.RowIndex).Cells("Nombre").Value.ToString()
             Dim precioProducto As Decimal = dgvProducto.Rows(e.RowIndex).Cells("Precio").Value.ToString()
@@ -161,7 +161,7 @@ Public Class FormProductoPrincipal
     Protected Function ObtenerTodosLosProductos() As ArrayList
         Dim manager = New ManagerProducto()
 
-        Dim resultado = manager.ObtenerTodosLosProductos
+        Dim resultado = manager.ObtenerTodosLosProductos()
 
         Return resultado
     End Function

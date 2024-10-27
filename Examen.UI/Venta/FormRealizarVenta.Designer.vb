@@ -165,9 +165,9 @@ Partial Class FormRealizarVenta
         Me.lbNumTotalGeneral.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lbNumTotalGeneral.Location = New System.Drawing.Point(124, 446)
         Me.lbNumTotalGeneral.Name = "lbNumTotalGeneral"
-        Me.lbNumTotalGeneral.Size = New System.Drawing.Size(20, 22)
+        Me.lbNumTotalGeneral.Size = New System.Drawing.Size(30, 22)
         Me.lbNumTotalGeneral.TabIndex = 21
-        Me.lbNumTotalGeneral.Text = "1"
+        Me.lbNumTotalGeneral.Text = "$0"
         '
         'FormRealizarVenta
         '

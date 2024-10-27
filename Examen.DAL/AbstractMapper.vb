@@ -95,8 +95,7 @@ Public MustInherit Class AbstractMapper
             cmd.Connection = conn
             cmd.CommandType = CommandType.Text
 
-            cmd.ExecuteNonQuery()
-            id = cmd.ExecuteScalar
+            id = cmd.ExecuteScalar()
 
             conn.Close()
             Return id

@@ -30,10 +30,7 @@ Public Class FormAgregarCliente
                 If Not GuardarClienteEnBd(New Cliente().GenerarObjetoClienteParaGuardarEnBd(txtCliente.Text, Integer.Parse(txtTelefono.Text), txtCorreo.Text)).Excepcion.Error Then 'Verifico que el guardado en la base sea correcto de lo contrario muestro un MessageBox de error
                     MessageBox.Show("Cliente guardado.", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si todo salio correcto muestro un MessageBox diciendo que el cliente se guardo correctamente'
 
-                    txtCliente.Clear()
-                    txtTelefono.Clear() 'Limpio los campos Cliente, Teléfono y Correo para que no quede con datos reciduales'
-                    txtCorreo.Clear()
-                    lbValidCorreo.Text = String.Empty
+                    LimpiarControles() 'Limpio los campos Cliente, Teléfono y Correo para que no quede con datos reciduales'
 
                     FormClientePrincipal.ActivarDataGridViewProducto() 'Refresco la grilla cada vez que haga click en el botón'
                 Else
@@ -119,6 +116,16 @@ Public Class FormAgregarCliente
 
         Return validado = True
     End Function
+
+    ''' <summary>
+    '''  Método que limpia controles despues de realizar alguna acción
+    ''' </summary>''
+    Protected Sub LimpiarControles()
+        txtCliente.Clear()
+        txtTelefono.Clear()
+        txtCorreo.Clear()
+        lbValidCorreo.Text = String.Empty
+    End Sub
 
     ''' <summary>
     '''  Método que guarda en la base datos los datos del objeto Cliente desde el "gestor" o "manager" de la capa de negocios

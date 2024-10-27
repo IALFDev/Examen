@@ -35,11 +35,6 @@ Public Class FormEditarCliente
                 If Not GuardarEdicionProductoEnBd(New Cliente().GenerarObjetoClienteParaGuardarEnBd(idCliente, txtCliente.Text, Integer.Parse(txtTelefono.Text), correoNuevo)).Excepcion.Error Then 'Verifico que el guardado en la base sea correcto de lo contrario muestro un MessageBox de error
                     MessageBox.Show("Cliente guardado.", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si todo salio correcto muestro un MessageBox diciendo que el cliente se guardo correctamente'
 
-                    txtCliente.Clear()
-                    txtTelefono.Clear() 'Limpio los campos Cliente, Teléfono y Correo para que no quede con datos reciduales'
-                    txtCorreo.Clear()
-                    lbValidCorreo.Text = String.Empty
-
                     FormClientePrincipal.ActivarDataGridViewProducto() 'Refresco la grilla cada vez que haga click en el botón'
                 Else
                     MessageBox.Show("Error al guardar el cliente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que el cliente no se guardar correctamente'

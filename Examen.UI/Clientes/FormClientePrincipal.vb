@@ -17,6 +17,9 @@ Public Class FormClientePrincipal
         FormAgregarCliente.ShowDialog() 'Muesto el form donde se puede agregar nuevos clientes
     End Sub
 
+    ''' <summary>
+    '''  Método que rellena una Grilla (DataGridView)
+    ''' </summary>''
     Public Sub ActivarDataGridViewProducto()
         Dim clientes = ObtenerTodosLosClientes()
         If clientes IsNot Nothing AndAlso clientes.Count > 0 Then
@@ -66,8 +69,8 @@ Public Class FormClientePrincipal
     End Sub
 
     Protected Sub dgvProducto_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvCliente.CellClick
-        ' Verificar si es una fila válida
-        If e.RowIndex >= 0 Then
+
+        If e.RowIndex >= 0 Then 'Verifico si es una fila válida
             Dim idCliente As Long = Long.Parse(dgvCliente.Rows(e.RowIndex).Cells("ID").Value.ToString())
             Dim nombreCliente As String = dgvCliente.Rows(e.RowIndex).Cells("Cliente").Value.ToString()
             Dim telefonoPrecio As Decimal = dgvCliente.Rows(e.RowIndex).Cells("Telefono").Value.ToString()
@@ -87,14 +90,15 @@ Public Class FormClientePrincipal
                 FormEditarCliente.ShowDialog() 'Muesto el form donde se puede editar los datos del cliente
 
 
-            ElseIf dgvCliente.Columns(e.ColumnIndex).Name = "Eliminar" Then 'Verifico si se hizo click en el botón "Eliminar"
-                Dim result As DialogResult = MessageBox.Show("¿Estás seguro de eliminar el cliente " + nombreCliente + " ?", "Atención", MessageBoxButtons.YesNo) 'Verifico si es correcto que quiere eliminar el cliente
-                If result = DialogResult.Yes Then
-                    If Not EliminarClienteEnBd(New Cliente().GenerarObjetoClienteParaEliminarEnBd(idCliente)).Excepcion.Error Then 'Verifico que la eliminación en la base sea correcto de lo contrario muestro un MessageBox de error
-                        MessageBox.Show("Cliente eliminado.", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si todo salio correcto muestro un MessageBox diciendo que el cliente se elimino correctamente'
-                        ConfigurarContenido()
-                    Else
-                        MessageBox.Show("Error al eliminar el cliente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que el cliente no se guardar correctamente'
+                If dgvCliente.Columns(e.ColumnIndex).Name = "Eliminar" Then 'Verifico si se hizo click en el botón "Eliminar"
+                    Dim result As DialogResult = MessageBox.Show("¿Estás seguro de eliminar el cliente " + nombreCliente + " ?", "Atención", MessageBoxButtons.YesNo) 'Verifico si es correcto que quiere eliminar el cliente
+                    If result = DialogResult.Yes Then
+                        If Not EliminarClienteEnBd(New Cliente().GenerarObjetoClienteParaEliminarEnBd(idCliente)).Excepcion.Error Then 'Verifico que la eliminación en la base sea correcto de lo contrario muestro un MessageBox de error
+                            MessageBox.Show("Cliente eliminado.", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si todo salio correcto muestro un MessageBox diciendo que el cliente se elimino correctamente'
+                            ConfigurarContenido()
+                        Else
+                            MessageBox.Show("Error al eliminar el cliente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que el cliente no se guardar correctamente'
+                        End If
                     End If
                 End If
             End If

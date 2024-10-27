@@ -1,19 +1,21 @@
 ﻿Imports System.ComponentModel
 Imports System.Net.Mime.MediaTypeNames
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement
+Imports System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar
 Imports Examen.BLL
 Imports Examen.Entidad
 
 Public Class FormRealizarVenta
-    Protected productos As BindingList(Of VentaItem) = New BindingList(Of VentaItem)() 'Variable para almacenar los prouctos en la grilla
+    Protected listVentaItemProductos As BindingList(Of VentaItem) = New BindingList(Of VentaItem)() 'Variable para almacenar los productos en la grilla
+    Protected totalGeneral As Decimal 'Variable para almacenar el total general
 
     Private Sub FormRealizarVenta_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ConfigurarContenido()
     End Sub
 
     Private Sub FormRealizarVenta_Closed(sender As Object, e As EventArgs) Handles Me.Closed
-        productos.Clear() 'Cuando se cierre la ventana limpio la variable
-        dgvVentaProducto.DataSource = Nothing 'Tambien cuando se cierre la ventana limpio la grilla
+        LimpiarControles()
+        ActivarDataGridViewVentaItemProducto() 'Refresco la grilla
     End Sub
 
     ''' <summary>
@@ -36,17 +38,26 @@ Public Class FormRealizarVenta
     End Sub
 
     Private Sub btnAgregar_Click(sender As Object, e As EventArgs) Handles btnAgregar.Click
-        If VerificarCampos() Then
-            productos.Add(New VentaItem() With {
-                .Producto = New Producto() With {.Id = Long.Parse(cbProducto.SelectedValue.ToString())},
-                .Cantidad = Long.Parse(txtCantidad.Text)
-            })
+        If VerificarCamposProducto() Then
 
-            cbProducto.Refresh()
+            Dim productoCoincidente = listVentaItemProductos.Cast(Of VentaItem)().FirstOrDefault(Function(vi) vi.Producto.Id = Long.Parse(cbProducto.SelectedValue.ToString())) 'Buscar el producto correspondiente en listVentaItemProductos
+
+            If productoCoincidente Is Nothing Then ' Verifico si el producto ya fue agregado a la lista
+                listVentaItemProductos.Add(New VentaItem() With {
+                    .Producto = New Producto() With {.Id = Long.Parse(cbProducto.SelectedValue.ToString())},
+                    .Cantidad = Long.Parse(txtCantidad.Text)
+                })
+            Else
+                MessageBox.Show("Ya has agregado el producto " + cbProducto.GetItemText(cbProducto.SelectedItem) + " a lista.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            End If
+
+
+            cbProducto.SelectedIndex = 0
             txtCantidad.Text = "1"
 
-            ActivarDataGridViewProducto()
+            ActivarDataGridViewVentaItemProducto()
         End If
+
     End Sub
 
     ''' <summary>
@@ -64,19 +75,20 @@ Public Class FormRealizarVenta
                 dato.Producto.Nombre = productoCoincidente.Nombre
             End If
         Next
-
         Return productos
     End Function
 
     ''' <summary>
     '''  Método que rellena una Grilla (DataGridView)
     ''' </summary>'' 
-    Public Sub ActivarDataGridViewProducto()
-        If productos IsNot Nothing AndAlso productos.Count <> 0 Then
+    Public Sub ActivarDataGridViewVentaItemProducto()
+        If listVentaItemProductos IsNot Nothing AndAlso listVentaItemProductos.Count <> 0 Then
 
-            productos = RellenarDatosProducto(productos)
+            lbNumTotalGeneral.Text = "0" 'Limpio la etiqueta para que no quede ningun valor recidual
 
-            dgvVentaProducto.DataSource = productos
+            listVentaItemProductos = RellenarDatosProducto(listVentaItemProductos)
+
+            dgvVentaProducto.DataSource = listVentaItemProductos
 
             dgvVentaProducto.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill 'Establesco que las columas ocupen todo el ancho de la grilla
 
@@ -89,7 +101,7 @@ Public Class FormRealizarVenta
             End If
 
             If dgvVentaProducto.Columns.Contains("Producto") Then 'Si la grilla contiene la columna "Producto" la oculto
-                dgvVentaProducto.Columns("Producto").Visible = False ' Elimina la columna de objeto Producto
+                dgvVentaProducto.Columns("Producto").Visible = False 'Oculta la columna de objeto Producto
             End If
 
             If dgvVentaProducto.Columns.Contains("NombreProducto") Then 'Si la grilla contiene la columna "Producto" la oculto
@@ -124,31 +136,73 @@ Public Class FormRealizarVenta
                 btnEliminar.Text = "Eliminar"
                 btnEliminar.UseColumnTextForButtonValue = True
                 dgvVentaProducto.Columns.Add(btnEliminar)
-             End If
-
-                dgvVentaProducto.AllowUserToAddRows = False ' Desactivar la fila de nueva fila
-
-                CalcularTotalGeneral()
             End If
+
+            dgvVentaProducto.AllowUserToAddRows = False ' Desactivar la fila de nueva fila
+
+            CalcularTotalGeneral() 'Calculo el total general
+        End If
     End Sub
 
+    ''' <summary>
+    '''  Método que suma el total de cada VentaItem y lo muesto en pantalla cada vez que actualiza la grilla
+    ''' </summary>''
     Protected Sub CalcularTotalGeneral()
         Dim decValue As Decimal
         Dim total As Decimal
         For Each row As DataGridViewRow In dgvVentaProducto.Rows
-            If Decimal.TryParse(row.Cells(4).Value, decValue) Then
+            If Decimal.TryParse(row.Cells(6).Value, decValue) Then
                 total += decValue
             End If
         Next
 
-        lbNumTotalGeneral.Text = total.ToString()
+        totalGeneral = total
+        lbNumTotalGeneral.Text = Format(total.ToString(), "Currency") 'Convierto el tipo de dato a tipo "Currency" que es tipo de dato moneda
+    End Sub
+
+    Protected Sub dgvVentaProducto_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvVentaProducto.CellClick
+        If e.RowIndex >= 0 Then 'Verifico si es una fila válida
+
+            Dim ventaItem As VentaItem = CType(dgvVentaProducto.Rows(e.RowIndex).DataBoundItem, VentaItem) ' Obtener el objeto VentaItem de la fila
+            Dim idProducto As Long = ventaItem.Producto.Id
+            Dim nombreProducto As String = ventaItem.NombreProducto
+
+            If dgvVentaProducto.Columns(e.ColumnIndex).Name = "Eliminar" Then 'Verifico si se hizo click en el botón "Eliminar"
+                Dim result As DialogResult = MessageBox.Show("¿Estás seguro de eliminar el producto " + nombreProducto + " ?", "Atención", MessageBoxButtons.YesNo) 'Verifico si es correcto que quiere eliminar el cliente
+                If result = DialogResult.Yes Then
+                    ' Eliminar el producto directamente de la lista
+                    listVentaItemProductos.Remove(ventaItem)
+
+                    ActivarDataGridViewVentaItemProducto()
+
+                    lbNumTotalGeneral.Text = "$0" 'Limpio la etiqueta para que no quede ningun valor recidual
+                End If
+            End If
+        End If
+    End Sub
+
+    Private Sub dgvVentaProducto_EndEdit(sender As Object, e As DataGridViewCellEventArgs) Handles dgvVentaProducto.CellEndEdit
+        If e.ColumnIndex = 5 Then 'replace 5 with your column number
+            Dim ventaItem As VentaItem = CType(dgvVentaProducto.Rows(e.RowIndex).DataBoundItem, VentaItem) ' Obtener el objeto VentaItem de la fila editada
+
+
+            Dim nuevaCantidad As Integer 'Obtener el nuevo valor de la celda editada
+            If Integer.TryParse(dgvVentaProducto.Rows(e.RowIndex).Cells(e.ColumnIndex).Value.ToString(), nuevaCantidad) Then
+                ventaItem.Cantidad = nuevaCantidad 'Actualizar la propiedad Cantidad en el objeto VentaItem
+            Else
+                MessageBox.Show("Ingrese una cantidad válida.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                dgvVentaProducto.Rows(e.RowIndex).Cells(e.ColumnIndex).Value = ventaItem.Cantidad ' Revertir al valor anterior
+            End If
+
+            ActivarDataGridViewVentaItemProducto()
+        End If
     End Sub
 
     ''' <summary>
     '''  Método que verifica que los campos Producto(ComboBox), Cantidad(Texbox) y Fecha(DatePiker) no esten vacíos al momento de querer guardarlos en la base de datos
     ''' </summary>
     ''' <returns>Devuelve bool de acuerdo a la verificación</returns>
-    Protected Function VerificarCampos() As Boolean
+    Protected Function VerificarCamposProducto() As Boolean
         Dim validado As Boolean
 
         If cbProducto.SelectedValue <> 0 Then
@@ -165,6 +219,43 @@ Public Class FormRealizarVenta
             validado = True
         Else
             MessageBox.Show("El campo Cantidad no debe estar vacío.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+
+            validado = False
+
+            Return validado
+        End If
+
+        Return validado = True
+    End Function
+
+    Private Sub btnAgregarProducto_Click(sender As Object, e As EventArgs) Handles btnAgregarProducto.Click
+        If VerificarCamposVenta() Then
+            If listVentaItemProductos.Count <> 0 Then
+                Dim venta As Venta = New Venta().GenerarObjetoVentaParaGuardarEnBd(cbCliente.SelectedValue, If(chkbHoy.Checked, DateTime.Now, dtpFecha.Value), totalGeneral)
+
+                If Not GuardarVentaEnBD(venta).Excepcion.Error Then 'Verifico que el guardado en la base sea correcto de lo contrario muestro un MessageBox de error
+                    MessageBox.Show("Venta guardada con éxito.", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si todo salio correcto muestro un MessageBox diciendo que el cliente se guardo correctamente'
+
+                    LimpiarControles() 'Limpio los campos Cliente, Teléfono y Correo para que no quede con datos reciduales'
+
+                    FormClientePrincipal.ActivarDataGridViewProducto() 'Refresco la grilla cada vez que haga click en el botón'
+                Else
+                    MessageBox.Show("Error al guardar la venta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que el cliente no se guardar correctamente'
+                End If
+
+            Else
+                MessageBox.Show("No has agregado productos a la lista.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            End If
+        End If
+    End Sub
+
+    Protected Function VerificarCamposVenta()
+        Dim validado As Boolean
+
+        If cbCliente.SelectedValue <> 0 Then
+            validado = True
+        Else
+            MessageBox.Show("Debes seleccionar una opción en el campo cliente", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
 
             validado = False
 
@@ -209,6 +300,29 @@ Public Class FormRealizarVenta
     End Sub
 
     ''' <summary>
+    '''  Método que limpia controles despues de realizar alguna acción
+    ''' </summary>''
+    Protected Sub LimpiarControles()
+        listVentaItemProductos.Clear() 'Cuando se cierre la ventana limpio la variable
+        dgvVentaProducto.Columns.Clear() 'Limpio las columnas de la grilla
+        dgvVentaProducto.DataSource = Nothing 'Limpio el datasourse de la grilla
+        dgvVentaProducto.Rows.Clear() ''Limpio las filas de la grilla
+        lbNumTotalGeneral.Text = "$0" 'Limpio la etiqueta para que no quede ningun valor recidual
+    End Sub
+
+    ''' <summary>
+    '''  Método que guarda en la base datos los datos del objeto Venta desde el "gestor" o "manager" de la capa de negocios
+    ''' </summary>
+    ''' <returns>Devuelve un objeto tipo Venta con el resultado de la operacion de guardado en la base datos</returns>
+    Public Function GuardarVentaEnBD(venta As Venta) As Venta
+        Dim manager = New ManagerVenta()
+
+        venta = manager.GuardarVentaEnBD(venta)
+
+        Return venta
+    End Function
+
+    ''' <summary>
     '''  Método que obtiene una collecion del tipo ArrayList con el ID y Nombre de los clientes desde el "gestor" o "manager" de la capa de negocios
     ''' </summary>
     ''' <returns>Devuelve un Arraylist de objetos tipo Cliente</returns>
@@ -243,5 +357,4 @@ Public Class FormRealizarVenta
 
         Return resultado
     End Function
-
 End Class

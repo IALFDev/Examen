@@ -31,9 +31,9 @@ Partial Class FormVentaPrincial
         Me.LbFechaHasta = New System.Windows.Forms.Label()
         Me.txtFechaHasta = New System.Windows.Forms.TextBox()
         Me.btnBuscarProducto = New System.Windows.Forms.Button()
-        Me.dgvProducto = New System.Windows.Forms.DataGridView()
+        Me.dgvVenta = New System.Windows.Forms.DataGridView()
         Me.btnRealizarVenta = New System.Windows.Forms.Button()
-        CType(Me.dgvProducto, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dgvVenta, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'lbIdCliente
@@ -110,14 +110,14 @@ Partial Class FormVentaPrincial
         Me.btnBuscarProducto.Text = "Buscar"
         Me.btnBuscarProducto.UseVisualStyleBackColor = True
         '
-        'dgvProducto
+        'dgvVenta
         '
-        Me.dgvProducto.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvProducto.Location = New System.Drawing.Point(15, 69)
-        Me.dgvProducto.Name = "dgvProducto"
-        Me.dgvProducto.Size = New System.Drawing.Size(773, 369)
-        Me.dgvProducto.TabIndex = 12
-        Me.dgvProducto.Visible = False
+        Me.dgvVenta.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvVenta.Location = New System.Drawing.Point(15, 69)
+        Me.dgvVenta.Name = "dgvVenta"
+        Me.dgvVenta.Size = New System.Drawing.Size(773, 369)
+        Me.dgvVenta.TabIndex = 12
+        Me.dgvVenta.Visible = False
         '
         'btnRealizarVenta
         '
@@ -134,7 +134,7 @@ Partial Class FormVentaPrincial
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 450)
         Me.Controls.Add(Me.btnRealizarVenta)
-        Me.Controls.Add(Me.dgvProducto)
+        Me.Controls.Add(Me.dgvVenta)
         Me.Controls.Add(Me.btnBuscarProducto)
         Me.Controls.Add(Me.txtFechaHasta)
         Me.Controls.Add(Me.LbFechaHasta)
@@ -146,7 +146,7 @@ Partial Class FormVentaPrincial
         Me.Controls.Add(Me.lbIdCliente)
         Me.Name = "FormVentaPrincial"
         Me.Text = "Ventas"
-        CType(Me.dgvProducto, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgvVenta, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -161,6 +161,6 @@ Partial Class FormVentaPrincial
     Friend WithEvents LbFechaHasta As Label
     Friend WithEvents txtFechaHasta As TextBox
     Friend WithEvents btnBuscarProducto As Button
-    Friend WithEvents dgvProducto As DataGridView
+    Friend WithEvents dgvVenta As DataGridView
     Friend WithEvents btnRealizarVenta As Button
 End Class
