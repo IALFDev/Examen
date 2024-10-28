@@ -22,6 +22,14 @@ Public Class ManagerVentaItem
         Return ventaitem
     End Function
 
+    Public Function GuardarVentaItemEnBD(ventaItem As VentaItem) As VentaItem
+        Dim ventaItemDAL = New VentaItemDAL()
+
+        ventaItem = ventaItemDAL.GuardarVentaItemEnBD(ventaItem)
+
+        Return ventaItem
+    End Function
+
     ''' <summary>
     '''  Método que guarda la edicion de los datos del ventaItem ya existente en la base de datos desde la capa de conexion a la base de datos //Reveer este texto
     ''' </summary>
@@ -35,13 +43,13 @@ Public Class ManagerVentaItem
     End Function
 
     ''' <summary>
-    '''  Método que guarda la edicion del Total en la base de datos desde la capa de conexion a la base de datos //Reveer este texto
+    '''  Método que elimina la ventaItem de manera logica en la base datos desde la capa de conexion a la base de datos //Reveer este texto
     ''' </summary>
-    ''' <returns>Devuelve un objeto tipo VentaItem con el resultado de la operacion de guardado en la base datos</returns>
-    Public Function ActualizarTotalDeLaVenta(ventaItem As VentaItem) As VentaItem
-        Dim ventaDAL = New VentaItemDAL()
+    ''' <returns>Devuelve un objeto tipo ventaItem con el resultado de la operacion de guardado en la base datos</returns>
+    Public Function EliminarVentaItemEnBd(ventaItem As VentaItem) As VentaItem
+        Dim ventaDal = New VentaItemDAL()
 
-        ventaItem = ventaDAL.ActualizarTotalDeLaVenta(ventaItem)
+        ventaItem = ventaDal.EliminarVentaItemEnBd(ventaItem)
 
         Return ventaItem
     End Function

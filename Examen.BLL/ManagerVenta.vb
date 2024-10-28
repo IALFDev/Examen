@@ -28,6 +28,30 @@ Public Class ManagerVenta
     End Function
 
     ''' <summary>
+    '''  Método que elimina la venta de manera logica en la base datos desde la capa de conexion a la base de datos //Reveer este texto
+    ''' </summary>
+    ''' <returns>Devuelve un objeto tipo venta con el resultado de la operacion de guardado en la base datos</returns>
+    Public Function EliminarVentaEnBd(venta As Venta) As Venta
+        Dim ventaDal = New VentaDAL()
+
+        venta = ventaDal.EliminarVentaEnBd(venta)
+
+        Return venta
+    End Function
+
+    ''' <summary>
+    '''  Método que guarda la edicion del Total en la base de datos desde la capa de conexion a la base de datos //Reveer este texto
+    ''' </summary>
+    ''' <returns>Devuelve un objeto tipo Venta con el resultado de la operacion de guardado en la base datos</returns>
+    Public Function ActualizarTotalDeLaVenta(venta As Venta) As Venta
+        Dim ventaDal = New VentaDAL()
+
+        venta = ventaDal.ActualizarTotalDeLaVenta(venta)
+
+        Return venta
+    End Function
+
+    ''' <summary>
     '''  Método que obtiene una collecion tipo ArrayList de todos las ventas desde la capa de conexion a la base de datos
     ''' </summary>
     ''' <returns>Devuelve un Arraylist de objetos tipo Venta</returns>

@@ -41,15 +41,15 @@ Partial Class FormVentaPrincipal
         Me.lbIdCliente.AutoSize = True
         Me.lbIdCliente.Location = New System.Drawing.Point(12, 15)
         Me.lbIdCliente.Name = "lbIdCliente"
-        Me.lbIdCliente.Size = New System.Drawing.Size(18, 13)
+        Me.lbIdCliente.Size = New System.Drawing.Size(48, 13)
         Me.lbIdCliente.TabIndex = 3
-        Me.lbIdCliente.Text = "ID"
+        Me.lbIdCliente.Text = "ID venta"
         '
         'txtIdCliente
         '
-        Me.txtIdCliente.Location = New System.Drawing.Point(36, 11)
+        Me.txtIdCliente.Location = New System.Drawing.Point(67, 11)
         Me.txtIdCliente.Name = "txtIdCliente"
-        Me.txtIdCliente.Size = New System.Drawing.Size(100, 20)
+        Me.txtIdCliente.Size = New System.Drawing.Size(69, 20)
         Me.txtIdCliente.TabIndex = 4
         '
         'lbCliente
@@ -128,7 +128,7 @@ Partial Class FormVentaPrincipal
         Me.btnRealizarVenta.Text = "Realizar nueva venta"
         Me.btnRealizarVenta.UseVisualStyleBackColor = True
         '
-        'FormVentaPrincial
+        'FormVentaPrincipal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -144,7 +144,7 @@ Partial Class FormVentaPrincipal
         Me.Controls.Add(Me.lbCliente)
         Me.Controls.Add(Me.txtIdCliente)
         Me.Controls.Add(Me.lbIdCliente)
-        Me.Name = "FormVentaPrincial"
+        Me.Name = "FormVentaPrincipal"
         Me.Text = "Ventas"
         CType(Me.dgvVenta, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)

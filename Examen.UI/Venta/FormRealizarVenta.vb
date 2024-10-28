@@ -273,7 +273,7 @@ Public Class FormRealizarVenta
                     If Not GuardarVentaItemEnBD(ventaItem).Excepcion.Error Then
                         MessageBox.Show("Venta guardada con éxito.", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si todo salio correcto muestro un MessageBox diciendo que el cliente se guardo correctamente'
 
-                        LimpiarControles() 'Limpio los campos Cliente, Teléfono y Correo para que no quede con datos reciduales'
+                        LimpiarControles() 'Limpio los campos Producto y Cantidad para que no quede con datos reciduales'
 
                         FormVentaPrincipal.ActivarDataGridViewVenta() 'Refresco la grilla cada vez que haga click en el botón'
                     Else

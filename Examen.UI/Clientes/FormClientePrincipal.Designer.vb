@@ -41,15 +41,15 @@ Partial Class FormClientePrincipal
         Me.lbIdCliente.AutoSize = True
         Me.lbIdCliente.Location = New System.Drawing.Point(12, 9)
         Me.lbIdCliente.Name = "lbIdCliente"
-        Me.lbIdCliente.Size = New System.Drawing.Size(18, 13)
+        Me.lbIdCliente.Size = New System.Drawing.Size(52, 13)
         Me.lbIdCliente.TabIndex = 3
-        Me.lbIdCliente.Text = "ID"
+        Me.lbIdCliente.Text = "ID cliente"
         '
         'txtIdCliente
         '
-        Me.txtIdCliente.Location = New System.Drawing.Point(36, 6)
+        Me.txtIdCliente.Location = New System.Drawing.Point(70, 6)
         Me.txtIdCliente.Name = "txtIdCliente"
-        Me.txtIdCliente.Size = New System.Drawing.Size(100, 20)
+        Me.txtIdCliente.Size = New System.Drawing.Size(66, 20)
         Me.txtIdCliente.TabIndex = 4
         '
         'lbCliente

@@ -35,6 +35,7 @@ Partial Class FormProductoPrincipal
         Me.txtRangoHasta = New System.Windows.Forms.TextBox()
         Me.lbA = New System.Windows.Forms.Label()
         Me.btnAgregarProducto = New System.Windows.Forms.Button()
+        Me.btnGenerarReporte = New System.Windows.Forms.Button()
         CType(Me.dgvProducto, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -59,15 +60,15 @@ Partial Class FormProductoPrincipal
         Me.lbIdProducto.AutoSize = True
         Me.lbIdProducto.Location = New System.Drawing.Point(12, 9)
         Me.lbIdProducto.Name = "lbIdProducto"
-        Me.lbIdProducto.Size = New System.Drawing.Size(18, 13)
+        Me.lbIdProducto.Size = New System.Drawing.Size(63, 13)
         Me.lbIdProducto.TabIndex = 2
-        Me.lbIdProducto.Text = "ID"
+        Me.lbIdProducto.Text = "ID producto"
         '
         'txtIdProducto
         '
-        Me.txtIdProducto.Location = New System.Drawing.Point(36, 6)
+        Me.txtIdProducto.Location = New System.Drawing.Point(81, 6)
         Me.txtIdProducto.Name = "txtIdProducto"
-        Me.txtIdProducto.Size = New System.Drawing.Size(100, 20)
+        Me.txtIdProducto.Size = New System.Drawing.Size(55, 20)
         Me.txtIdProducto.TabIndex = 3
         '
         'lbCategoria
@@ -93,7 +94,7 @@ Partial Class FormProductoPrincipal
         Me.dgvProducto.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvProducto.Location = New System.Drawing.Point(16, 69)
         Me.dgvProducto.Name = "dgvProducto"
-        Me.dgvProducto.Size = New System.Drawing.Size(772, 369)
+        Me.dgvProducto.Size = New System.Drawing.Size(772, 336)
         Me.dgvProducto.TabIndex = 7
         Me.dgvProducto.Visible = False
         '
@@ -147,11 +148,21 @@ Partial Class FormProductoPrincipal
         Me.btnAgregarProducto.Text = "Agregar producto"
         Me.btnAgregarProducto.UseVisualStyleBackColor = True
         '
+        'btnGenerarReporte
+        '
+        Me.btnGenerarReporte.Location = New System.Drawing.Point(16, 415)
+        Me.btnGenerarReporte.Name = "btnGenerarReporte"
+        Me.btnGenerarReporte.Size = New System.Drawing.Size(120, 23)
+        Me.btnGenerarReporte.TabIndex = 14
+        Me.btnGenerarReporte.Text = "Generar reporte"
+        Me.btnGenerarReporte.UseVisualStyleBackColor = True
+        '
         'FormProductoPrincipal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.Controls.Add(Me.btnGenerarReporte)
         Me.Controls.Add(Me.btnAgregarProducto)
         Me.Controls.Add(Me.lbA)
         Me.Controls.Add(Me.txtRangoHasta)
@@ -186,4 +197,5 @@ Partial Class FormProductoPrincipal
     Friend WithEvents txtRangoHasta As TextBox
     Friend WithEvents lbA As Label
     Friend WithEvents btnAgregarProducto As Button
+    Friend WithEvents btnGenerarReporte As Button
 End Class

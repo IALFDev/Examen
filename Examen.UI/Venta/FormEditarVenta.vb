@@ -11,8 +11,21 @@ Public Class FormEditarVenta
         LimpiarControles()
     End Sub
 
+    Private Sub txtCantidad_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtCantidad.KeyPress
+        If Asc(e.KeyChar) <> 13 AndAlso Asc(e.KeyChar) <> 8 AndAlso Not IsNumeric(e.KeyChar) Then
+            ' Verifico que el campo Teléfono solo se ingresen números
+            MessageBox.Show("Debes ingresar solamente valores numéricos.", "Atención")
+            e.Handled = True
+        ElseIf e.KeyChar = "0"c Or sender.Text.Length = 0 Then
+            ' Verifico que el primer carácter no sea 0
+            MessageBox.Show("La cantidad debe ser mayor a 0.", "Atención")
+            e.Handled = True
+        End If
+    End Sub
+
     Protected Sub ConfigurarContenido()
         ActivarDataGridViewVentaItem()
+        ActivarComboBoxProducto()
     End Sub
 
     ''' <summary>
@@ -66,6 +79,10 @@ Public Class FormEditarVenta
             dgvItemVenta.ReadOnly = True 'Establesco que toda la grilla sea de solo lectura
 
             dgvItemVenta.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill 'Establesco que las columas ocupen todo el ancho de la grilla
+
+            If dgvItemVenta.Columns.Contains("ID") Then 'Si la grilla contiene la columna "ID" la oculto
+                dgvItemVenta.Columns("ID").Visible = False 'Oculto la columna de objeto ID
+            End If
 
             If dgvItemVenta.Columns.Contains("Venta") Then 'Si la grilla contiene la columna "Venta" la oculto
                 dgvItemVenta.Columns("Venta").Visible = False 'Oculto la columna de objeto Venta
@@ -129,6 +146,7 @@ Public Class FormEditarVenta
             Dim idVentaItem As Long = Long.Parse(dgvItemVenta.Rows(e.RowIndex).Cells("Id").Value.ToString())
             Dim idProducto As Long = Long.Parse(dgvItemVenta.Rows(e.RowIndex).Cells("IDProducto").Value.ToString())
             Dim cantidadProducto As Long = dgvItemVenta.Rows(e.RowIndex).Cells("Cantidad").Value.ToString()
+            Dim NombreProducto As String = dgvItemVenta.Rows(e.RowIndex).Cells("NombreProducto").Value.ToString()
 
 
             If dgvItemVenta.Columns(e.ColumnIndex).Name = "Editar" Then 'Verifico si se hizo click en el botón "Editar"
@@ -144,15 +162,20 @@ Public Class FormEditarVenta
                 FormEditarVentaItemProducto.ShowDialog() 'Muesto el form donde se puede editar los datos de la ventaItem
 
             ElseIf dgvItemVenta.Columns(e.ColumnIndex).Name = "Eliminar" Then 'Verifico si se hizo click en el botón "Eliminar"
-                'Dim result As DialogResult = MessageBox.Show("¿Estás seguro de eliminar el cliente " + nombreCliente + " ?", "Atención", MessageBoxButtons.YesNo) 'Verifico si es correcto que quiere eliminar el cliente
-                'If result = DialogResult.Yes Then
-                '    If Not EliminarClienteEnBd(New Cliente().GenerarObjetoClienteParaEliminarEnBd(idCliente)).Excepcion.Error Then 'Verifico que la eliminación en la base sea correcto de lo contrario muestro un MessageBox de error
-                '        MessageBox.Show("Cliente eliminado.", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si todo salio correcto muestro un MessageBox diciendo que el cliente se elimino correctamente'
-                '        ConfigurarContenido()
-                '    Else
-                '        MessageBox.Show("Error al eliminar el cliente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que el cliente no se guardar correctamente'
-                '    End If
-                'End If
+                Dim result As DialogResult = MessageBox.Show("¿Estás seguro de eliminar el " + NombreProducto + " ?", "Atención", MessageBoxButtons.YesNo) 'Verifico si es correcto que quiere eliminar la ventaItem
+                If result = DialogResult.Yes Then
+                    If Not EliminarVentaItemEnBd(New VentaItem().GenerarObjetoVentaItemParaEliminarEnBd(idVentaItem)).Excepcion.Error Then 'Verifico que la eliminación en la base sea correcto de lo contrario muestro un MessageBox de error
+                        If Not ActualizarTotalDeLaVenta(New Venta().GenerarObjetoVentaParaActualizarTotal(IdVenta)).Excepcion.Error Then 'Verifico que la actualización del Total en la base sea correcto de lo contrario muestro un MessageBox de error
+                            MessageBox.Show("Producto eliminado de la venta correctamnte.", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si todo salio correcto muestro un MessageBox diciendo que la ventaItem se elimino correctamente'
+                            ConfigurarContenido()
+                            FormVentaPrincipal.ActivarDataGridViewVenta()
+                        Else
+                            MessageBox.Show("Error al guardar Total de la venta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que el VentaItem no se editar correctamente
+                        End If
+                    Else
+                        MessageBox.Show("Error al eliminar el producto de la venta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que la ventaItem no se guardar correctamente'
+                    End If
+                End If
             End If
         End If
     End Sub
@@ -200,6 +223,81 @@ Public Class FormEditarVenta
     End Sub
 
     ''' <summary>
+    '''  Método que rellena el ComboBox de Producto
+    ''' </summary>'' 
+    Protected Sub ActivarComboBoxProducto()
+        Dim productos = ObtenerIDYNombreDelProducto()
+        Dim producto = New Producto
+        producto.Nombre = "Seleccione un producto" 'Agrego una opción nueva primera en lista
+
+        productos.Insert(0, producto)
+
+        If productos IsNot Nothing AndAlso productos.Count > 0 Then 'Verifico que "productos" no este vacío y no sea nulo
+            cbProducto.DataSource = productos
+            cbProducto.DisplayMember = "Nombre"
+            cbProducto.ValueMember = "Id"
+        End If
+    End Sub
+
+    Private Sub btnAgregar_Click(sender As Object, e As EventArgs) Handles btnAgregar.Click
+        If VerificarCamposProducto() Then
+            Dim itemVenta = New VentaItem()
+            Dim datosProductos = ObtenerDatosDeProducto(New Producto() With {.Id = cbProducto.SelectedValue})
+            Dim producto = New Producto()
+
+            If datosProductos IsNot Nothing Then
+                itemVenta.PrecioUnitario = datosProductos(0).Precio
+            End If
+
+            If Not GuardarVentaItemEnBD(New VentaItem().GenerarObjetoVentaItemParaGuardarEnBd(IdVenta, cbProducto.SelectedValue, itemVenta.PrecioUnitario, txtCantidad.Text)).Excepcion.Error Then
+                If Not ActualizarTotalDeLaVenta(New Venta().GenerarObjetoVentaParaActualizarTotal(IdVenta)).Excepcion.Error Then 'Verifico que la actualización del Total en la base sea correcto de lo contrario muestro un MessageBox de error
+                    MessageBox.Show("Producto guardado en la venta correctamnte.", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si todo salio correcto muestro un MessageBox diciendo que la ventaItem se elimino correctamente'
+                    ConfigurarContenido()
+
+                    FormVentaPrincipal.ActivarDataGridViewVenta() 'Refresco la grilla cada vez que haga click en el botón'
+
+                    cbProducto.SelectedIndex = 0
+                    txtCantidad.Text = "1" 'Limpio los campos Producto y Cantidad para que no quede con datos reciduales'
+                Else
+                    MessageBox.Show("Error al guardar Total de la venta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que el VentaItem no se editar correctamente
+                End If
+            Else
+                MessageBox.Show("Error al guardar los ItemVenta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que el cliente no se guardar correctamente'
+            End If
+        End If
+    End Sub
+
+    ''' <summary>
+    '''  Método que verifica que los campos Producto(ComboBox), Cantidad(Texbox) y Fecha(DatePiker) no esten vacíos al momento de querer guardarlos en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve bool de acuerdo a la verificación</returns>
+    Protected Function VerificarCamposProducto() As Boolean
+        Dim validado As Boolean
+
+        If cbProducto.SelectedValue <> 0 Then
+            validado = True
+        Else
+            MessageBox.Show("Debes seleccionar una opción en el campo Producto", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+
+            validado = False
+
+            Return validado
+        End If
+
+        If Not String.IsNullOrEmpty(txtCantidad.Text) Then 'Verifico que el campo Precio no este vacío'
+            validado = True
+        Else
+            MessageBox.Show("El campo Cantidad no debe estar vacío.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+
+            validado = False
+
+            Return validado
+        End If
+
+        Return validado = True
+    End Function
+
+    ''' <summary>
     '''  Método que limpia controles despues de realizar alguna acción
     ''' </summary>''
     Protected Sub LimpiarControles()
@@ -207,6 +305,18 @@ Public Class FormEditarVenta
         dgvItemVenta.DataSource = Nothing 'Limpio el datasourse de la grilla
         dgvItemVenta.Rows.Clear() ''Limpio las filas de la grilla
     End Sub
+
+    ''' <summary>
+    '''  Método que guarda en la base datos los datos del objeto VentaItem desde el "gestor" o "manager" de la capa de negocios
+    ''' </summary>
+    ''' <returns>Devuelve un objeto tipo VentaItem con el resultado de la operacion de guardado en la base datos</returns>
+    Public Function GuardarVentaItemEnBD(ventaItem As VentaItem) As VentaItem
+        Dim manager = New ManagerVentaItem()
+
+        ventaItem = manager.GuardarVentaItemEnBD(ventaItem)
+
+        Return ventaItem
+    End Function
 
     ''' <summary>
     '''  Método que guarda la edicion de los datos del venta ya existente en la base de datos desde el "gestor" o "manager" de la capa de negocios
@@ -221,13 +331,37 @@ Public Class FormEditarVenta
     End Function
 
     ''' <summary>
-    '''  Método que obtiene una collecion de ventasItem por ID desde el "gestor" o "manager" de la capa de negocios
+    '''  Método que elimina la venta de manera logica en la base datos desde el "gestor" o "manager" de la capa de negocios
     ''' </summary>
-    ''' <returns>Devuelve un Arraylist de objetos tipo VentaItem</returns>
-    Protected Function ObtenerVentasItemId(ventasItem As VentaItem) As ArrayList
+    ''' <returns>Devuelve un objeto tipo Venta con el resultado de la operación de eliminación del venta en la base datos</returns>
+    Protected Function EliminarVentaItemEnBd(ventaItem As VentaItem) As VentaItem
         Dim manager = New ManagerVentaItem()
 
-        Dim resultado = manager.ObtenerVentasItemId(ventasItem)
+        ventaItem = manager.EliminarVentaItemEnBd(ventaItem)
+
+        Return ventaItem
+    End Function
+
+    ''' <summary>
+    '''  Método que guarda la edicion del Total en la base de datos desde el "gestor" o "manager" de la capa de negocios
+    ''' </summary>
+    ''' <returns>Devuelve un objeto tipo Venta con el resultado de la operacion de guardado en la base datos</returns>
+    Protected Function ActualizarTotalDeLaVenta(venta As Venta) As Venta
+        Dim manager = New ManagerVenta()
+
+        venta = manager.ActualizarTotalDeLaVenta(venta)
+
+        Return venta
+    End Function
+
+    ''' <summary>
+    '''  Método que obtiene una collecion tipo ArrayList con ID y Nombre de los productos desde el "gestor" o "manager" de la capa de negocios
+    ''' </summary>
+    ''' <returns>Devuelve un Arraylist de objetos tipo Producto</returns>
+    Public Function ObtenerIDYNombreDelProducto() As ArrayList
+        Dim manager = New ManagerProducto()
+
+        Dim resultado = manager.ObtenerIDYNombreDelProducto()
 
         Return resultado
     End Function
@@ -240,6 +374,26 @@ Public Class FormEditarVenta
         Dim manager = New ManagerCliente()
 
         Dim resultado = manager.ObtenerIDYNombreDelCliente()
+
+        Return resultado
+    End Function
+
+    ''' <summary>
+    '''  Método que obtiene una collecion de ventasItem por ID desde el "gestor" o "manager" de la capa de negocios
+    ''' </summary>
+    ''' <returns>Devuelve un Arraylist de objetos tipo VentaItem</returns>
+    Protected Function ObtenerVentasItemId(ventasItem As VentaItem) As ArrayList
+        Dim manager = New ManagerVentaItem()
+
+        Dim resultado = manager.ObtenerVentasItemId(ventasItem)
+
+        Return resultado
+    End Function
+
+    Public Function ObtenerDatosDeProducto(producto As Producto) As ArrayList
+        Dim manager = New ManagerProducto()
+
+        Dim resultado = manager.ObtenerDatosDeProducto(producto)
 
         Return resultado
     End Function

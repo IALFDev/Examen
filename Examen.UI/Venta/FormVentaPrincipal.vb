@@ -15,6 +15,7 @@ Public Class FormVentaPrincipal
     ''' </summary>
     Protected Sub ConfigurarContenido()
         ActivarDataGridViewVenta()
+        ActivarComboBoxCliente()
     End Sub
 
     Private Sub btnRealizarVenta_Click(sender As Object, e As EventArgs) Handles btnRealizarVenta.Click
@@ -122,16 +123,33 @@ Public Class FormVentaPrincipal
                 FormEditarVenta.ShowDialog() 'Muesto el form donde se puede editar los datos de la venta
 
             ElseIf dgvVenta.Columns(e.ColumnIndex).Name = "Eliminar" Then 'Verifico si se hizo click en el botón "Eliminar"
-                Dim result As DialogResult = MessageBox.Show("¿Estás seguro de eliminar el cliente " + nombreCliente + " ?", "Atención", MessageBoxButtons.YesNo) 'Verifico si es correcto que quiere eliminar el cliente
+                Dim result As DialogResult = MessageBox.Show("¿Estás seguro de eliminar la venta con el Id " + idVenta.ToString() + " ?", "Atención", MessageBoxButtons.YesNo) 'Verifico si es correcto que quiere eliminar la venta
                 If result = DialogResult.Yes Then
-                    'If Not EliminarClienteEnBd(New Cliente().GenerarObjetoClienteParaEliminarEnBd(idCliente)).Excepcion.Error Then 'Verifico que la eliminación en la base sea correcto de lo contrario muestro un MessageBox de error
-                    '    MessageBox.Show("Cliente eliminado.", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si todo salio correcto muestro un MessageBox diciendo que el cliente se elimino correctamente'
-                    '    ConfigurarContenido()
-                    'Else
-                    '    MessageBox.Show("Error al eliminar el cliente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que el cliente no se guardar correctamente'
-                    'End If
+                    If Not EliminarVentaEnBd(New Venta().GenerarObjetoVentaParaEliminarEnBd(idVenta)).Excepcion.Error Then 'Verifico que la eliminación en la base sea correcto de lo contrario muestro un MessageBox de error
+                        MessageBox.Show("Venta eliminada.", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si todo salio correcto muestro un MessageBox diciendo que la venta se elimino correctamente'
+                        ConfigurarContenido()
+                    Else
+                        MessageBox.Show("Error al eliminar la venta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que la venta no se guardar correctamente'
+                    End If
                 End If
             End If
+        End If
+    End Sub
+
+    ''' <summary>
+    '''  Método que rellena el ComboBox de Cliente
+    ''' </summary>'' 
+    Protected Sub ActivarComboBoxCliente()
+        Dim clientes = ObtenerIDYNombreDelCliente()
+        Dim cliente = New Cliente
+        cliente.Cliente = "Seleccione un cliente" 'Agrego una opción nueva primera en lista
+
+        clientes.Insert(0, cliente)
+
+        If clientes IsNot Nothing AndAlso clientes.Count > 0 Then 'Verifico que "categorias" no este vacío y no sea nulo
+            cbCliente.DataSource = clientes
+            cbCliente.DisplayMember = "Cliente"
+            cbCliente.ValueMember = "Id"
         End If
     End Sub
 
@@ -145,6 +163,18 @@ Public Class FormVentaPrincipal
     End Sub
 
     ''' <summary>
+    '''  Método que elimina la venta de manera logica en la base datos desde el "gestor" o "manager" de la capa de negocios
+    ''' </summary>
+    ''' <returns>Devuelve un objeto tipo Venta con el resultado de la operación de eliminación del venta en la base datos</returns>
+    Protected Function EliminarVentaEnBd(venta As Venta) As Venta
+        Dim manager = New ManagerVenta()
+
+        venta = manager.EliminarVentaEnBd(venta)
+
+        Return venta
+    End Function
+
+    ''' <summary>
     '''  Método que obtiene una collecion de todas las ventas desde el "gestor" o "manager" de la capa de negocios
     ''' </summary>
     ''' <returns>Devuelve un Arraylist de objetos tipo Venta</returns>
@@ -152,6 +182,18 @@ Public Class FormVentaPrincipal
         Dim manager = New ManagerVenta()
 
         Dim resultado = manager.ObtenerTodasLasVentas()
+
+        Return resultado
+    End Function
+
+    ''' <summary>
+    '''  Método que obtiene una collecion del tipo ArrayList con el ID y Nombre de los clientes desde el "gestor" o "manager" de la capa de negocios
+    ''' </summary>
+    ''' <returns>Devuelve un Arraylist de objetos tipo Cliente</returns>
+    Protected Function ObtenerIDYNombreDelCliente() As ArrayList
+        Dim manager = New ManagerCliente()
+
+        Dim resultado = manager.ObtenerIDYNombreDelCliente()
 
         Return resultado
     End Function

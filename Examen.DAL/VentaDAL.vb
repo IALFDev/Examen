@@ -38,6 +38,39 @@ Public Class VentaDAL
         Return venta
     End Function
 
+    ''' <summary>
+    '''  Método que elimina la venta de manera logica en la base datos
+    ''' </summary>
+    ''' <returns>Devuelve un objeto tipo Venta con el resultado de la operación de eliminación del venta en la base datos</returns>
+    Public Function EliminarVentaEnBd(venta As Venta) As Venta
+        commandText = venta.EliminarVentaEnBd()
+
+        Try
+            ExecuteNonQuery()
+        Catch ex As Exception 'Si hay un error lo almaceno en la variable venta.Excepcion.Mensaje el mensaje de la Excepcion ocurrida para si se quiere mostrar en pantalla o guardar en una tabla si se quiere
+            venta.Excepcion.Error = True
+            venta.Excepcion.Mensaje = ex.Message.ToString
+        End Try
+
+        Return venta
+    End Function
+
+    ''' <summary>
+    '''  Método que guarda la edicion del Total en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un objeto tipo Venta con el resultado de la operación de edición del Total en la base de datos</returns>
+    Public Function ActualizarTotalDeLaVenta(venta As Venta) As Venta
+        commandText = venta.ActualizarTotalDeLaVenta()
+
+        Try
+            ExecuteNonQuery()
+        Catch ex As Exception 'Si hay un error lo almaceno en la variable venta.Excepcion.Mensaje el mensaje de la Excepcion ocurrida para si se quiere mostrar en pantalla o guardar en una tabla si se quiere
+            venta.Excepcion.Error = True
+            venta.Excepcion.Mensaje = ex.Message.ToString
+        End Try
+
+        Return venta
+    End Function
 
     ''' <summary>
     '''  Método que obtiene una collecion del tipo ArrayList de todos las ventas en la base de datos

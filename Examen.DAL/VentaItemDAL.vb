@@ -39,11 +39,11 @@ Public Class VentaItemDAL
     End Function
 
     ''' <summary>
-    '''  Método que guarda la edicion del Total en la base de datos
+    '''  Método que elimina la ventaItem de manera logica en la base datos
     ''' </summary>
-    ''' <returns>Devuelve un objeto tipo VentaItem con el resultado de la operación de edición del Total en la base de datos</returns>
-    Public Function ActualizarTotalDeLaVenta(ventaItem As VentaItem) As VentaItem
-        commandText = ventaItem.ActualizarTotalDeLaVenta()
+    ''' <returns>Devuelve un objeto tipo VentaIten con el resultado de la operación de eliminación la ventaItem en la base datos</returns>
+    Public Function EliminarVentaItemEnBd(ventaItem As VentaItem) As VentaItem
+        commandText = ventaItem.EliminarVentaItemEnBd()
 
         Try
             ExecuteNonQuery()

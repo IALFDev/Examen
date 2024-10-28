@@ -29,27 +29,30 @@ Partial Class FormPrincipal
         '
         'btnProducto
         '
-        Me.btnProducto.Location = New System.Drawing.Point(12, 12)
+        Me.btnProducto.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnProducto.Location = New System.Drawing.Point(12, 105)
         Me.btnProducto.Name = "btnProducto"
-        Me.btnProducto.Size = New System.Drawing.Size(75, 30)
+        Me.btnProducto.Size = New System.Drawing.Size(220, 179)
         Me.btnProducto.TabIndex = 0
         Me.btnProducto.Text = "Productos"
         Me.btnProducto.UseVisualStyleBackColor = True
         '
         'btnCliente
         '
-        Me.btnCliente.Location = New System.Drawing.Point(93, 12)
+        Me.btnCliente.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnCliente.Location = New System.Drawing.Point(285, 105)
         Me.btnCliente.Name = "btnCliente"
-        Me.btnCliente.Size = New System.Drawing.Size(75, 30)
+        Me.btnCliente.Size = New System.Drawing.Size(220, 179)
         Me.btnCliente.TabIndex = 1
         Me.btnCliente.Text = "Clientes"
         Me.btnCliente.UseVisualStyleBackColor = True
         '
         'btnVentas
         '
-        Me.btnVentas.Location = New System.Drawing.Point(174, 12)
+        Me.btnVentas.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnVentas.Location = New System.Drawing.Point(568, 105)
         Me.btnVentas.Name = "btnVentas"
-        Me.btnVentas.Size = New System.Drawing.Size(75, 30)
+        Me.btnVentas.Size = New System.Drawing.Size(220, 179)
         Me.btnVentas.TabIndex = 2
         Me.btnVentas.Text = "Ventas"
         Me.btnVentas.UseVisualStyleBackColor = True

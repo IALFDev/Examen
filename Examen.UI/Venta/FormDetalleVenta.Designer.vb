@@ -29,6 +29,7 @@ Partial Class FormDetalleVenta
         Me.lbFechaVenta = New System.Windows.Forms.Label()
         Me.lbTotal = New System.Windows.Forms.Label()
         Me.lbTotalVenta = New System.Windows.Forms.Label()
+        Me.btnGenerarReporte = New System.Windows.Forms.Button()
         CType(Me.dgvVentaItem, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -94,11 +95,21 @@ Partial Class FormDetalleVenta
         Me.lbTotalVenta.TabIndex = 20
         Me.lbTotalVenta.Text = "Total venta"
         '
+        'btnGenerarReporte
+        '
+        Me.btnGenerarReporte.Location = New System.Drawing.Point(12, 415)
+        Me.btnGenerarReporte.Name = "btnGenerarReporte"
+        Me.btnGenerarReporte.Size = New System.Drawing.Size(120, 23)
+        Me.btnGenerarReporte.TabIndex = 21
+        Me.btnGenerarReporte.Text = "Generar reporte"
+        Me.btnGenerarReporte.UseVisualStyleBackColor = True
+        '
         'FormDetalleVenta
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.Controls.Add(Me.btnGenerarReporte)
         Me.Controls.Add(Me.lbTotalVenta)
         Me.Controls.Add(Me.lbTotal)
         Me.Controls.Add(Me.lbFechaVenta)
@@ -121,4 +132,5 @@ Partial Class FormDetalleVenta
     Friend WithEvents lbFechaVenta As Label
     Friend WithEvents lbTotal As Label
     Friend WithEvents lbTotalVenta As Label
+    Friend WithEvents btnGenerarReporte As Button
 End Class

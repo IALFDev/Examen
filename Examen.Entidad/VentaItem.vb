@@ -91,9 +91,52 @@
     End Property
 
     ''' <summary>
+    '''  Metodo que devuelve un objeto del tipo VentaItem con los datos necesarios para guardar la VentaItem en la base datos
+    ''' </summary>
+    ''' <returns>Devuelve un objeto del tipo VentaItem para guardar los datos de la venta en la base de datos</returns>
+    Public Function GenerarObjetoVentaItemParaGuardarEnBd(idVenta As Long, idProducto As Long, precioUniario As Decimal, cantidad As Integer) As VentaItem
+        Dim ventaItem = New VentaItem()
+
+        ventaItem.Venta.Id = idVenta
+        ventaItem.Producto.Id = idProducto
+        ventaItem.PrecioUnitario = precioUniario
+        ventaItem.Cantidad = cantidad
+
+        Return ventaItem
+    End Function
+
+    ''' <summary>
+    '''  Metodo que devuelve un objeto del tipo VentaItem con los datos necesarios para guardar la VentaItem en la base datos, este caso recibe una sobrecarga más para poder editar la VentaItem en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un objeto del tipo VentaItem para guardar los datos del VentaItem en la base de datos</returns>
+    Public Function GenerarObjetoVentaItemParaGuardarEnBd(idVentaItem As Long, idVenta As Long, idProducto As Long, precioUniario As Decimal, cantidad As Integer) As VentaItem
+        Dim ventaItem = New VentaItem()
+
+        ventaItem.Id = idVentaItem
+        ventaItem.Venta.Id = idVenta
+        ventaItem.Producto.Id = idProducto
+        ventaItem.PrecioUnitario = precioUniario
+        ventaItem.Cantidad = cantidad
+
+        Return ventaItem
+    End Function
+
+    ''' <summary>
+    '''  Metodo que devuelve un objeto del tipo VentaItem con los datos necesarios para eliminar de manera logica el VentaItem en la base datos
+    ''' </summary>
+    ''' <returns>Devuelve un objeto del tipo VentaItem para guardar los datos del VentaItem en la base de datos</returns>
+    Public Function GenerarObjetoVentaItemParaEliminarEnBd(idVentaItem As Long) As VentaItem
+        Dim ventaItem = New VentaItem()
+
+        ventaItem.Id = idVentaItem
+
+        Return ventaItem
+    End Function
+
+    ''' <summary>
     '''  Método que obtiene un string para guardar los datos de la ventaItem en la base de datos
     ''' </summary>
-    ''' <returns>Devuelve un string para guardar los datos de la ventaItem en la base de datos</returns>
+    ''' <returns>Devuelve un objeto del tipo Producto para guardar los datos de la ventaItem en la base de datos</returns>
     Public Function GuardarVentaItemEnBD()
         Dim precioUnitarioFormateado As String = PrecioUnitario.ToString(System.Globalization.CultureInfo.InvariantCulture) 'Formateo el nuemro para poder ser guardado en la base de datos como Float'
         Dim precioTotalFormateado As String = PrecioTotal.ToString(System.Globalization.CultureInfo.InvariantCulture) 'Formateo el nuemro para poder ser guardado en la base de datos como Float'
@@ -105,7 +148,7 @@
     ''' <summary>
     '''  Método que obtiene un string para guardar la edicion de los datos de la ventaItem ya existente en la base de datos
     ''' </summary>
-    ''' <returns>Devuelve un string para guardar la edicion de los datos de la ventaItem ya existente la base de datos</returns>
+    ''' <returns>Devuelve un objeto del tipo Producto para guardar la edicion de los datos de la ventaItem ya existente la base de datos</returns>
     Public Function EditarVentaItemEnBd() As String
         Dim precioUnitarioFormateado As String = PrecioUnitario.ToString(System.Globalization.CultureInfo.InvariantCulture) 'Formateo el nuemro para poder ser guardado en la base de datos como Float'
         Dim precioTotalFormateado As String = PrecioTotal.ToString(System.Globalization.CultureInfo.InvariantCulture) 'Formateo el nuemro para poder ser guardado en la base de datos como Float'
@@ -115,14 +158,15 @@
     End Function
 
     ''' <summary>
-    '''  Método que obtiene un string para guardar la edicion del Total en la base de datos
+    '''  Método que obtiene un string para eliminar de manera logica la ventaItem en la base de datos
     ''' </summary>
-    ''' <returns>Devuelve un string para guardar la edicion del Total ya existente la base de datos</returns>
-    Public Function ActualizarTotalDeLaVenta() As String
-        Dim cmd = String.Format("UPDATE ventas SET Total = (SELECT SUM(vi.PrecioTotal) FROM ventasitems vi INNER JOIN productos p ON vi.IDProducto = p.ID WHERE vi.IDVenta = {0} AND vi.Activo = 1) WHERE ID = {1};", Venta.Id, Venta.Id)
+    ''' <returns>Devuelve un string para eliminar de manera logica la ventaItem en la base de datos</returns>
+    Public Function EliminarVentaItemEnBd() As String
+        Dim cmd = String.Format("UPDATE ventasitems SET Activo = 0 WHERE ventasitems.ID = {0}", Id)
 
         Return cmd
     End Function
+
 
     ''' <summary>
     '''  Metodo que obtiene un string para la consulta de para obtener todos las ventasItem en la base de datos

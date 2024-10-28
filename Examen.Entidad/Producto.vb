@@ -67,7 +67,7 @@
     ''' <summary>
     '''  Método que devuelve un objeto del tipo Producto con los datos necesarios para guardar el producto en la base datos
     ''' </summary>
-    ''' <returns>Devuelve un string para guardar los datos del producto en la base de datos</returns>
+    ''' <returns>Devuelve un objeto del tipo Producto para guardar los datos del producto en la base de datos</returns>
     Public Function GenerarObjetoProductoParaGuardarEnBd(nombre As String, precio As Decimal, categoria As String) As Producto
         Dim producto = New Producto()
 
@@ -82,7 +82,7 @@
     ''' <summary>
     '''  Método que devuelve un objeto del tipo Producto con los datos necesarios para guardar el producto en la base datos, este caso recibe una sobrecarga más para poder editar el producto en la base de datos
     ''' </summary>
-    ''' <returns>Devuelve un string para guardar los datos del producto en la base de datos</returns>
+    ''' <returns>Devuelve un objeto del tipo Producto para guardar los datos del producto en la base de datos</returns>
     Public Function GenerarObjetoProductoParaGuardarEnBd(id As Long, nombre As String, precio As Decimal, categoria As String) As Producto
         Dim producto = New Producto()
 
@@ -97,7 +97,7 @@
     ''' <summary>
     '''  Método que devuelve un objeto del tipo Producto con los datos necesarios para eliminar de manera logica el producto en la base datos
     ''' </summary>
-    ''' <returns>Devuelve un string para guardar los datos del producto en la base de datos</returns>
+    ''' <returns>Devuelve un objeto del tipo Producto para guardar los datos del producto en la base de datos</returns>
     Public Function GenerarObjetoProductoParaEliminarEnBd(id As Long) As Producto
         Dim producto = New Producto()
 

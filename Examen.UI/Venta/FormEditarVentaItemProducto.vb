@@ -34,15 +34,12 @@ Public Class FormEditarVentaItemProducto
             Dim datosProductos = ObtenerDatosDeProducto(New Producto() With {.Id = cbProducto.SelectedValue})
             Dim producto = New Producto()
 
-            itemVenta.Id = IdventaItem
-            itemVenta.Producto.Id = cbProducto.SelectedValue
-            itemVenta.Cantidad = txtCantidad.Text
             If datosProductos IsNot Nothing Then
                 itemVenta.PrecioUnitario = datosProductos(0).Precio
             End If
 
-            If Not EditarVentaItemEnBd(itemVenta).Excepcion.Error Then
-                If Not ActualizarTotalDeLaVenta(New VentaItem() With {.Venta = New Venta() With {.Id = Idventa}}).Excepcion.Error Then
+            If Not EditarVentaItemEnBd(New VentaItem().GenerarObjetoVentaItemParaGuardarEnBd(IdventaItem, Idventa, cbProducto.SelectedValue, itemVenta.PrecioUnitario, txtCantidad.Text)).Excepcion.Error Then
+                If Not ActualizarTotalDeLaVenta(New Venta().GenerarObjetoVentaParaActualizarTotal(Idventa)).Excepcion.Error Then
                     MessageBox.Show("Producto guardado.", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si todo salio correcto muestro un MessageBox diciendo que el VentaItem se edito correctamente
                     FormEditarVenta.ActivarDataGridViewVentaItem() 'Refresco la grilla cada vez que haga click en el botón'
                     FormVentaPrincipal.ActivarDataGridViewVenta() 'Refresco la grilla cada vez que haga click en el botón'
@@ -106,24 +103,24 @@ Public Class FormEditarVentaItemProducto
     '''  Método que guarda la edicion de los datos del ventaItem ya existente en la base de datos desde el "gestor" o "manager" de la capa de negocios
     ''' </summary>
     ''' <returns>Devuelve un objeto tipo VentaItem con el resultado de la operacion de guardado en la base datos</returns>
-    Protected Function EditarVentaItemEnBd(venta As VentaItem) As VentaItem
+    Protected Function EditarVentaItemEnBd(ventaItem As VentaItem) As VentaItem
         Dim manager = New ManagerVentaItem()
 
-        venta = manager.EditarVentaItemEnBd(venta)
+        ventaItem = manager.EditarVentaItemEnBd(ventaItem)
 
-        Return venta
+        Return ventaItem
     End Function
 
     ''' <summary>
     '''  Método que guarda la edicion del Total en la base de datos desde el "gestor" o "manager" de la capa de negocios
     ''' </summary>
-    ''' <returns>Devuelve un objeto tipo VentaItem con el resultado de la operacion de guardado en la base datos</returns>
-    Protected Function ActualizarTotalDeLaVenta(ventaItem As VentaItem) As VentaItem
-        Dim manager = New ManagerVentaItem()
+    ''' <returns>Devuelve un objeto tipo Venta con el resultado de la operacion de guardado en la base datos</returns>
+    Protected Function ActualizarTotalDeLaVenta(venta As Venta) As Venta
+        Dim manager = New ManagerVenta()
 
-        ventaItem = manager.ActualizarTotalDeLaVenta(ventaItem)
+        venta = manager.ActualizarTotalDeLaVenta(venta)
 
-        Return ventaItem
+        Return venta
     End Function
 
     ''' <summary>

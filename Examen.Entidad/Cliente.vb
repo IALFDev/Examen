@@ -82,7 +82,7 @@ Public Class Cliente
     ''' <summary>
     '''  Metodo que devuelve un objeto del tipo Cliente con los datos necesarios para guardar el Cliente en la base datos
     ''' </summary>
-    ''' <returns>Devuelve un string para guardar los datos del Cliente en la base de datos</returns>
+    ''' <returns>Devuelve un objeto del tipo Cliente para guardar los datos del Cliente en la base de datos</returns>
     Public Function GenerarObjetoClienteParaGuardarEnBd(id As Long, cliente As String, telefono As Integer, correo As String) As Cliente
         Dim oCliente = New Cliente
 
@@ -97,7 +97,7 @@ Public Class Cliente
     ''' <summary>
     '''  Metodo que devuelve un objeto del tipo Cliente con los datos necesarios para guardar el cliente en la base datos, este caso recibe una sobrecarga más para poder editar el producto en la base de datos
     ''' </summary>
-    ''' <returns>Devuelve un string para guardar los datos del cliente en la base de datos</returns>
+    ''' <returns>Devuelve un objeto del tipo Cliente para guardar los datos del cliente en la base de datos</returns>
     Public Function GenerarObjetoClienteParaVerificarSiExiste(correo As String) As Cliente
         Dim cliente = New Cliente
 
@@ -109,7 +109,7 @@ Public Class Cliente
     ''' <summary>
     '''  Metodo que devuelve un objeto del tipo Cliente con los datos necesarios para eliminar de manera logica el cliente en la base datos
     ''' </summary>
-    ''' <returns>Devuelve un string para guardar los datos del cliente en la base de datos</returns>
+    ''' <returns>Devuelve un objeto del tipo Cliente para guardar los datos del cliente en la base de datos</returns>
     Public Function GenerarObjetoClienteParaEliminarEnBd(id As Long) As Cliente
         Dim cliente = New Cliente()
 

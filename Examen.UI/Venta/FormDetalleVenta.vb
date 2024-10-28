@@ -38,6 +38,10 @@ Public Class FormDetalleVenta
                 dgvVentaItem.Columns("Venta").Visible = False 'Oculto la columna de objeto Venta
             End If
 
+            If dgvVentaItem.Columns.Contains("IdProducto") Then 'Si la grilla contiene la columna "IdProducto" la oculto
+                dgvVentaItem.Columns("IdProducto").Visible = False 'Oculto la columna de objeto IdProducto
+            End If
+
             If dgvVentaItem.Columns.Contains("Producto") Then 'Si la grilla contiene la columna "Producto" la oculto
                 dgvVentaItem.Columns("Producto").Visible = False 'Oculto la columna de objeto Producto
             End If
