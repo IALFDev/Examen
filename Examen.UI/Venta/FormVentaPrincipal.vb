@@ -14,7 +14,7 @@ Public Class FormVentaPrincipal
     '''  Metodo que activa distintos elementos al llamar al mismo
     ''' </summary>
     Protected Sub ConfigurarContenido()
-        ActivarDataGridViewProducto()
+        ActivarDataGridViewVenta()
     End Sub
 
     Private Sub btnRealizarVenta_Click(sender As Object, e As EventArgs) Handles btnRealizarVenta.Click
@@ -24,7 +24,7 @@ Public Class FormVentaPrincipal
     ''' <summary>
     '''  Método que rellena una Grilla (DataGridView)
     ''' </summary>''
-    Public Sub ActivarDataGridViewProducto()
+    Public Sub ActivarDataGridViewVenta()
         Dim ventas = ObtenerTodasLasVentas()
         If ventas IsNot Nothing AndAlso ventas.Count > 0 Then
             dgvVenta.DataSource = ventas
@@ -40,6 +40,10 @@ Public Class FormVentaPrincipal
 
             If dgvVenta.Columns.Contains("NombreCliente") Then 'Si la grilla contiene la columna "NombreCliente" la oculto
                 dgvVenta.Columns("NombreCliente").HeaderText = "Cliente" 'Renombro la columna "NombreCliente" por "Cliente"
+            End If
+
+            If dgvVenta.Columns.Contains("IdCliente") Then 'Si la grilla contiene la columna "IdCliente" la oculto
+                dgvVenta.Columns("IdCliente").Visible = False 'Renombro la columna "NombreCliente" por "Cliente"
             End If
 
             If dgvVenta.Columns.Contains("Activo") Then 'Si la grilla contiene la columna "Excepcion" la oculto
@@ -87,6 +91,7 @@ Public Class FormVentaPrincipal
 
         If e.RowIndex >= 0 Then 'Verifico si es una fila válida
             Dim idVenta As Long = Long.Parse(dgvVenta.Rows(e.RowIndex).Cells("ID").Value.ToString())
+            Dim IdCliente As Long = dgvVenta.Rows(e.RowIndex).Cells("IdCliente").Value.ToString()
             Dim nombreCliente As String = dgvVenta.Rows(e.RowIndex).Cells("NombreCliente").Value.ToString()
             Dim fechaVenta As DateTime = dgvVenta.Rows(e.RowIndex).Cells("Fecha").Value.ToString()
             Dim TotalVenta As Decimal = dgvVenta.Rows(e.RowIndex).Cells("Total").Value.ToString()
@@ -108,7 +113,7 @@ Public Class FormVentaPrincipal
                 Dim venta = New Venta() 'Creo un objeto Venta para almacenar los datos de la venta que quiere editar
 
                 venta.Id = idVenta
-                venta.Cliente.Cliente = nombreCliente
+                venta.Cliente.Id = IdCliente
                 venta.Fecha = fechaVenta
                 venta.Total = TotalVenta
 

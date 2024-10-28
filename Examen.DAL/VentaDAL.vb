@@ -22,6 +22,24 @@ Public Class VentaDAL
     End Function
 
     ''' <summary>
+    '''  Método que guarda la edicion de los datos de la venta ya existente en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un objeto tipo Venta con el resultado de la operación de guardado de la venta en la base de datos</returns>
+    Public Function EditarVentaEnBd(venta As Venta) As Venta
+        commandText = venta.EditarVentaEnBd()
+
+        Try
+            ExecuteNonQuery()
+        Catch ex As Exception 'Si hay un error lo almaceno en la variable venta.Excepcion.Mensaje el mensaje de la Excepcion ocurrida para si se quiere mostrar en pantalla o guardar en una tabla si se quiere
+            venta.Excepcion.Error = True
+            venta.Excepcion.Mensaje = ex.Message.ToString
+        End Try
+
+        Return venta
+    End Function
+
+
+    ''' <summary>
     '''  Método que obtiene una collecion del tipo ArrayList de todos las ventas en la base de datos
     ''' </summary>
     ''' <returns>Devuelve un Arraylist de objetos tipo Venta</returns>
@@ -52,9 +70,10 @@ Public Class VentaDAL
         Dim venta = New Venta()
 
         venta.Id = Long.Parse(registers("IDVENTA").ToString())
+        venta.Cliente.Id = Long.Parse(registers("IDCLIENTE").ToString())
         venta.Cliente.Cliente = registers("CLIENTE").ToString()
         venta.Fecha = DateTime.Parse(registers("FECHAVENTA").ToString())
-        venta.Total = Decimal.Parse(registers("TOTALVENTA").ToString())
+        venta.Total = If(String.IsNullOrEmpty(registers("TOTALVENTA").ToString()), 0, Decimal.Parse(registers("TOTALVENTA").ToString()))
 
         Return venta
     End Function

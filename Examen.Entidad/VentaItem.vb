@@ -41,6 +41,12 @@
         End Set
     End Property
 
+    Public ReadOnly Property IdProducto As String 'Propiedad adicional para poder mostrarla en la grilla
+        Get
+            Return If(_producto IsNot Nothing, _producto.Id, String.Empty)
+        End Get
+    End Property
+
     Public ReadOnly Property NombreProducto As String 'Propiedad adicional para poder mostrarla en la grilla
         Get
             Return If(_producto IsNot Nothing, _producto.Nombre, String.Empty)
@@ -97,11 +103,43 @@
     End Function
 
     ''' <summary>
+    '''  Método que obtiene un string para guardar la edicion de los datos de la ventaItem ya existente en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un string para guardar la edicion de los datos de la ventaItem ya existente la base de datos</returns>
+    Public Function EditarVentaItemEnBd() As String
+        Dim precioUnitarioFormateado As String = PrecioUnitario.ToString(System.Globalization.CultureInfo.InvariantCulture) 'Formateo el nuemro para poder ser guardado en la base de datos como Float'
+        Dim precioTotalFormateado As String = PrecioTotal.ToString(System.Globalization.CultureInfo.InvariantCulture) 'Formateo el nuemro para poder ser guardado en la base de datos como Float'
+        Dim cmd = String.Format("UPDATE ventasitems SET IDProducto = {0}, PrecioUnitario = {1}, Cantidad = {2}, PrecioTotal = {3} WHERE ventasitems.ID = {4}", Producto.Id, precioUnitarioFormateado, Cantidad, precioTotalFormateado, Id)
+
+        Return cmd
+    End Function
+
+    ''' <summary>
+    '''  Método que obtiene un string para guardar la edicion del Total en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un string para guardar la edicion del Total ya existente la base de datos</returns>
+    Public Function ActualizarTotalDeLaVenta() As String
+        Dim cmd = String.Format("UPDATE ventas SET Total = (SELECT SUM(vi.PrecioTotal) FROM ventasitems vi INNER JOIN productos p ON vi.IDProducto = p.ID WHERE vi.IDVenta = {0} AND vi.Activo = 1) WHERE ID = {1};", Venta.Id, Venta.Id)
+
+        Return cmd
+    End Function
+
+    ''' <summary>
     '''  Metodo que obtiene un string para la consulta de para obtener todos las ventasItem en la base de datos
     ''' </summary>
     ''' <returns>Devuelve un string con la consulta para obtener todos los ventasItem</returns>
     Public Function ObtenerTodasLasVentasItem() As String
-        Dim cmd = "SELECT vi.ID AS IDVENTAITEM, p.Nombre AS PRODUCTO, vi.PrecioUnitario AS PRECIOUNITARIO, vi.Cantidad AS CANTIDAD, vi.PrecioTotal AS PRECIOTOTAL FROM ventasitems vi INNER JOIN productos AS p ON vi.IDProducto = p.ID WHERE vi.IDVenta = 1 AND vi.Activo = 1"
+        Dim cmd = "SELECT vi.ID AS IDVENTAITEM, p.ID AS IDPRODUCTO, p.Nombre AS PRODUCTO, vi.PrecioUnitario AS PRECIOUNITARIO, vi.Cantidad AS CANTIDAD, vi.PrecioTotal AS PRECIOTOTAL FROM ventasitems vi INNER JOIN productos AS p ON vi.IDProducto = p.ID WHERE vi.Activo = 1"
+
+        Return cmd
+    End Function
+
+    ''' <summary>
+    '''  Metodo que obtiene un string para la consulta de para obtener las ventasItem por Id en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un string con la consulta para obtener los ventasItem</returns>
+    Public Function ObtenerVentasItemId(ventaItem As VentaItem) As String
+        Dim cmd = String.Format("SELECT vi.ID AS IDVENTAITEM, p.ID AS IDPRODUCTO, p.Nombre AS PRODUCTO, vi.PrecioUnitario AS PRECIOUNITARIO, vi.Cantidad AS CANTIDAD, vi.PrecioTotal AS PRECIOTOTAL FROM ventasitems vi INNER JOIN productos AS p ON vi.IDProducto = p.ID WHERE vi.IDVenta = {0} AND vi.Activo = 1", ventaItem.Id)
 
         Return cmd
     End Function

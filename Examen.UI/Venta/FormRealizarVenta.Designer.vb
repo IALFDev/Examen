@@ -36,6 +36,7 @@ Partial Class FormRealizarVenta
         Me.btnAgregar = New System.Windows.Forms.Button()
         Me.lbTotalGeneral = New System.Windows.Forms.Label()
         Me.lbNumTotalGeneral = New System.Windows.Forms.Label()
+        Me.lbInfo = New System.Windows.Forms.Label()
         CType(Me.dgvVentaProducto, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -78,9 +79,9 @@ Partial Class FormRealizarVenta
         'dgvVentaProducto
         '
         Me.dgvVentaProducto.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvVentaProducto.Location = New System.Drawing.Point(12, 97)
+        Me.dgvVentaProducto.Location = New System.Drawing.Point(12, 123)
         Me.dgvVentaProducto.Name = "dgvVentaProducto"
-        Me.dgvVentaProducto.Size = New System.Drawing.Size(776, 341)
+        Me.dgvVentaProducto.Size = New System.Drawing.Size(776, 320)
         Me.dgvVentaProducto.TabIndex = 13
         '
         'btnAgregarProducto
@@ -169,11 +170,21 @@ Partial Class FormRealizarVenta
         Me.lbNumTotalGeneral.TabIndex = 21
         Me.lbNumTotalGeneral.Text = "$0"
         '
+        'lbInfo
+        '
+        Me.lbInfo.AutoSize = True
+        Me.lbInfo.Location = New System.Drawing.Point(473, 98)
+        Me.lbInfo.Name = "lbInfo"
+        Me.lbInfo.Size = New System.Drawing.Size(315, 13)
+        Me.lbInfo.TabIndex = 22
+        Me.lbInfo.Text = "*Para editar la cantidad hacer doble click en la columna Cantidad" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
+        '
         'FormRealizarVenta
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 560)
+        Me.Controls.Add(Me.lbInfo)
         Me.Controls.Add(Me.lbNumTotalGeneral)
         Me.Controls.Add(Me.lbTotalGeneral)
         Me.Controls.Add(Me.btnAgregar)
@@ -210,4 +221,5 @@ Partial Class FormRealizarVenta
     Friend WithEvents btnAgregar As Button
     Friend WithEvents lbTotalGeneral As Label
     Friend WithEvents lbNumTotalGeneral As Label
+    Friend WithEvents lbInfo As Label
 End Class

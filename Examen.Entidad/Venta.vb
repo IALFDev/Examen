@@ -27,6 +27,12 @@
         End Set
     End Property
 
+    Public ReadOnly Property IdCliente As String 'Propiedad adicional para poder mostrarla en la grilla
+        Get
+            Return If(_cliente IsNot Nothing, _cliente.Id, String.Empty)
+        End Get
+    End Property
+
     Public ReadOnly Property NombreCliente As String 'Propiedad adicional para poder mostrarla en la grilla
         Get
             Return If(_cliente IsNot Nothing, _cliente.Cliente, String.Empty)
@@ -79,6 +85,21 @@
     End Function
 
     ''' <summary>
+    '''  Metodo que devuelve un objeto del tipo Venta con los datos necesarios para guardar el Venta en la base datos, este caso recibe una sobrecarga más para poder editar la venta en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un string para guardar los datos del Venta en la base de datos</returns>
+    Public Function GenerarObjetoVentaParaGuardarEnBd(idVenta As Long, idCliente As Long, fecha As Date, total As Decimal) As Venta
+        Dim venta = New Venta()
+
+        venta.Id = idVenta
+        venta.Cliente.Id = idCliente
+        venta.Fecha = fecha
+        venta.Total = total
+
+        Return venta
+    End Function
+
+    ''' <summary>
     '''  Método que obtiene un string para guardar los datos de la venta en la base de datos
     ''' </summary>
     ''' <returns>Devuelve un string para guardar los datos de la venta  en la base de datos</returns>
@@ -90,12 +111,23 @@
     End Function
 
     ''' <summary>
+    '''  Método que obtiene un string para guardar la edicion de los datos de la venta ya existente en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un string para guardar la edicion de los datos de la venta ya existente la base de datos</returns>
+    Public Function EditarVentaEnBd() As String
+        Dim cmd = String.Format("UPDATE ventas SET IDCliente = {0}, Fecha = CONVERT(DATETIME, '{1}', 102) WHERE ventas.ID = {2}", Cliente.Id, Fecha.ToString("yyyy-MM-dd HH:mm:ss"), Id)
+
+        Return cmd
+    End Function
+
+
+    ''' <summary>
     '''  Metodo que obtiene un string para la consulta de para obtener todos las ventas en la base de datos
     ''' </summary>
     ''' <returns>Devuelve un string con la consulta para obtener todos los ventas</returns>
 
     Public Function ObtenerTodasLasVentas() As String
-        Dim cmd = "SELECT v.ID AS IDVENTA, c.Cliente AS CLIENTE, v.Fecha AS FECHAVENTA, v.Total AS TOTALVENTA FROM ventas AS v INNER JOIN clientes AS c ON v.IDCliente = c.ID WHERE c.Activo = 1"
+        Dim cmd = "SELECT v.ID AS IDVENTA, c.ID AS IDCLIENTE, c.Cliente AS CLIENTE, v.Fecha AS FECHAVENTA, v.Total AS TOTALVENTA FROM ventas AS v INNER JOIN clientes AS c ON v.IDCliente = c.ID WHERE v.Activo = 1"
 
         Return cmd
     End Function

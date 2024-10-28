@@ -25,7 +25,7 @@ Public Class FormDetalleVenta
     '''  Método que rellena una Grilla (DataGridView)
     ''' </summary>''
     Public Sub ActivarDataGridViewVentaItem()
-        Dim ventasItem = ObtenerTodasLasVentasItem()
+        Dim ventasItem = ObtenerVentasItemId(New VentaItem() With {.Id = IdVenta})
         If ventasItem IsNot Nothing AndAlso ventasItem.Count > 0 Then
             dgvVentaItem.DataSource = ventasItem
             dgvVentaItem.Visible = True
@@ -67,13 +67,13 @@ Public Class FormDetalleVenta
     End Sub
 
     ''' <summary>
-    '''  Método que obtiene una collecion de todas las ventasItem desde el "gestor" o "manager" de la capa de negocios
+    '''  Método que obtiene una collecion de ventasItem por ID desde el "gestor" o "manager" de la capa de negocios
     ''' </summary>
     ''' <returns>Devuelve un Arraylist de objetos tipo VentaItem</returns>
-    Protected Function ObtenerTodasLasVentasItem() As ArrayList
+    Protected Function ObtenerVentasItemId(ventasItem As VentaItem) As ArrayList
         Dim manager = New ManagerVentaItem()
 
-        Dim resultado = manager.ObtenerTodasLasVentasItem()
+        Dim resultado = manager.ObtenerVentasItemId(ventasItem)
 
         Return resultado
     End Function

@@ -143,6 +143,12 @@
     <Compile Include="Venta\FormEditarVenta.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Venta\FormEditarVentaItemProducto.Designer.vb">
+      <DependentUpon>FormEditarVentaItemProducto.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Venta\FormEditarVentaItemProducto.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Venta\FormRealizarVenta.Designer.vb">
       <DependentUpon>FormRealizarVenta.vb</DependentUpon>
     </Compile>
@@ -189,6 +195,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Venta\FormEditarVenta.resx">
       <DependentUpon>FormEditarVenta.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Venta\FormEditarVentaItemProducto.resx">
+      <DependentUpon>FormEditarVentaItemProducto.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Venta\FormRealizarVenta.resx">
       <DependentUpon>FormRealizarVenta.vb</DependentUpon>

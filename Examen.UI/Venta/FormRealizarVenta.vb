@@ -31,8 +31,13 @@ Public Class FormRealizarVenta
     End Sub
 
     Private Sub txtCantidad_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtCantidad.KeyPress
-        If Asc(e.KeyChar) <> 13 AndAlso Asc(e.KeyChar) <> 8 AndAlso Not IsNumeric(e.KeyChar) Then 'Verifico que el campo Teléfono solo se ingrese numeros'
+        If Asc(e.KeyChar) <> 13 AndAlso Asc(e.KeyChar) <> 8 AndAlso Not IsNumeric(e.KeyChar) Then
+            ' Verifico que el campo Teléfono solo se ingresen números
             MessageBox.Show("Debes ingresar solamente valores numéricos.", "Atención")
+            e.Handled = True
+        ElseIf e.KeyChar = "0"c Or sender.Text.Length = 0 Then
+            ' Verifico que el primer carácter no sea 0
+            MessageBox.Show("La cantidad debe ser mayor a 0.", "Atención")
             e.Handled = True
         End If
     End Sub
@@ -91,12 +96,18 @@ Public Class FormRealizarVenta
 
             dgvVentaProducto.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill 'Establesco que las columas ocupen todo el ancho de la grilla
 
+            dgvVentaProducto.EditMode = DataGridViewEditMode.EditProgrammatically
+
             If dgvVentaProducto.Columns.Contains("Venta") Then 'Si la grilla contiene la columna "Venta" la oculto
                 dgvVentaProducto.Columns("Venta").Visible = False
             End If
 
             If dgvVentaProducto.Columns.Contains("Id") Then 'Si la grilla contiene la columna "Id" la oculto
                 dgvVentaProducto.Columns("Id").Visible = False
+            End If
+
+            If dgvVentaProducto.Columns.Contains("IdProducto") Then 'Si la grilla contiene la columna "IdProducto" la oculto
+                dgvVentaProducto.Columns("IdProducto").Visible = False
             End If
 
             If dgvVentaProducto.Columns.Contains("Producto") Then 'Si la grilla contiene la columna "Producto" la oculto
@@ -143,22 +154,6 @@ Public Class FormRealizarVenta
         End If
     End Sub
 
-    ''' <summary>
-    '''  Método que suma el total de cada VentaItem y lo muesto en pantalla cada vez que actualiza la grilla
-    ''' </summary>''
-    Protected Sub CalcularTotalGeneral()
-        Dim decValue As Decimal
-        Dim total As Decimal
-        For Each row As DataGridViewRow In dgvVentaProducto.Rows
-            If Decimal.TryParse(row.Cells(6).Value, decValue) Then
-                total += decValue
-            End If
-        Next
-
-        totalGeneral = total
-        lbNumTotalGeneral.Text = Format(total.ToString(), "Currency") 'Convierto el tipo de dato a tipo "Currency" que es tipo de dato moneda
-    End Sub
-
     Protected Sub dgvVentaProducto_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvVentaProducto.CellClick
         If e.RowIndex >= 0 Then 'Verifico si es una fila válida
 
@@ -180,14 +175,28 @@ Public Class FormRealizarVenta
         End If
     End Sub
 
+    Private Sub dgvVentaProducto_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvVentaProducto.CellContentClick
+        If e.ColumnIndex = 6 Then
+            dgvVentaProducto.CurrentCell = dgvVentaProducto(6, e.RowIndex)
+            dgvVentaProducto.BeginEdit(True)
+        End If
+    End Sub
+
     Private Sub dgvVentaProducto_EndEdit(sender As Object, e As DataGridViewCellEventArgs) Handles dgvVentaProducto.CellEndEdit
-        If e.ColumnIndex = 5 Then 'replace 5 with your column number
+        If e.ColumnIndex = 6 Then
             Dim ventaItem As VentaItem = CType(dgvVentaProducto.Rows(e.RowIndex).DataBoundItem, VentaItem) ' Obtener el objeto VentaItem de la fila editada
 
 
             Dim nuevaCantidad As Integer 'Obtener el nuevo valor de la celda editada
+
+
             If Integer.TryParse(dgvVentaProducto.Rows(e.RowIndex).Cells(e.ColumnIndex).Value.ToString(), nuevaCantidad) Then
-                ventaItem.Cantidad = nuevaCantidad 'Actualizar la propiedad Cantidad en el objeto VentaItem
+                If nuevaCantidad.ToString() <> "0"c Or nuevaCantidad <> 0 Then
+                    ventaItem.Cantidad = nuevaCantidad 'Actualizar la propiedad Cantidad en el objeto VentaItem
+                Else
+                    MessageBox.Show("La cantidad debe ser mayor a 0.", "Atención")
+                    dgvVentaProducto.Rows(e.RowIndex).Cells(e.ColumnIndex).Value = ventaItem.Cantidad ' Revertir al valor anterior
+                End If
             Else
                 MessageBox.Show("Ingrese una cantidad válida.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 dgvVentaProducto.Rows(e.RowIndex).Cells(e.ColumnIndex).Value = ventaItem.Cantidad ' Revertir al valor anterior
@@ -195,6 +204,28 @@ Public Class FormRealizarVenta
 
             ActivarDataGridViewVentaItemProducto()
         End If
+    End Sub
+
+    Private Sub dgvVentaProducto_DataBindingComplete(sender As Object, e As DataGridViewBindingCompleteEventArgs) Handles dgvVentaProducto.DataBindingComplete
+        CalcularTotalGeneral()
+    End Sub
+
+    ''' <summary>
+    '''  Método que suma el total de cada VentaItem y lo muesto en pantalla cada vez que actualiza la grilla
+    ''' </summary>''
+    Protected Sub CalcularTotalGeneral()
+        Dim decValue As Decimal
+        Dim total As Decimal = 0
+
+        If dgvVentaProducto.Columns.Contains("PrecioTotal") Then 'Verifico de que la columna "PrecioTotal" existe antes de intentar acceder a ella
+            For Each row As DataGridViewRow In dgvVentaProducto.Rows
+                If Decimal.TryParse(row.Cells("PrecioTotal").Value, decValue) Then
+                    total += decValue
+                End If
+            Next
+        End If
+        totalGeneral = total
+        lbNumTotalGeneral.Text = Format(total.ToString(), "Currency")
     End Sub
 
     ''' <summary>
@@ -244,7 +275,7 @@ Public Class FormRealizarVenta
 
                         LimpiarControles() 'Limpio los campos Cliente, Teléfono y Correo para que no quede con datos reciduales'
 
-                        FormVentaPrincipal.ActivarDataGridViewProducto() 'Refresco la grilla cada vez que haga click en el botón'
+                        FormVentaPrincipal.ActivarDataGridViewVenta() 'Refresco la grilla cada vez que haga click en el botón'
                     Else
                         MessageBox.Show("Error al guardar los ItemVenta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que el cliente no se guardar correctamente'
                     End If
@@ -300,7 +331,7 @@ Public Class FormRealizarVenta
 
         productos.Insert(0, producto)
 
-        If productos IsNot Nothing AndAlso productos.Count > 0 Then 'Verifico que "categorias" no este vacío y no sea nulo
+        If productos IsNot Nothing AndAlso productos.Count > 0 Then 'Verifico que "productos" no este vacío y no sea nulo
             cbProducto.DataSource = productos
             cbProducto.DisplayMember = "Nombre"
             cbProducto.ValueMember = "Id"
