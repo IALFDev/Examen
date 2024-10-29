@@ -91,6 +91,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="ReportPdfDAL.vb" />
     <Compile Include="ProductoDAL.vb" />
     <Compile Include="VentaDAL.vb" />
     <Compile Include="VentaItemDAL.vb" />

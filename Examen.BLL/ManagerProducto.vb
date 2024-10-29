@@ -29,7 +29,7 @@ Public Class ManagerProducto
     ''' <summary>
     '''  Método que elimina el producto de manera logica en la base datos desde la capa de conexion a la base de datos //Reveer este texto
     ''' </summary>
-    ''' <returns>Devuelve un objeto tipo Producto con el resultado de la operacion de guardado en la base datos</returns>
+    ''' <returns>Devuelve un objeto tipo Producto con el resultado de la operacion de eliminación en la base datos</returns>
     Public Function EliminarProductoEnBd(producto As Producto) As Producto
         Dim productoDAL = New ProductoDAL()
 
@@ -82,6 +82,18 @@ Public Class ManagerProducto
         Dim productoDAL = New ProductoDAL()
 
         Dim resultado = productoDAL.ObtenerCategoriaProducto()
+
+        Return resultado
+    End Function
+
+    ''' <summary>
+    '''  Método que obtiene una collecion tipo ArrayList los producto desde la capa de conexion a la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un Arraylist de objetos tipo Producto</returns>
+    Public Function ObtenerProductos(Optional idProducto As String = "", Optional nombre As String = "", Optional categoria As String = "", Optional precioMin As String = "", Optional precioMax As String = "") As ArrayList
+        Dim productoDAL = New ProductoDAL()
+
+        Dim resultado = productoDAL.ObtenerProductos(idProducto, nombre, categoria, precioMin, precioMax)
 
         Return resultado
     End Function

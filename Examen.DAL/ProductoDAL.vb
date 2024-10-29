@@ -111,6 +111,20 @@ Public Class ProductoDAL
         Return resultado
     End Function
 
+    ''' <summary>
+    '''  Método que obtiene una collecion del tipo ArrayList los productos en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un Arraylist de objetos tipo producto</returns>
+    Public Function ObtenerProductos(Optional idProducto As String = "", Optional nombre As String = "", Optional categoria As String = "", Optional precioMin As String = "", Optional precioMax As String = "") As ArrayList
+        commandText = New Producto().ObtenerProductos(idProducto, nombre, categoria, precioMin, precioMax)
+
+        tipoOp = 3
+
+        Dim resultado = AbstractFindAll()
+
+        Return resultado
+    End Function
+
     Public Overrides Function DoLoad(registers As IDataReader) As Object
         Select Case tipoOp
             Case 0
@@ -119,6 +133,8 @@ Public Class ProductoDAL
                 Return ObtenerCategoriaProducto(registers)
             Case 2
                 Return ObtenerIDYNombreDelProducto(registers)
+            Case 3
+                Return ObtenerClientes(registers)
         End Select
 
         Return New Object
@@ -160,6 +176,21 @@ Public Class ProductoDAL
 
         producto.Id = Long.Parse(registers("IDPRODUCTO").ToString)
         producto.Nombre = registers("NOMBRE").ToString
+
+        Return producto
+    End Function
+
+    ''' <summary>
+    '''  Método que almacena todos los datos obtenidos en el objeto del tipo Producto
+    ''' </summary>
+    ''' <returns>Devuelve un objeto del tipo Producto</returns>
+    Protected Function ObtenerClientes(registers As IDataReader) As Producto
+        Dim producto = New Producto()
+
+        producto.Id = Long.Parse(registers("IDPRODUCTO").ToString)
+        producto.Nombre = registers("NOMBRE").ToString
+        producto.Precio = Decimal.Parse(registers("PRECIO").ToString)
+        producto.Categoria = registers("CATEGORIA").ToString
 
         Return producto
     End Function

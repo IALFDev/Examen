@@ -33,6 +33,8 @@ Partial Class FormClientePrincipal
         Me.dgvCliente = New System.Windows.Forms.DataGridView()
         Me.btnBuscar = New System.Windows.Forms.Button()
         Me.btnAgregarCliente = New System.Windows.Forms.Button()
+        Me.lbNoResultados = New System.Windows.Forms.Label()
+        Me.btnGenerarReporte = New System.Windows.Forms.Button()
         CType(Me.dgvCliente, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -105,7 +107,7 @@ Partial Class FormClientePrincipal
         Me.dgvCliente.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvCliente.Location = New System.Drawing.Point(12, 69)
         Me.dgvCliente.Name = "dgvCliente"
-        Me.dgvCliente.Size = New System.Drawing.Size(772, 369)
+        Me.dgvCliente.Size = New System.Drawing.Size(772, 340)
         Me.dgvCliente.TabIndex = 14
         Me.dgvCliente.Visible = False
         '
@@ -127,11 +129,33 @@ Partial Class FormClientePrincipal
         Me.btnAgregarCliente.Text = "Agregar cliente"
         Me.btnAgregarCliente.UseVisualStyleBackColor = True
         '
+        'lbNoResultados
+        '
+        Me.lbNoResultados.AutoSize = True
+        Me.lbNoResultados.Font = New System.Drawing.Font("Microsoft Sans Serif", 20.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbNoResultados.Location = New System.Drawing.Point(213, 239)
+        Me.lbNoResultados.Name = "lbNoResultados"
+        Me.lbNoResultados.Size = New System.Drawing.Size(370, 31)
+        Me.lbNoResultados.TabIndex = 17
+        Me.lbNoResultados.Text = "No se encontraron resultados"
+        Me.lbNoResultados.Visible = False
+        '
+        'btnGenerarReporte
+        '
+        Me.btnGenerarReporte.Location = New System.Drawing.Point(12, 415)
+        Me.btnGenerarReporte.Name = "btnGenerarReporte"
+        Me.btnGenerarReporte.Size = New System.Drawing.Size(120, 23)
+        Me.btnGenerarReporte.TabIndex = 18
+        Me.btnGenerarReporte.Text = "Generar reporte"
+        Me.btnGenerarReporte.UseVisualStyleBackColor = True
+        '
         'FormClientePrincipal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.Controls.Add(Me.btnGenerarReporte)
+        Me.Controls.Add(Me.lbNoResultados)
         Me.Controls.Add(Me.btnAgregarCliente)
         Me.Controls.Add(Me.btnBuscar)
         Me.Controls.Add(Me.dgvCliente)
@@ -162,4 +186,6 @@ Partial Class FormClientePrincipal
     Friend WithEvents dgvCliente As DataGridView
     Friend WithEvents btnBuscar As Button
     Friend WithEvents btnAgregarCliente As Button
+    Friend WithEvents lbNoResultados As Label
+    Friend WithEvents btnGenerarReporte As Button
 End Class

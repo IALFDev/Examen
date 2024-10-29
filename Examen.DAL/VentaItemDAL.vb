@@ -56,6 +56,23 @@ Public Class VentaItemDAL
     End Function
 
     ''' <summary>
+    '''  Método que elimina la ventaItem por id de venta de manera logica en la base datos
+    ''' </summary>
+    ''' <returns>Devuelve un objeto tipo VentaIten con el resultado de la operación de eliminación la ventaItem en la base datos</returns>
+    Public Function EliminarVentaItemPorVentaEnBd(ventaItem As VentaItem) As VentaItem
+        commandText = ventaItem.EliminarVentaItemPorVentaEnBd()
+
+        Try
+            ExecuteNonQuery()
+        Catch ex As Exception 'Si hay un error lo almaceno en la variable ventaItem.Excepcion.Mensaje el mensaje de la Excepcion ocurrida para si se quiere mostrar en pantalla o guardar en una tabla si se quiere
+            ventaItem.Excepcion.Error = True
+            ventaItem.Excepcion.Mensaje = ex.Message.ToString
+        End Try
+
+        Return ventaItem
+    End Function
+
+    ''' <summary>
     '''  Método que obtiene una collecion del tipo ArrayList de todos las ventaItem en la base de datos
     ''' </summary>
     ''' <returns>Devuelve un Arraylist de objetos tipo VentaItem</returns>

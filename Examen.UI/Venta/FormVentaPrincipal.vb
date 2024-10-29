@@ -1,8 +1,13 @@
 ﻿Imports System.ComponentModel
+Imports System.Environment
+Imports System.IO
+Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Window
 Imports Examen.BLL
 Imports Examen.Entidad
 
 Public Class FormVentaPrincipal
+    Dim ultimaBusqueda As String = String.Empty 'Guardo cual fue la ultima busqueda para hacer el reporte
+
     Private Sub FormVentaPrincial_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ConfigurarContenido()
     End Sub
@@ -14,22 +19,37 @@ Public Class FormVentaPrincipal
     '''  Metodo que activa distintos elementos al llamar al mismo
     ''' </summary>
     Protected Sub ConfigurarContenido()
-        ActivarDataGridViewVenta()
-        ActivarComboBoxCliente()
+        ActivarDataGridViewVenta("Todos")
+        ultimaBusqueda = "Todos" 'Acá seria que la ultima busqueda fue "Todos"
     End Sub
 
     Private Sub btnRealizarVenta_Click(sender As Object, e As EventArgs) Handles btnRealizarVenta.Click
         FormRealizarVenta.ShowDialog() 'Muesto el form donde se puede realziar las nuevas ventas
     End Sub
 
+    Private Sub btnBuscarProducto_Click(sender As Object, e As EventArgs) Handles btnBuscarProducto.Click
+        ActivarDataGridViewVenta("Filtro")
+        ultimaBusqueda = "Filtro" 'Acá seria que la ultima busqueda fue "Filtro"
+    End Sub
+
     ''' <summary>
     '''  Método que rellena una Grilla (DataGridView)
     ''' </summary>''
-    Public Sub ActivarDataGridViewVenta()
-        Dim ventas = ObtenerTodasLasVentas()
+    Public Sub ActivarDataGridViewVenta(tipoOp As String)
+        Dim ventas As ArrayList = Nothing
+
+        Select Case tipoOp
+            Case "Todos"
+                ventas = ObtenerTodasLasVentas()
+            Case "Filtro"
+                ventas = ObtenerVentas(txtIdVenta.Text, txtNombreCliente.Text, dtpFechaDesde.Text, dtpFechaHasta.Text)
+        End Select
+
         If ventas IsNot Nothing AndAlso ventas.Count > 0 Then
             dgvVenta.DataSource = ventas
             dgvVenta.Visible = True
+            lbNoResultados.Visible = False
+            btnGenerarReporte.Enabled = True
 
             dgvVenta.ReadOnly = True 'Establesco que toda la grilla sea de solo lectura
 
@@ -41,6 +61,10 @@ Public Class FormVentaPrincipal
 
             If dgvVenta.Columns.Contains("NombreCliente") Then 'Si la grilla contiene la columna "NombreCliente" la oculto
                 dgvVenta.Columns("NombreCliente").HeaderText = "Cliente" 'Renombro la columna "NombreCliente" por "Cliente"
+            End If
+
+            If dgvVenta.Columns.Contains("Fecha") Then
+                dgvVenta.Columns("Fecha").DefaultCellStyle.Format = "dd/MM/yyyy" 'Convierto el tipo de dato a tipo "dd/MM/yyyy"
             End If
 
             If dgvVenta.Columns.Contains("IdCliente") Then 'Si la grilla contiene la columna "IdCliente" la oculto
@@ -85,6 +109,10 @@ Public Class FormVentaPrincipal
                 btnEliminar.UseColumnTextForButtonValue = True
                 dgvVenta.Columns.Add(btnEliminar)
             End If
+        Else
+            dgvVenta.Visible = False
+            lbNoResultados.Visible = True
+            btnGenerarReporte.Enabled = False
         End If
     End Sub
 
@@ -125,9 +153,13 @@ Public Class FormVentaPrincipal
             ElseIf dgvVenta.Columns(e.ColumnIndex).Name = "Eliminar" Then 'Verifico si se hizo click en el botón "Eliminar"
                 Dim result As DialogResult = MessageBox.Show("¿Estás seguro de eliminar la venta con el Id " + idVenta.ToString() + " ?", "Atención", MessageBoxButtons.YesNo) 'Verifico si es correcto que quiere eliminar la venta
                 If result = DialogResult.Yes Then
-                    If Not EliminarVentaEnBd(New Venta().GenerarObjetoVentaParaEliminarEnBd(idVenta)).Excepcion.Error Then 'Verifico que la eliminación en la base sea correcto de lo contrario muestro un MessageBox de error
-                        MessageBox.Show("Venta eliminada.", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si todo salio correcto muestro un MessageBox diciendo que la venta se elimino correctamente'
-                        ConfigurarContenido()
+                    If Not EliminarVentaItemPorIdVentaEnBd(New VentaItem().GenerarObjetoVentaItemPorIdVentaParaEliminarEnBd(idVenta)).Excepcion.Error Then 'Verifico que la eliminación en la base sea correcto de lo contrario muestro un MessageBox de error
+                        If Not EliminarVentaEnBd(New Venta().GenerarObjetoVentaParaEliminarEnBd(idVenta)).Excepcion.Error Then 'Verifico que la eliminación en la base sea correcto de lo contrario muestro un MessageBox de error
+                            MessageBox.Show("Venta eliminada.", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si todo salio correcto muestro un MessageBox diciendo que la venta se elimino correctamente'
+                            ConfigurarContenido()
+                        Else
+                            MessageBox.Show("Error al eliminar la venta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que la venta no se guardar correctamente'
+                        End If
                     Else
                         MessageBox.Show("Error al eliminar la venta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que la venta no se guardar correctamente'
                     End If
@@ -136,20 +168,48 @@ Public Class FormVentaPrincipal
         End If
     End Sub
 
+    Private Sub btnGenerarReporte_Click(sender As Object, e As EventArgs) Handles btnGenerarReporte.Click
+        MostarSaveDialog()
+    End Sub
+
     ''' <summary>
-    '''  Método que rellena el ComboBox de Cliente
-    ''' </summary>'' 
-    Protected Sub ActivarComboBoxCliente()
-        Dim clientes = ObtenerIDYNombreDelCliente()
-        Dim cliente = New Cliente
-        cliente.Cliente = "Seleccione un cliente" 'Agrego una opción nueva primera en lista
+    '''  Método muestra un ShowOpenDialog obtiene la ruta, nombre y el tipo de reporte para genenar un reporte en PDF
+    ''' </summary>
+    Public Sub MostarSaveDialog()
+        Dim saveFileD As New SaveFileDialog
+        saveFileD.InitialDirectory = GetFolderPath(SpecialFolder.Desktop)
+        saveFileD.Title = "Guardar reporte"
+        saveFileD.FileName = "Reporte Ventas"
+        saveFileD.CheckPathExists = True
+        saveFileD.DefaultExt = "*pdf"
+        saveFileD.Filter = "PDF (*.pdf)|*.pdf|All Files|*.*"
+        saveFileD.FilterIndex = 1
+        saveFileD.RestoreDirectory = True
 
-        clientes.Insert(0, cliente)
+        Dim diag As DialogResult = saveFileD.ShowDialog()
+        Dim venta = New Venta()
 
-        If clientes IsNot Nothing AndAlso clientes.Count > 0 Then 'Verifico que "categorias" no este vacío y no sea nulo
-            cbCliente.DataSource = clientes
-            cbCliente.DisplayMember = "Cliente"
-            cbCliente.ValueMember = "Id"
+
+        Select Case ultimaBusqueda
+            Case "Filtro"
+                venta.Id = If(String.IsNullOrEmpty(txtIdVenta.Text), 0, Long.Parse(txtIdVenta.Text))
+                venta.Cliente.Cliente = txtNombreCliente.Text
+                venta.FechaDesde = dtpFechaDesde.Value
+                venta.FechaHasta = dtpFechaHasta.Value
+        End Select
+
+        If diag = DialogResult.OK Then 'Verifico que el se haya seleccionado la ruta para guardar el reporte
+
+            Dim path = saveFileD.FileName 'Obtengo la dirección completa del reporte a guardar
+            Dim directory As String = New FileInfo(path).DirectoryName 'Separo la carpeta donde se va a guardar el reporte
+            Dim file As String = New FileInfo(path).Name 'Separo la el nombre del reporte
+
+            If Not GenerarReportePDF(New PDF().GenerarObjetoParaReportePDF(file, directory, "Ventas", ultimaBusqueda, venta)).Excepcion.Error Then 'Verifico que el reporte se haya generado correctamente
+                MessageBox.Show("Se genero el reporte correctamente", "Genial", MessageBoxButtons.OK, MessageBoxIcon.None) 'Si el reporte se genero correctamente muesto un MessageBox
+
+            ElseIf diag = DialogResult.Cancel Then
+                MessageBox.Show("Se cancelo la generación del reporte", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si no se selecciono una ruta muesto un MessageBox
+            End If
         End If
     End Sub
 
@@ -165,13 +225,25 @@ Public Class FormVentaPrincipal
     ''' <summary>
     '''  Método que elimina la venta de manera logica en la base datos desde el "gestor" o "manager" de la capa de negocios
     ''' </summary>
-    ''' <returns>Devuelve un objeto tipo Venta con el resultado de la operación de eliminación del venta en la base datos</returns>
+    ''' <returns>Devuelve un objeto tipo Venta con el resultado de la operación de eliminación la ventaItem en la base datos</returns>
     Protected Function EliminarVentaEnBd(venta As Venta) As Venta
         Dim manager = New ManagerVenta()
 
         venta = manager.EliminarVentaEnBd(venta)
 
         Return venta
+    End Function
+
+    ''' <summary>
+    '''  Método que elimina la ventaItem por Id de venta de manera logica en la base datos desde el "gestor" o "manager" de la capa de negocios
+    ''' </summary>
+    ''' <returns>Devuelve un objeto tipo VentaItem con el resultado de la operación de eliminación la ventaItem en la base datos</returns>
+    Protected Function EliminarVentaItemPorIdVentaEnBd(ventaItem As VentaItem) As VentaItem
+        Dim manager = New ManagerVentaItem()
+
+        ventaItem = manager.EliminarVentaItemPorIdVentaEnBd(ventaItem)
+
+        Return ventaItem
     End Function
 
     ''' <summary>
@@ -196,5 +268,29 @@ Public Class FormVentaPrincipal
         Dim resultado = manager.ObtenerIDYNombreDelCliente()
 
         Return resultado
+    End Function
+
+    ''' <summary>
+    '''  Método que obtiene una collecion los venta desde el "gestor" o "manager" de la capa de negocios
+    ''' </summary>
+    ''' <returns>Devuelve un Arraylist de objetos tipo Venta</returns>
+    Protected Function ObtenerVentas(Optional idVenta As String = "", Optional clienteNombre As String = "", Optional fechaDesde As String = "", Optional fechaHasta As String = "") As ArrayList
+        Dim manager = New ManagerVenta()
+
+        Dim resultado = manager.ObtenerVentas(idVenta, clienteNombre, fechaDesde, fechaHasta)
+
+        Return resultado
+    End Function
+
+    ''' <summary>
+    '''  Método reporte para genenar un reporte en PDF desde el "gestor" o "manager" de la capa de negocios
+    ''' </summary>
+    ''' <returns>Devuelve un objeto tipo PDF con el resultado de la operación que genera el PDF</returns>
+    Protected Function GenerarReportePDF(pdf As PDF) As PDF
+        Dim manager = New ManagerPDF()
+
+        pdf = manager.GenerarReportePDF(pdf)
+
+        Return pdf
     End Function
 End Class

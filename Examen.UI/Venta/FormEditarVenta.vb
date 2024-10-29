@@ -12,13 +12,20 @@ Public Class FormEditarVenta
     End Sub
 
     Private Sub txtCantidad_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtCantidad.KeyPress
-        If Asc(e.KeyChar) <> 13 AndAlso Asc(e.KeyChar) <> 8 AndAlso Not IsNumeric(e.KeyChar) Then
-            ' Verifico que el campo Teléfono solo se ingresen números
+        If Asc(e.KeyChar) = 13 Then 'Permite la tecla Enter
+            e.Handled = False
+        ElseIf Asc(e.KeyChar) = 8 Then 'Permite la tecla de retroceso (Backspace) solo si hay más de un carácter en el campo
+            If sender.Text.Length = 1 Then
+                MessageBox.Show("No se puede borrar el último carácter.", "Atención")
+                e.Handled = True
+            Else
+                e.Handled = False
+            End If
+        ElseIf Not Char.IsDigit(e.KeyChar) Then 'Bloquea caracteres que no son números
             MessageBox.Show("Debes ingresar solamente valores numéricos.", "Atención")
             e.Handled = True
-        ElseIf e.KeyChar = "0"c Or sender.Text.Length = 0 Then
-            ' Verifico que el primer carácter no sea 0
-            MessageBox.Show("La cantidad debe ser mayor a 0.", "Atención")
+        ElseIf sender.Text.Length = 0 And e.KeyChar = "0"c Then 'Bloquea el ingreso de "0" como primer carácter
+            MessageBox.Show("El primer dígito no puede ser 0.", "Atención")
             e.Handled = True
         End If
     End Sub
@@ -35,7 +42,7 @@ Public Class FormEditarVenta
         ActivarComboBoxCliente()
 
         IdVenta = venta.Id
-        cbCliente.SelectedIndex = venta.Cliente.Id
+        cbCliente.SelectedValue = venta.Cliente.Id
         dtpFecha.Text = venta.Fecha.ToString("dd/MM/yyyy")
     End Sub
 
@@ -44,7 +51,7 @@ Public Class FormEditarVenta
             If Not EditarVentaEnBd(New Venta().GenerarObjetoVentaParaGuardarEnBd(IdVenta, cbCliente.SelectedValue, dtpFecha.Value, 0)).Excepcion.Error Then
                 MessageBox.Show("Venta guardada.", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si todo salio correcto muestro un MessageBox diciendo que la venta se edito correctamente
 
-                FormVentaPrincipal.ActivarDataGridViewVenta() 'Refresco la grilla cada vez que haga click en el botón'
+                FormVentaPrincipal.ActivarDataGridViewVenta("Todos") 'Refresco la grilla cada vez que haga click en el botón'
             Else
                 MessageBox.Show("Error al guardar la venta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que la venta no se editar correctamente
             End If
@@ -147,6 +154,7 @@ Public Class FormEditarVenta
             Dim idProducto As Long = Long.Parse(dgvItemVenta.Rows(e.RowIndex).Cells("IDProducto").Value.ToString())
             Dim cantidadProducto As Long = dgvItemVenta.Rows(e.RowIndex).Cells("Cantidad").Value.ToString()
             Dim NombreProducto As String = dgvItemVenta.Rows(e.RowIndex).Cells("NombreProducto").Value.ToString()
+            Dim PrecioUnitario As Decimal = dgvItemVenta.Rows(e.RowIndex).Cells("PrecioUnitario").Value.ToString()
 
 
             If dgvItemVenta.Columns(e.ColumnIndex).Name = "Editar" Then 'Verifico si se hizo click en el botón "Editar"
@@ -155,6 +163,8 @@ Public Class FormEditarVenta
                 ventaItem.Id = idVentaItem
                 ventaItem.Venta.Id = IdVenta
                 ventaItem.Producto.Id = idProducto
+                ventaItem.Producto.Nombre = NombreProducto
+                ventaItem.PrecioUnitario = PrecioUnitario
                 ventaItem.Cantidad = cantidadProducto
 
                 FormEditarVentaItemProducto.RellenarDatosVenta(ventaItem) 'llamo al metodo en el otro form para ir almacenando los datos de la ventaItem
@@ -168,7 +178,7 @@ Public Class FormEditarVenta
                         If Not ActualizarTotalDeLaVenta(New Venta().GenerarObjetoVentaParaActualizarTotal(IdVenta)).Excepcion.Error Then 'Verifico que la actualización del Total en la base sea correcto de lo contrario muestro un MessageBox de error
                             MessageBox.Show("Producto eliminado de la venta correctamnte.", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si todo salio correcto muestro un MessageBox diciendo que la ventaItem se elimino correctamente'
                             ConfigurarContenido()
-                            FormVentaPrincipal.ActivarDataGridViewVenta()
+                            FormVentaPrincipal.ActivarDataGridViewVenta("")
                         Else
                             MessageBox.Show("Error al guardar Total de la venta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que el VentaItem no se editar correctamente
                         End If
@@ -254,15 +264,15 @@ Public Class FormEditarVenta
                     MessageBox.Show("Producto guardado en la venta correctamnte.", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si todo salio correcto muestro un MessageBox diciendo que la ventaItem se elimino correctamente'
                     ConfigurarContenido()
 
-                    FormVentaPrincipal.ActivarDataGridViewVenta() 'Refresco la grilla cada vez que haga click en el botón'
+                    FormVentaPrincipal.ActivarDataGridViewVenta("Todos") 'Refresco la grilla cada vez que haga click en el botón'
 
                     cbProducto.SelectedIndex = 0
                     txtCantidad.Text = "1" 'Limpio los campos Producto y Cantidad para que no quede con datos reciduales'
                 Else
-                    MessageBox.Show("Error al guardar Total de la venta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que el VentaItem no se editar correctamente
+                    MessageBox.Show("Error al guardar Total de la venta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que no se pudo actualizar el Total de la venta en la base de datos
                 End If
             Else
-                MessageBox.Show("Error al guardar los ItemVenta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que el cliente no se guardar correctamente'
+                MessageBox.Show("Error al guardar los ItemVenta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que el Ventaitem no se pudo correctamente'
             End If
         End If
     End Sub
@@ -276,16 +286,48 @@ Public Class FormEditarVenta
 
         If cbProducto.SelectedValue <> 0 Then
             validado = True
+            Dim productoExistente As Boolean = False
+
+            For Each row As DataGridViewRow In dgvItemVenta.Rows
+                If row.Cells("IDProducto").Value = cbProducto.SelectedValue Then
+                    productoExistente = True
+                    Exit For
+                End If
+            Next
+
+            If productoExistente Then
+                MessageBox.Show("El producto " + cbProducto.GetItemText(cbProducto.SelectedItem) + " ya está en la lista", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                validado = False
+            End If
+
         Else
             MessageBox.Show("Debes seleccionar una opción en el campo Producto", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-
             validado = False
-
-            Return validado
         End If
 
+        Return validado
+
+
         If Not String.IsNullOrEmpty(txtCantidad.Text) Then 'Verifico que el campo Precio no este vacío'
-            validado = True
+            Dim cantidad As Integer
+
+            If Integer.TryParse(txtCantidad.Text, cantidad) Then ' Intento convertir el texto a un número decimal
+
+                If cantidad <> 0 Then 'Verifico que el valor no sea 0
+                    validado = True
+                Else
+                    MessageBox.Show("El campo Cantidad no debe ser 0.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+
+                    validado = False
+
+                    Return validado
+                End If
+            Else
+                MessageBox.Show("El campo Cantidad debe ser un número válido.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                validado = False
+
+                Return validado
+            End If
         Else
             MessageBox.Show("El campo Cantidad no debe estar vacío.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
 
@@ -354,17 +396,6 @@ Public Class FormEditarVenta
         Return venta
     End Function
 
-    ''' <summary>
-    '''  Método que obtiene una collecion tipo ArrayList con ID y Nombre de los productos desde el "gestor" o "manager" de la capa de negocios
-    ''' </summary>
-    ''' <returns>Devuelve un Arraylist de objetos tipo Producto</returns>
-    Public Function ObtenerIDYNombreDelProducto() As ArrayList
-        Dim manager = New ManagerProducto()
-
-        Dim resultado = manager.ObtenerIDYNombreDelProducto()
-
-        Return resultado
-    End Function
 
     ''' <summary>
     '''  Método que obtiene una collecion del tipo ArrayList con el ID y Nombre de los clientes desde el "gestor" o "manager" de la capa de negocios
@@ -374,6 +405,18 @@ Public Class FormEditarVenta
         Dim manager = New ManagerCliente()
 
         Dim resultado = manager.ObtenerIDYNombreDelCliente()
+
+        Return resultado
+    End Function
+
+    ''' <summary>
+    '''  Método que obtiene una collecion tipo ArrayList con ID y Nombre de los productos desde el "gestor" o "manager" de la capa de negocios
+    ''' </summary>
+    ''' <returns>Devuelve un Arraylist de objetos tipo Producto</returns>
+    Public Function ObtenerIDYNombreDelProducto() As ArrayList
+        Dim manager = New ManagerProducto()
+
+        Dim resultado = manager.ObtenerIDYNombreDelProducto()
 
         Return resultado
     End Function

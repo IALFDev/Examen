@@ -49,7 +49,7 @@ Public Class FormEditarProducto
             If Not GuardarEdicionProductoEnBd(New Producto().GenerarObjetoProductoParaGuardarEnBd(Long.Parse(idProducto), txtNombre.Text, txtPrecio.Text, SeleccionarCategoria())).Excepcion.Error Then 'Verifico que el guardado de la edición en la base sea correcto de lo contrario muestro un MessageBox de error
                 MessageBox.Show("Producto guardado.", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si todo salio correcto muestro un MessageBox diciendo que el producto se edito correctamente
 
-                FormProductoPrincipal.ActivarDataGridViewProducto() 'Refresco la grilla cada vez que haga click en el botón'
+                FormProductoPrincipal.ActivarDataGridViewProducto("Todos") 'Refresco la grilla cada vez que haga click en el botón'
             Else
                 MessageBox.Show("Error al guardar el producto.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que el producto no se editar correctamente
             End If

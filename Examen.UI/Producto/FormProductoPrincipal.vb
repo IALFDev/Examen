@@ -1,7 +1,10 @@
-﻿Imports Examen.BLL
+﻿Imports System.Environment
+Imports System.IO
+Imports Examen.BLL
 Imports Examen.Entidad
 
 Public Class FormProductoPrincipal
+    Dim ultimaBusqueda As String = String.Empty 'Guardo cual fue la ultima busqueda para hacer el reporte
     Private Sub FormProducto_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ConfigurarContenido()
     End Sub
@@ -10,13 +13,62 @@ Public Class FormProductoPrincipal
     '''  Metodo que activa distintos elementos al llamar al mismo
     ''' </summary>'' 
     Protected Sub ConfigurarContenido()
-        ActivarDataGridViewProducto()
+        ActivarDataGridViewProducto("Todos")
+        ultimaBusqueda = "Todos" 'Acá seria que la ultima busqueda fue "Todos"
         ActivarComboBoxCategoria()
     End Sub
 
-    Private Sub btnBuscar_Click(sender As Object, e As EventArgs) Handles btnBuscarProducto.Click
-
+    Private Sub txtIdProducto_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtIdProducto.KeyPress
+        If Asc(e.KeyChar) = 13 Then 'Permite la tecla Enter
+            e.Handled = False
+        ElseIf Asc(e.KeyChar) = 8 Then 'Permite la tecla de retroceso (Backspace) solo si hay más de un carácter en el campo
+            If Not Char.IsDigit(e.KeyChar) Then 'Bloquea caracteres que no son números
+                MessageBox.Show("Debes ingresar solamente valores numéricos.", "Atención")
+                e.Handled = True
+            ElseIf sender.Text.Length = 0 And e.KeyChar = "0"c Then 'Bloquea el ingreso de "0" como primer carácter
+                MessageBox.Show("El primer dígito no puede ser 0.", "Atención")
+                e.Handled = True
+            End If
+        End If
     End Sub
+
+    Private Sub txtRangoDesde_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtRangoDesde.KeyPress
+        If Asc(e.KeyChar) = 13 Then 'Permite la tecla Enter
+            e.Handled = False
+        ElseIf Asc(e.KeyChar) = 8 Then 'Permite la tecla de retroceso (Backspace) solo si hay más de un carácter en el campo
+            If sender.Text.Length = 1 Then
+                MessageBox.Show("No se puede borrar el último carácter.", "Atención")
+                e.Handled = True
+            Else
+                e.Handled = False
+            End If
+        ElseIf Not Char.IsDigit(e.KeyChar) Then 'Bloquea caracteres que no son números
+            MessageBox.Show("Debes ingresar solamente valores numéricos.", "Atención")
+            e.Handled = True
+        End If
+    End Sub
+
+    Private Sub txtRangoHasta_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtRangoHasta.KeyPress
+        If Asc(e.KeyChar) = 13 Then 'Permite la tecla Enter
+            e.Handled = False
+        ElseIf Asc(e.KeyChar) = 8 Then 'Permite la tecla de retroceso (Backspace) solo si hay más de un carácter en el campo
+            If sender.Text.Length = 1 Then
+                MessageBox.Show("No se puede borrar el último carácter.", "Atención")
+                e.Handled = True
+            Else
+                e.Handled = False
+            End If
+        ElseIf Not Char.IsDigit(e.KeyChar) Then 'Bloquea caracteres que no son números
+            MessageBox.Show("Debes ingresar solamente valores numéricos.", "Atención")
+            e.Handled = True
+        End If
+    End Sub
+
+    Private Sub btnBuscar_Click(sender As Object, e As EventArgs) Handles btnBuscarProducto.Click
+        ActivarDataGridViewProducto("Filtro")
+        ultimaBusqueda = "Filtro" 'Acá seria que la ultima busqueda fue "Filtro"
+    End Sub
+
     Private Sub txtIdProducto_LostFocus(sender As Object, e As EventArgs) Handles txtIdProducto.LostFocus
         If Not IsNumeric(txtIdProducto.Text) And Trim(txtIdProducto.Text) <> "" Then 'Verifico que sea numerico, que no tenga espacios al principio ni al final, y no este vació
             MessageBox.Show("Debes ingresar solamente valores numéricos.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
@@ -46,11 +98,20 @@ Public Class FormProductoPrincipal
     ''' <summary>
     '''  Método que rellena una Grilla (DataGridView)
     ''' </summary>'' 
-    Public Sub ActivarDataGridViewProducto()
-        Dim productos = ObtenerTodosLosProductos()
+    Public Sub ActivarDataGridViewProducto(tipoOp As String)
+        Dim productos As ArrayList = Nothing
+
+        Select Case tipoOp
+            Case "Todos"
+                productos = ObtenerTodosLosProductos()
+            Case "Filtro"
+                productos = ObtenerProductos(txtIdProducto.Text, txtNombreProducto.Text, cbCategoriaProducto.GetItemText(cbCategoriaProducto.SelectedItem), txtRangoDesde.Text, txtRangoHasta.Text)
+        End Select
+
         If productos IsNot Nothing AndAlso productos.Count > 0 Then 'Verifico que "productos" no este vacío y no sea nulo
             dgvProducto.DataSource = productos
             dgvProducto.Visible = True
+            lbNoResultados.Visible = False
 
             dgvProducto.ReadOnly = True 'Establesco que toda la grilla sea de solo lectura
 
@@ -86,6 +147,9 @@ Public Class FormProductoPrincipal
                 btnEliminar.UseColumnTextForButtonValue = True
                 dgvProducto.Columns.Add(btnEliminar)
             End If
+        Else
+            dgvProducto.Visible = False
+            lbNoResultados.Visible = True
         End If
 
     End Sub
@@ -142,6 +206,52 @@ Public Class FormProductoPrincipal
         End If
     End Sub
 
+    Private Sub btnGenerarReporte_Click(sender As Object, e As EventArgs) Handles btnGenerarReporte.Click
+        MostarSaveDialog()
+    End Sub
+
+    ''' <summary>
+    '''  Método muestra un ShowOpenDialog obtiene la ruta, nombre y el tipo de reporte para genenar un reporte en PDF
+    ''' </summary>
+    Public Sub MostarSaveDialog()
+        Dim saveFileD As New SaveFileDialog
+        saveFileD.InitialDirectory = GetFolderPath(SpecialFolder.Desktop)
+        saveFileD.Title = "Guardar reporte"
+        saveFileD.FileName = "Reporte Productos"
+        saveFileD.CheckPathExists = True
+        saveFileD.DefaultExt = "*pdf"
+        saveFileD.Filter = "PDF (*.pdf)|*.pdf|All Files|*.*"
+        saveFileD.FilterIndex = 1
+        saveFileD.RestoreDirectory = True
+
+        Dim diag As DialogResult = saveFileD.ShowDialog()
+        Dim producto = New Producto()
+
+
+        Select Case ultimaBusqueda
+            Case "Filtro"
+                producto.Id = If(String.IsNullOrEmpty(txtIdProducto.Text), 0, Long.Parse(txtIdProducto.Text))
+                producto.Nombre = txtNombreProducto.Text
+                producto.Categoria = cbCategoriaProducto.GetItemText(cbCategoriaProducto.SelectedItem)
+                producto.PrecioDesde = If(String.IsNullOrEmpty(txtRangoDesde.Text), 0, Long.Parse(txtRangoDesde.Text))
+                producto.PrecioHasta = If(String.IsNullOrEmpty(txtRangoHasta.Text), 0, Long.Parse(txtRangoHasta.Text))
+        End Select
+
+        If diag = DialogResult.OK Then 'Verifico que el se haya seleccionado la ruta para guardar el reporte
+
+            Dim path = saveFileD.FileName 'Obtengo la dirección completa del reporte a guardar
+            Dim directory As String = New FileInfo(path).DirectoryName 'Separo la carpeta donde se va a guardar el reporte
+            Dim file As String = New FileInfo(path).Name 'Separo la el nombre del reporte
+
+            If Not GenerarReportePDF(New PDF().GenerarObjetoParaReportePDF(file, directory, "Productos", ultimaBusqueda, Nothing, Nothing, producto)).Excepcion.Error Then 'Verifico que el reporte se haya generado correctamente
+                MessageBox.Show("Se genero el reporte correctamente", "Genial", MessageBoxButtons.OK, MessageBoxIcon.None) 'Si el reporte se genero correctamente muesto un MessageBox
+
+            ElseIf diag = DialogResult.Cancel Then
+                MessageBox.Show("Se cancelo la generación del reporte", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si no se selecciono una ruta muesto un MessageBox
+            End If
+        End If
+    End Sub
+
     ''' <summary>
     '''  Método que elimina el producto de manera logica en la base datos desde el "gestor" o "manager" de la capa de negocios
     ''' </summary>
@@ -176,5 +286,29 @@ Public Class FormProductoPrincipal
         Dim resultado = manager.ObtenerCategoriaProducto()
 
         Return resultado
+    End Function
+
+    ''' <summary>
+    '''  Método que obtiene una collecion los producto desde el "gestor" o "manager" de la capa de negocios
+    ''' </summary>
+    ''' <returns>Devuelve un Arraylist de objetos tipo Productos</returns>
+    Protected Function ObtenerProductos(Optional idProducto As String = "", Optional nombre As String = "", Optional categoria As String = "", Optional precioMin As String = "", Optional precioMax As String = "") As ArrayList
+        Dim manager = New ManagerProducto()
+
+        Dim resultado = manager.ObtenerProductos(idProducto, nombre, categoria, precioMin, precioMax)
+
+        Return resultado
+    End Function
+
+    ''' <summary>
+    '''  Método reporte para genenar un reporte en PDF desde el "gestor" o "manager" de la capa de negocios
+    ''' </summary>
+    ''' <returns>Devuelve un objeto tipo PDF con el resultado de la operación que genera el PDF</returns>
+    Protected Function GenerarReportePDF(pdf As PDF) As PDF
+        Dim manager = New ManagerPDF()
+
+        pdf = manager.GenerarReportePDF(pdf)
+
+        Return pdf
     End Function
 End Class

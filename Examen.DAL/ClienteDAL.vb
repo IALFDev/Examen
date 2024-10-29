@@ -97,14 +97,30 @@ Public Class ClienteDAL
         Return resultado
     End Function
 
+    ''' <summary>
+    '''  Método que obtiene una collecion del tipo ArrayList los clientes en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un Arraylist de objetos tipo Cliente</returns>
+    Public Function ObtenerClientes(Optional idCliente As String = "", Optional cliente As String = "", Optional telefono As String = "", Optional correo As String = "") As ArrayList
+        commandText = New Cliente().ObtenerClientes(idCliente, cliente, telefono, correo)
+
+        tipoOp = 3
+
+        Dim resultado = AbstractFindAll()
+
+        Return resultado
+    End Function
+
     Public Overrides Function DoLoad(registers As IDataReader) As Object
         Select Case tipoOp
             Case 0
                 Return VerificarSiYaExisteElCliente(registers)
             Case 1
-                Return ObtenerTodosLosProductos(registers)
+                Return ObtenerTodosLosClientes(registers)
             Case 2
                 Return ObtenerIDYNombreDelCliente(registers)
+            Case 3
+                Return ObtenerClientes(registers)
         End Select
 
         Return New Object
@@ -126,7 +142,7 @@ Public Class ClienteDAL
     '''  Método que almacena todos los datos obtenidos en el objeto del tipo Cliente
     ''' </summary>
     ''' <returns>Devuelve un objeto del tipo Cliente</returns>
-    Protected Function ObtenerTodosLosProductos(registers As IDataReader) As Cliente
+    Protected Function ObtenerTodosLosClientes(registers As IDataReader) As Cliente
         Dim cliente = New Cliente()
 
         cliente.Id = Long.Parse(registers("IDCLIENTE").ToString)
@@ -146,6 +162,21 @@ Public Class ClienteDAL
 
         cliente.Id = Long.Parse(registers("IDCLIENTE").ToString)
         cliente.Cliente = registers("CLIENTE").ToString
+
+        Return cliente
+    End Function
+
+    ''' <summary>
+    '''  Método que almacena todos los datos obtenidos en el objeto del tipo Cliente
+    ''' </summary>
+    ''' <returns>Devuelve un objeto del tipo Cliente</returns>
+    Protected Function ObtenerClientes(registers As IDataReader) As Cliente
+        Dim cliente = New Cliente()
+
+        cliente.Id = Long.Parse(registers("IDCLIENTE").ToString)
+        cliente.Cliente = registers("CLIENTE").ToString
+        cliente.Telefono = Integer.Parse(registers("TELEFONO").ToString)
+        cliente.Correo = registers("CORREO").ToString
 
         Return cliente
     End Function

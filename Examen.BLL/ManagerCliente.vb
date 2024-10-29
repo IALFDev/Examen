@@ -29,7 +29,7 @@ Public Class ManagerCliente
     ''' <summary>
     '''  Método que elimina el cliente de manera logica en la base datos desde la capa de conexion a la base de datos //Reveer este texto
     ''' </summary>
-    ''' <returns>Devuelve un objeto tipo cliente con el resultado de la operacion de guardado en la base datos</returns>
+    ''' <returns>Devuelve un objeto tipo cliente con el resultado de la operacion de eliminación en la base datos</returns>
     Public Function EliminarClienteEnBd(cliente As Cliente) As Cliente
         Dim clienteDAL = New ClienteDAL()
 
@@ -74,6 +74,18 @@ Public Class ManagerCliente
         Dim clienteDAL = New ClienteDAL()
 
         Dim resultado = clienteDAL.ObtenerIDYNombreDelCliente()
+
+        Return resultado
+    End Function
+
+    ''' <summary>
+    '''  Método que obtiene una collecion tipo ArrayList los clientes desde la capa de conexion a la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un Arraylist de objetos tipo Cliente</returns>
+    Public Function ObtenerClientes(Optional idCliente As String = "", Optional cliente As String = "", Optional telefono As String = "", Optional correo As String = "") As ArrayList
+        Dim clienteDAL = New ClienteDAL()
+
+        Dim resultado = clienteDAL.ObtenerClientes(idCliente, cliente, telefono, correo)
 
         Return resultado
     End Function

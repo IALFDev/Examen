@@ -275,7 +275,7 @@ Public Class FormRealizarVenta
 
                         LimpiarControles() 'Limpio los campos Producto y Cantidad para que no quede con datos reciduales'
 
-                        FormVentaPrincipal.ActivarDataGridViewVenta() 'Refresco la grilla cada vez que haga click en el botón'
+                        FormVentaPrincipal.ActivarDataGridViewVenta("Todos") 'Refresco la grilla cada vez que haga click en el botón'
                     Else
                         MessageBox.Show("Error al guardar los ItemVenta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que el cliente no se guardar correctamente'
                     End If

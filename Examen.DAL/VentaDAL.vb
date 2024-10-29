@@ -86,10 +86,26 @@ Public Class VentaDAL
         Return resultado
     End Function
 
+    ''' <summary>
+    '''  Método que obtiene una collecion del tipo ArrayList las ventas en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un Arraylist de objetos tipo Venta</returns>
+    Public Function ObtenerVentas(Optional idVenta As String = "", Optional clienteNombre As String = "", Optional fechaDesde As String = "", Optional fechaHasta As String = "") As ArrayList
+        commandText = New Venta().ObtenerVentas(idVenta, clienteNombre, fechaDesde, fechaHasta)
+
+        tipoOp = 1
+
+        Dim resultado = AbstractFindAll()
+
+        Return resultado
+    End Function
+
     Public Overrides Function DoLoad(registers As IDataReader) As Object
         Select Case tipoOp
             Case 0
                 Return ObtenerTodasLasVentas(registers)
+            Case 1
+                Return ObtenerVentas(registers)
         End Select
 
         Return New Object
@@ -100,6 +116,22 @@ Public Class VentaDAL
     ''' </summary>
     ''' <returns>Devuelve un objeto del tipo Venta</returns>
     Protected Function ObtenerTodasLasVentas(registers As IDataReader) As Venta
+        Dim venta = New Venta()
+
+        venta.Id = Long.Parse(registers("IDVENTA").ToString())
+        venta.Cliente.Id = Long.Parse(registers("IDCLIENTE").ToString())
+        venta.Cliente.Cliente = registers("CLIENTE").ToString()
+        venta.Fecha = DateTime.Parse(registers("FECHAVENTA").ToString())
+        venta.Total = If(String.IsNullOrEmpty(registers("TOTALVENTA").ToString()), 0, Decimal.Parse(registers("TOTALVENTA").ToString()))
+
+        Return venta
+    End Function
+
+    ''' <summary>
+    '''  Método que almacena todos los datos obtenidos en el objeto del tipo Venta
+    ''' </summary>
+    ''' <returns>Devuelve un objeto del tipo Venta</returns>
+    Protected Function ObtenerVentas(registers As IDataReader) As Venta
         Dim venta = New Venta()
 
         venta.Id = Long.Parse(registers("IDVENTA").ToString())

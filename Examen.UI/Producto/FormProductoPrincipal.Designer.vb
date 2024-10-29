@@ -36,6 +36,7 @@ Partial Class FormProductoPrincipal
         Me.lbA = New System.Windows.Forms.Label()
         Me.btnAgregarProducto = New System.Windows.Forms.Button()
         Me.btnGenerarReporte = New System.Windows.Forms.Button()
+        Me.lbNoResultados = New System.Windows.Forms.Label()
         CType(Me.dgvProducto, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -141,9 +142,10 @@ Partial Class FormProductoPrincipal
         '
         'btnAgregarProducto
         '
-        Me.btnAgregarProducto.Location = New System.Drawing.Point(668, 39)
+        Me.btnAgregarProducto.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnAgregarProducto.Location = New System.Drawing.Point(645, 29)
         Me.btnAgregarProducto.Name = "btnAgregarProducto"
-        Me.btnAgregarProducto.Size = New System.Drawing.Size(120, 23)
+        Me.btnAgregarProducto.Size = New System.Drawing.Size(143, 33)
         Me.btnAgregarProducto.TabIndex = 13
         Me.btnAgregarProducto.Text = "Agregar producto"
         Me.btnAgregarProducto.UseVisualStyleBackColor = True
@@ -157,11 +159,23 @@ Partial Class FormProductoPrincipal
         Me.btnGenerarReporte.Text = "Generar reporte"
         Me.btnGenerarReporte.UseVisualStyleBackColor = True
         '
+        'lbNoResultados
+        '
+        Me.lbNoResultados.AutoSize = True
+        Me.lbNoResultados.Font = New System.Drawing.Font("Microsoft Sans Serif", 20.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbNoResultados.Location = New System.Drawing.Point(220, 223)
+        Me.lbNoResultados.Name = "lbNoResultados"
+        Me.lbNoResultados.Size = New System.Drawing.Size(370, 31)
+        Me.lbNoResultados.TabIndex = 18
+        Me.lbNoResultados.Text = "No se encontraron resultados"
+        Me.lbNoResultados.Visible = False
+        '
         'FormProductoPrincipal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.Controls.Add(Me.lbNoResultados)
         Me.Controls.Add(Me.btnGenerarReporte)
         Me.Controls.Add(Me.btnAgregarProducto)
         Me.Controls.Add(Me.lbA)
@@ -198,4 +212,5 @@ Partial Class FormProductoPrincipal
     Friend WithEvents lbA As Label
     Friend WithEvents btnAgregarProducto As Button
     Friend WithEvents btnGenerarReporte As Button
+    Friend WithEvents lbNoResultados As Label
 End Class

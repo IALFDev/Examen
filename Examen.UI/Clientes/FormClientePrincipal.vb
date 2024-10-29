@@ -1,16 +1,65 @@
-﻿Imports Examen.BLL
+﻿Imports System.Environment
+Imports System.IO
+Imports Examen.BLL
 Imports Examen.Entidad
+Imports Microsoft.Win32
 
 Public Class FormClientePrincipal
+    Dim ultimaBusqueda As String = String.Empty 'Guardo cual fue la ultima busqueda para hacer el reporte
+
     Private Sub FormClientePrincipal_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ConfigurarContenido()
+    End Sub
+
+    Private Sub txtIdCliente_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtIdCliente.KeyPress
+        If Asc(e.KeyChar) = 13 Then 'Permite la tecla Enter
+            e.Handled = False
+        ElseIf Asc(e.KeyChar) = 8 Then 'Permite la tecla de retroceso (Backspace) solo si hay más de un carácter en el campo
+            If sender.Text.Length = 1 Then
+                MessageBox.Show("No se puede borrar el último carácter.", "Atención")
+                e.Handled = True
+            Else
+                e.Handled = False
+            End If
+        ElseIf Not Char.IsDigit(e.KeyChar) Then 'Bloquea caracteres que no son números
+            MessageBox.Show("Debes ingresar solamente valores numéricos.", "Atención")
+            e.Handled = True
+        ElseIf sender.Text.Length = 0 And e.KeyChar = "0"c Then 'Bloquea el ingreso de "0" como primer carácter
+            MessageBox.Show("El primer dígito no puede ser 0.", "Atención")
+            e.Handled = True
+        End If
+    End Sub
+
+    Private Sub txtTelefonoCliente_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtTelefonoCliente.KeyPress
+        If Asc(e.KeyChar) = 13 Then 'Permite la tecla Enter
+            e.Handled = False
+        ElseIf Asc(e.KeyChar) = 8 Then 'Permite la tecla de retroceso (Backspace) solo si hay más de un carácter en el campo
+            If sender.Text.Length = 1 Then
+                MessageBox.Show("No se puede borrar el último carácter.", "Atención")
+                e.Handled = True
+            Else
+                e.Handled = False
+            End If
+        ElseIf Not Char.IsDigit(e.KeyChar) Then 'Bloquea caracteres que no son números
+            MessageBox.Show("Debes ingresar solamente valores numéricos.", "Atención")
+            e.Handled = True
+        ElseIf sender.Text.Length = 0 And e.KeyChar = "0"c Then 'Bloquea el ingreso de "0" como primer carácter
+            MessageBox.Show("El primer dígito no puede ser 0.", "Atención")
+            e.Handled = True
+        End If
     End Sub
 
     ''' <summary>
     '''  Metodo que activa distintos elementos al llamar al mismo
     ''' </summary>'' 
     Protected Sub ConfigurarContenido()
-        ActivarDataGridViewProducto()
+        ActivarDataGridViewProducto("Todos")
+        ultimaBusqueda = "Todos" 'Acá seria que la ultima busqueda fue "Todos"
+    End Sub
+
+    Private Sub btnBuscar_Click(sender As Object, e As EventArgs) Handles btnBuscar.Click
+        ActivarDataGridViewProducto("Filtro")
+        ultimaBusqueda = "Filtro" 'Acá seria que la ultima busqueda fue "Filtro"
     End Sub
 
     Private Sub btnAgregarCliente_Click(sender As Object, e As EventArgs) Handles btnAgregarCliente.Click
@@ -20,9 +69,21 @@ Public Class FormClientePrincipal
     ''' <summary>
     '''  Método que rellena una Grilla (DataGridView)
     ''' </summary>''
-    Public Sub ActivarDataGridViewProducto()
-        Dim clientes = ObtenerTodosLosClientes()
+    Public Sub ActivarDataGridViewProducto(tipoOp As String)
+        Dim clientes As ArrayList = Nothing
+
+        Select Case tipoOp
+            Case "Todos"
+                clientes = ObtenerTodosLosClientes()
+            Case "Filtro"
+                clientes = ObtenerClientes(txtIdCliente.Text, txtNombreCliente.Text, txtTelefonoCliente.Text, txtCorreoCliente.Text)
+        End Select
+
         If clientes IsNot Nothing AndAlso clientes.Count > 0 Then
+            dgvCliente.Visible = True
+            lbNoResultados.Visible = False
+            btnGenerarReporte.Enabled = True
+
             dgvCliente.DataSource = clientes
             dgvCliente.Visible = True
 
@@ -64,8 +125,11 @@ Public Class FormClientePrincipal
                 btnEliminar.UseColumnTextForButtonValue = True
                 dgvCliente.Columns.Add(btnEliminar)
             End If
+        Else
+            dgvCliente.Visible = False
+            lbNoResultados.Visible = True
+            btnGenerarReporte.Enabled = False
         End If
-
     End Sub
 
     Protected Sub dgvProducto_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvCliente.CellClick
@@ -105,6 +169,51 @@ Public Class FormClientePrincipal
         End If
     End Sub
 
+    Private Sub btnGenerarReporte_Click(sender As Object, e As EventArgs) Handles btnGenerarReporte.Click
+        MostarSaveDialog()
+    End Sub
+
+    ''' <summary>
+    '''  Método muestra un ShowOpenDialog obtiene la ruta, nombre y el tipo de reporte para genenar un reporte en PDF
+    ''' </summary>
+    Public Sub MostarSaveDialog()
+        Dim saveFileD As New SaveFileDialog
+        saveFileD.InitialDirectory = GetFolderPath(SpecialFolder.Desktop)
+        saveFileD.Title = "Guardar reporte"
+        saveFileD.FileName = "Reporte Clientes"
+        saveFileD.CheckPathExists = True
+        saveFileD.DefaultExt = "*pdf"
+        saveFileD.Filter = "PDF (*.pdf)|*.pdf|All Files|*.*"
+        saveFileD.FilterIndex = 1
+        saveFileD.RestoreDirectory = True
+
+        Dim diag As DialogResult = saveFileD.ShowDialog()
+        Dim cliente = New Cliente()
+
+
+        Select Case ultimaBusqueda
+            Case "Filtro"
+                cliente.Id = If(String.IsNullOrEmpty(txtIdCliente.Text), 0, Long.Parse(txtIdCliente.Text))
+                cliente.Cliente = txtNombreCliente.Text
+                cliente.Telefono = If(String.IsNullOrEmpty(txtIdCliente.Text), 0, Integer.Parse(txtIdCliente.Text))
+                cliente.Correo = txtCorreoCliente.Text
+        End Select
+
+        If diag = DialogResult.OK Then 'Verifico que el se haya seleccionado la ruta para guardar el reporte
+
+            Dim path = saveFileD.FileName 'Obtengo la dirección completa del reporte a guardar
+            Dim directory As String = New FileInfo(path).DirectoryName 'Separo la carpeta donde se va a guardar el reporte
+            Dim file As String = New FileInfo(path).Name 'Separo la el nombre del reporte
+
+            If Not GenerarReportePDF(New PDF().GenerarObjetoParaReportePDF(file, directory, "Clientes", ultimaBusqueda, Nothing, cliente)).Excepcion.Error Then 'Verifico que el reporte se haya generado correctamente
+                MessageBox.Show("Se genero el reporte correctamente", "Genial", MessageBoxButtons.OK, MessageBoxIcon.None) 'Si el reporte se genero correctamente muesto un MessageBox
+
+            ElseIf diag = DialogResult.Cancel Then
+                MessageBox.Show("Se cancelo la generación del reporte", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si no se selecciono una ruta muesto un MessageBox
+            End If
+        End If
+    End Sub
+
     ''' <summary>
     '''  Método que elimina el cliente de manera logica en la base datos desde el "gestor" o "manager" de la capa de negocios
     ''' </summary>
@@ -127,5 +236,29 @@ Public Class FormClientePrincipal
         Dim resultado = manager.ObtenerTodosLosClientes()
 
         Return resultado
+    End Function
+
+    ''' <summary>
+    '''  Método que obtiene una collecion los clientes desde el "gestor" o "manager" de la capa de negocios
+    ''' </summary>
+    ''' <returns>Devuelve un Arraylist de objetos tipo Cliente</returns>
+    Protected Function ObtenerClientes(Optional idCliente As String = "", Optional cliente As String = "", Optional telefono As String = "", Optional correo As String = "") As ArrayList
+        Dim manager = New ManagerCliente()
+
+        Dim resultado = manager.ObtenerClientes(idCliente, cliente, telefono, correo)
+
+        Return resultado
+    End Function
+
+    ''' <summary>
+    '''  Método reporte para genenar un reporte en PDF desde el "gestor" o "manager" de la capa de negocios
+    ''' </summary>
+    ''' <returns>Devuelve un objeto tipo PDF con el resultado de la operación que genera el PDF</returns>
+    Protected Function GenerarReportePDF(pdf As PDF) As PDF
+        Dim manager = New ManagerPDF()
+
+        pdf = manager.GenerarReportePDF(pdf)
+
+        Return pdf
     End Function
 End Class

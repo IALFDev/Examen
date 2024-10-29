@@ -23,16 +23,18 @@ Partial Class FormVentaPrincipal
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.lbIdCliente = New System.Windows.Forms.Label()
-        Me.txtIdCliente = New System.Windows.Forms.TextBox()
+        Me.txtIdVenta = New System.Windows.Forms.TextBox()
         Me.lbCliente = New System.Windows.Forms.Label()
-        Me.cbCliente = New System.Windows.Forms.ComboBox()
         Me.lbFechaDesde = New System.Windows.Forms.Label()
-        Me.txtFechaDesde = New System.Windows.Forms.TextBox()
         Me.LbFechaHasta = New System.Windows.Forms.Label()
-        Me.txtFechaHasta = New System.Windows.Forms.TextBox()
         Me.btnBuscarProducto = New System.Windows.Forms.Button()
         Me.dgvVenta = New System.Windows.Forms.DataGridView()
         Me.btnRealizarVenta = New System.Windows.Forms.Button()
+        Me.btnGenerarReporte = New System.Windows.Forms.Button()
+        Me.txtNombreCliente = New System.Windows.Forms.TextBox()
+        Me.lbNoResultados = New System.Windows.Forms.Label()
+        Me.dtpFechaDesde = New System.Windows.Forms.DateTimePicker()
+        Me.dtpFechaHasta = New System.Windows.Forms.DateTimePicker()
         CType(Me.dgvVenta, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -45,12 +47,12 @@ Partial Class FormVentaPrincipal
         Me.lbIdCliente.TabIndex = 3
         Me.lbIdCliente.Text = "ID venta"
         '
-        'txtIdCliente
+        'txtIdVenta
         '
-        Me.txtIdCliente.Location = New System.Drawing.Point(67, 11)
-        Me.txtIdCliente.Name = "txtIdCliente"
-        Me.txtIdCliente.Size = New System.Drawing.Size(69, 20)
-        Me.txtIdCliente.TabIndex = 4
+        Me.txtIdVenta.Location = New System.Drawing.Point(67, 13)
+        Me.txtIdVenta.Name = "txtIdVenta"
+        Me.txtIdVenta.Size = New System.Drawing.Size(69, 20)
+        Me.txtIdVenta.TabIndex = 4
         '
         'lbCliente
         '
@@ -61,14 +63,6 @@ Partial Class FormVentaPrincipal
         Me.lbCliente.TabIndex = 5
         Me.lbCliente.Text = "Cliente"
         '
-        'cbCliente
-        '
-        Me.cbCliente.FormattingEnabled = True
-        Me.cbCliente.Location = New System.Drawing.Point(192, 12)
-        Me.cbCliente.Name = "cbCliente"
-        Me.cbCliente.Size = New System.Drawing.Size(121, 21)
-        Me.cbCliente.TabIndex = 6
-        '
         'lbFechaDesde
         '
         Me.lbFechaDesde.AutoSize = True
@@ -77,13 +71,6 @@ Partial Class FormVentaPrincipal
         Me.lbFechaDesde.Size = New System.Drawing.Size(69, 13)
         Me.lbFechaDesde.TabIndex = 7
         Me.lbFechaDesde.Text = "Fecha desde"
-        '
-        'txtFechaDesde
-        '
-        Me.txtFechaDesde.Location = New System.Drawing.Point(394, 12)
-        Me.txtFechaDesde.Name = "txtFechaDesde"
-        Me.txtFechaDesde.Size = New System.Drawing.Size(100, 20)
-        Me.txtFechaDesde.TabIndex = 8
         '
         'LbFechaHasta
         '
@@ -94,18 +81,11 @@ Partial Class FormVentaPrincipal
         Me.LbFechaHasta.TabIndex = 9
         Me.LbFechaHasta.Text = "Fecha hasta"
         '
-        'txtFechaHasta
-        '
-        Me.txtFechaHasta.Location = New System.Drawing.Point(572, 12)
-        Me.txtFechaHasta.Name = "txtFechaHasta"
-        Me.txtFechaHasta.Size = New System.Drawing.Size(100, 20)
-        Me.txtFechaHasta.TabIndex = 10
-        '
         'btnBuscarProducto
         '
-        Me.btnBuscarProducto.Location = New System.Drawing.Point(713, 11)
+        Me.btnBuscarProducto.Location = New System.Drawing.Point(668, 13)
         Me.btnBuscarProducto.Name = "btnBuscarProducto"
-        Me.btnBuscarProducto.Size = New System.Drawing.Size(75, 23)
+        Me.btnBuscarProducto.Size = New System.Drawing.Size(120, 23)
         Me.btnBuscarProducto.TabIndex = 11
         Me.btnBuscarProducto.Text = "Buscar"
         Me.btnBuscarProducto.UseVisualStyleBackColor = True
@@ -113,36 +93,83 @@ Partial Class FormVentaPrincipal
         'dgvVenta
         '
         Me.dgvVenta.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvVenta.Location = New System.Drawing.Point(15, 69)
+        Me.dgvVenta.Location = New System.Drawing.Point(15, 98)
         Me.dgvVenta.Name = "dgvVenta"
-        Me.dgvVenta.Size = New System.Drawing.Size(773, 369)
+        Me.dgvVenta.Size = New System.Drawing.Size(773, 311)
         Me.dgvVenta.TabIndex = 12
         Me.dgvVenta.Visible = False
         '
         'btnRealizarVenta
         '
-        Me.btnRealizarVenta.Location = New System.Drawing.Point(668, 40)
+        Me.btnRealizarVenta.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnRealizarVenta.Location = New System.Drawing.Point(642, 57)
         Me.btnRealizarVenta.Name = "btnRealizarVenta"
-        Me.btnRealizarVenta.Size = New System.Drawing.Size(120, 23)
+        Me.btnRealizarVenta.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.btnRealizarVenta.Size = New System.Drawing.Size(146, 35)
         Me.btnRealizarVenta.TabIndex = 14
         Me.btnRealizarVenta.Text = "Realizar nueva venta"
         Me.btnRealizarVenta.UseVisualStyleBackColor = True
+        '
+        'btnGenerarReporte
+        '
+        Me.btnGenerarReporte.Location = New System.Drawing.Point(12, 415)
+        Me.btnGenerarReporte.Name = "btnGenerarReporte"
+        Me.btnGenerarReporte.Size = New System.Drawing.Size(120, 23)
+        Me.btnGenerarReporte.TabIndex = 15
+        Me.btnGenerarReporte.Text = "Generar reporte"
+        Me.btnGenerarReporte.UseVisualStyleBackColor = True
+        '
+        'txtNombreCliente
+        '
+        Me.txtNombreCliente.Location = New System.Drawing.Point(187, 11)
+        Me.txtNombreCliente.Name = "txtNombreCliente"
+        Me.txtNombreCliente.Size = New System.Drawing.Size(126, 20)
+        Me.txtNombreCliente.TabIndex = 16
+        '
+        'lbNoResultados
+        '
+        Me.lbNoResultados.AutoSize = True
+        Me.lbNoResultados.Font = New System.Drawing.Font("Microsoft Sans Serif", 20.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbNoResultados.Location = New System.Drawing.Point(215, 210)
+        Me.lbNoResultados.Name = "lbNoResultados"
+        Me.lbNoResultados.Size = New System.Drawing.Size(370, 31)
+        Me.lbNoResultados.TabIndex = 19
+        Me.lbNoResultados.Text = "No se encontraron resultados"
+        Me.lbNoResultados.Visible = False
+        '
+        'dtpFechaDesde
+        '
+        Me.dtpFechaDesde.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.dtpFechaDesde.Location = New System.Drawing.Point(395, 13)
+        Me.dtpFechaDesde.Name = "dtpFechaDesde"
+        Me.dtpFechaDesde.Size = New System.Drawing.Size(99, 20)
+        Me.dtpFechaDesde.TabIndex = 20
+        '
+        'dtpFechaHasta
+        '
+        Me.dtpFechaHasta.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.dtpFechaHasta.Location = New System.Drawing.Point(572, 13)
+        Me.dtpFechaHasta.Name = "dtpFechaHasta"
+        Me.dtpFechaHasta.Size = New System.Drawing.Size(85, 20)
+        Me.dtpFechaHasta.TabIndex = 21
         '
         'FormVentaPrincipal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.Controls.Add(Me.dtpFechaHasta)
+        Me.Controls.Add(Me.dtpFechaDesde)
+        Me.Controls.Add(Me.lbNoResultados)
+        Me.Controls.Add(Me.txtNombreCliente)
+        Me.Controls.Add(Me.btnGenerarReporte)
         Me.Controls.Add(Me.btnRealizarVenta)
         Me.Controls.Add(Me.dgvVenta)
         Me.Controls.Add(Me.btnBuscarProducto)
-        Me.Controls.Add(Me.txtFechaHasta)
         Me.Controls.Add(Me.LbFechaHasta)
-        Me.Controls.Add(Me.txtFechaDesde)
         Me.Controls.Add(Me.lbFechaDesde)
-        Me.Controls.Add(Me.cbCliente)
         Me.Controls.Add(Me.lbCliente)
-        Me.Controls.Add(Me.txtIdCliente)
+        Me.Controls.Add(Me.txtIdVenta)
         Me.Controls.Add(Me.lbIdCliente)
         Me.Name = "FormVentaPrincipal"
         Me.Text = "Ventas"
@@ -153,14 +180,16 @@ Partial Class FormVentaPrincipal
     End Sub
 
     Friend WithEvents lbIdCliente As Label
-    Friend WithEvents txtIdCliente As TextBox
+    Friend WithEvents txtIdVenta As TextBox
     Friend WithEvents lbCliente As Label
-    Friend WithEvents cbCliente As ComboBox
     Friend WithEvents lbFechaDesde As Label
-    Friend WithEvents txtFechaDesde As TextBox
     Friend WithEvents LbFechaHasta As Label
-    Friend WithEvents txtFechaHasta As TextBox
     Friend WithEvents btnBuscarProducto As Button
     Friend WithEvents dgvVenta As DataGridView
     Friend WithEvents btnRealizarVenta As Button
+    Friend WithEvents btnGenerarReporte As Button
+    Friend WithEvents txtNombreCliente As TextBox
+    Friend WithEvents lbNoResultados As Label
+    Friend WithEvents dtpFechaDesde As DateTimePicker
+    Friend WithEvents dtpFechaHasta As DateTimePicker
 End Class

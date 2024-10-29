@@ -2,6 +2,8 @@
     Private _id As Long
     Private _cliente As Cliente
     Private _fecha As DateTime
+    Private _fechaDesde As DateTime
+    Private _fechaHasta As DateTime
     Private _total As Decimal
     Private _excepcion As Excepcion
 
@@ -45,6 +47,24 @@
         End Get
         Set(value As Date)
             _fecha = value
+        End Set
+    End Property
+
+    Public Property FechaDesde As Date
+        Get
+            Return _fechaDesde
+        End Get
+        Set(value As Date)
+            _fechaDesde = value
+        End Set
+    End Property
+
+    Public Property FechaHasta As Date
+        Get
+            Return _fechaHasta
+        End Get
+        Set(value As Date)
+            _fechaHasta = value
         End Set
     End Property
 
@@ -175,4 +195,33 @@
 
         Return cmd
     End Function
+
+    Public Function ObtenerVentas(Optional idVenta As String = "", Optional clienteNombre As String = "", Optional fechaDesde As String = "", Optional fechaHasta As String = "") As String
+        Dim sqlQuery As String = "SELECT v.ID AS IDVENTA, c.ID AS IDCLIENTE, c.Cliente AS CLIENTE, v.Fecha AS FECHAVENTA, v.Total AS TOTALVENTA FROM ventas AS v INNER JOIN clientes AS c ON v.IDCliente = c.ID WHERE v.Activo = 1" ' Base de la consulta SQL
+
+        Dim condiciones As New List(Of String) 'Lista para agregar condiciones dinámicas
+
+
+        If Not String.IsNullOrEmpty(idVenta) Then 'Agrego condiciones solo si los parámetros tienen valor
+            condiciones.Add("CAST(v.Id AS VARCHAR) LIKE '%" & idVenta.Replace("'", "''") & "%'") 'Uso LIKE para buscar coincidencias parciales en ID venta
+        End If
+        If Not String.IsNullOrEmpty(clienteNombre) Then 'Uso LIKE para buscar coincidencias parciales en el nombre del cliente
+            condiciones.Add("v.Cliente LIKE '%" & clienteNombre.Replace("'", "''") & "%'")
+        End If
+        If Not String.IsNullOrEmpty(fechaDesde) AndAlso IsDate(fechaDesde) Then
+            condiciones.Add("CONVERT(DATE, v.Fecha) ='" & DateTime.Parse(fechaDesde).ToString("yyyy-MM-dd") & "'") 'Filtro por fecha desde si el valor es una fecha válida
+        End If
+        If Not String.IsNullOrEmpty(fechaHasta) AndAlso IsDate(fechaHasta) Then
+            condiciones.Add("CONVERT(DATE, v.Fecha) ='" & DateTime.Parse(fechaHasta).ToString("yyyy-MM-dd") & "'") 'Filtramos por fecha hasta si el valor es una fecha válida
+        End If
+
+        ' Si hay condiciones, las agregamos a la consulta
+        If condiciones.Count > 0 Then
+            sqlQuery &= " AND " & String.Join(" AND ", condiciones)
+        End If
+
+        ' Retornamos el SQL formateado
+        Return sqlQuery
+    End Function
+
 End Class

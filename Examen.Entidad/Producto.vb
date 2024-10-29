@@ -2,6 +2,8 @@
     Private _id As Long
     Private _nombre As String
     Private _precio As Decimal
+    Private _precioDesde As Decimal
+    Private _precioHasta As Decimal
     Private _categoria As String
     Private _activo As Boolean
     Private _excepcion As Excepcion
@@ -30,6 +32,24 @@
         End Get
         Set(value As Decimal)
             _precio = value
+        End Set
+    End Property
+
+    Public Property PrecioDesde As Decimal
+        Get
+            Return _precioDesde
+        End Get
+        Set(value As Decimal)
+            _precioDesde = value
+        End Set
+    End Property
+
+    Public Property PrecioHasta As Decimal
+        Get
+            Return _precioHasta
+        End Get
+        Set(value As Decimal)
+            _precioHasta = value
         End Set
     End Property
 
@@ -144,6 +164,41 @@
         Dim cmd = "SELECT DISTINCT p.Categoria AS CATEGORIA FROM dbo.productos AS p WHERE p.Activo = 1"
 
         Return cmd
+    End Function
+
+
+    ''' <summary>
+    '''  Metodo que obtiene un string para la consulta que se genera de forma dinamica para obtener producto con filtros en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un string con la consulta para obtener los producto</returns>
+    Public Function ObtenerProductos(Optional idProducto As String = "", Optional nombre As String = "", Optional categoria As String = "", Optional precioMin As String = "", Optional precioMax As String = "") As String
+        Dim sqlQuery As String = "SELECT p.Id AS IDPRODUCTO, p.Nombre AS NOMBRE, p.Precio AS PRECIO, p.Categoria AS CATEGORIA FROM productos AS p WHERE p.Activo = 1" ' Base de la consulta SQL
+
+        Dim condiciones As New List(Of String) 'Lista para agregar condiciones dinámicas
+
+        If Not String.IsNullOrEmpty(idProducto) Then ' Agrego condiciones solo si los parámetros tienen valor
+            condiciones.Add("CAST(p.Id AS VARCHAR) LIKE '%" & idProducto.Replace("'", "''") & "%'") 'Uso LIKE para buscar coincidencias parciales en ID producto
+        End If
+        If Not String.IsNullOrEmpty(nombre) Then
+            condiciones.Add("p.Nombre LIKE '%" & nombre.Replace("'", "''") & "%'") 'Uso  LIKE para buscar coincidencias parciales en Nombre
+        End If
+        If Not String.IsNullOrEmpty(categoria) AndAlso categoria <> "Seleccione una categoría" Then
+            condiciones.Add("p.Categoria = '" & categoria.Replace("'", "''") & "'") 'Filtro por categoría exacta
+        End If
+        If Not String.IsNullOrEmpty(precioMin) AndAlso IsNumeric(precioMin) Then
+
+            condiciones.Add("p.Precio >= " & Decimal.Parse(precioMin)) 'Filtro por precio mínimo si el valor es numérico
+        End If
+        If Not String.IsNullOrEmpty(precioMax) AndAlso IsNumeric(precioMax) Then
+            condiciones.Add("p.Precio <= " & Decimal.Parse(precioMax)) 'Filtro por precio máximo si el valor es numérico
+        End If
+
+        If condiciones.Count > 0 Then 'Si hay condiciones, las agregamos a la consulta
+            sqlQuery &= " AND " & String.Join(" AND ", condiciones)
+        End If
+
+        ' Retornamos el SQL formateado
+        Return sqlQuery
     End Function
 
     ''' <summary>

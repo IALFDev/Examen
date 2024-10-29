@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ManagerCliente.vb" />
+    <Compile Include="ManagerPDF.vb" />
     <Compile Include="ManagerProducto.vb" />
     <Compile Include="ManagerVenta.vb" />
     <Compile Include="ManagerVentaItem.vb" />

@@ -21,6 +21,7 @@ Public Class FormAgregarProducto
     Private Sub txtPrecio_LostFocus(sender As Object, e As EventArgs) Handles txtPrecio.LostFocus
         txtPrecio.Text = Format(txtPrecio.Text, "Currency") 'Convierto el tipo de dato a tipo "Currency" que es tipo de dato moneda'
     End Sub
+
     Private Sub txtCategoria_TextChanged(sender As Object, e As EventArgs) Handles txtCategoria.TextChanged
         If txtCategoria.Text.Length > 0 Then 'Verifico que el campo Categoria(TextBox) este vacío'
             cbCategoria.Enabled = False 'Si tiene datos desactivo el campo Categoria(ComboBox)'
@@ -45,7 +46,7 @@ Public Class FormAgregarProducto
 
                 LimpiarControles() 'Limpio los campos Nombre, Precio y Categoria para que no quede con datos reciduales'
 
-                FormProductoPrincipal.ActivarDataGridViewProducto() 'Refresco la grilla cada vez que haga click en el botón'
+                FormProductoPrincipal.ActivarDataGridViewProducto("Todos") 'Refresco la grilla cada vez que haga click en el botón'
             Else
                 MessageBox.Show("Error al guardar el producto", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que el producto no se guardar correctamente'
             End If

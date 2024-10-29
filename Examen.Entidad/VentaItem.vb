@@ -134,6 +134,18 @@
     End Function
 
     ''' <summary>
+    '''  Metodo que devuelve un objeto del tipo VentaItem con los datos necesarios para eliminar de manera logica el VentaItem por Id de venta en la base datos, este caso recibe una sobrecarga más para poder eliminar la VentaItem por id de venta en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un objeto del tipo VentaItem para guardar los datos del VentaItem por Id de venta en la base de datos</returns>
+    Public Function GenerarObjetoVentaItemPorIdVentaParaEliminarEnBd(idVenta As Long) As VentaItem
+        Dim ventaItem = New VentaItem()
+
+        ventaItem.Venta.Id = idVenta
+
+        Return ventaItem
+    End Function
+
+    ''' <summary>
     '''  Método que obtiene un string para guardar los datos de la ventaItem en la base de datos
     ''' </summary>
     ''' <returns>Devuelve un objeto del tipo Producto para guardar los datos de la ventaItem en la base de datos</returns>
@@ -163,6 +175,16 @@
     ''' <returns>Devuelve un string para eliminar de manera logica la ventaItem en la base de datos</returns>
     Public Function EliminarVentaItemEnBd() As String
         Dim cmd = String.Format("UPDATE ventasitems SET Activo = 0 WHERE ventasitems.ID = {0}", Id)
+
+        Return cmd
+    End Function
+
+    ''' <summary>
+    '''  Método que obtiene un string para eliminar de manera logica la ventaItem por id venta en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un string para eliminar de manera logica la ventaItem en la base de datos</returns>
+    Public Function EliminarVentaItemPorVentaEnBd() As String
+        Dim cmd = String.Format("UPDATE ventasitems SET Activo = 0 WHERE ventasitems.IDVenta = {0}", Venta.Id)
 
         Return cmd
     End Function

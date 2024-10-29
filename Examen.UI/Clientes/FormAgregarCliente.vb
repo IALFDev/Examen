@@ -32,7 +32,7 @@ Public Class FormAgregarCliente
 
                     LimpiarControles() 'Limpio los campos Cliente, Teléfono y Correo para que no quede con datos reciduales'
 
-                    FormClientePrincipal.ActivarDataGridViewProducto() 'Refresco la grilla cada vez que haga click en el botón'
+                    FormClientePrincipal.ActivarDataGridViewProducto("Todos") 'Refresco la grilla cada vez que haga click en el botón'
                 Else
                     MessageBox.Show("Error al guardar el cliente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que el cliente no se guardar correctamente'
                 End If

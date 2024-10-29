@@ -12,6 +12,25 @@ Public Class FormEditarCliente
         End If
     End Sub
 
+    Private Sub txtCantidad_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtTelefono.KeyPress
+        If Asc(e.KeyChar) = 13 Then 'Permite la tecla Enter
+            e.Handled = False
+        ElseIf Asc(e.KeyChar) = 8 Then 'Permite la tecla de retroceso (Backspace) solo si hay más de un carácter en el campo
+            If sender.Text.Length = 1 Then
+                MessageBox.Show("No se puede borrar el último carácter.", "Atención")
+                e.Handled = True
+            Else
+                e.Handled = False
+            End If
+        ElseIf Not Char.IsDigit(e.KeyChar) Then 'Bloquea caracteres que no son números
+            MessageBox.Show("Debes ingresar solamente valores numéricos.", "Atención")
+            e.Handled = True
+        ElseIf sender.Text.Length = 0 And e.KeyChar = "0"c Then 'Bloquea el ingreso de "0" como primer carácter
+            MessageBox.Show("El primer dígito no puede ser 0.", "Atención")
+            e.Handled = True
+        End If
+    End Sub
+
     Private Sub txtCorreo_TextChanged(sender As Object, e As EventArgs) Handles txtCorreo.TextChanged
         Dim cliente = New Cliente()
         cliente.Correo = txtCorreo.Text
@@ -35,7 +54,7 @@ Public Class FormEditarCliente
                 If Not GuardarEdicionProductoEnBd(New Cliente().GenerarObjetoClienteParaGuardarEnBd(idCliente, txtCliente.Text, Integer.Parse(txtTelefono.Text), correoNuevo)).Excepcion.Error Then 'Verifico que el guardado en la base sea correcto de lo contrario muestro un MessageBox de error
                     MessageBox.Show("Cliente guardado.", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si todo salio correcto muestro un MessageBox diciendo que el cliente se guardo correctamente'
 
-                    FormClientePrincipal.ActivarDataGridViewProducto() 'Refresco la grilla cada vez que haga click en el botón'
+                    FormClientePrincipal.ActivarDataGridViewProducto("Todos") 'Refresco la grilla cada vez que haga click en el botón'
                 Else
                     MessageBox.Show("Error al guardar el cliente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que el cliente no se guardar correctamente'
                 End If
@@ -71,23 +90,33 @@ Public Class FormEditarCliente
             Return validado
         End If
 
-        If Not String.IsNullOrEmpty(txtTelefono.Text) Then 'Verifico que el campo Teléfono no este vacío'
-            If Not txtTelefono.Text.Length > 255 Then 'Verifico que el campo no tenga más de 255 caracteres'
-                validado = True
-            Else
-                MessageBox.Show("El campo Teléfono no debe tener más de 255 caracteres.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+        If Not String.IsNullOrEmpty(txtTelefono.Text) Then ' Verifico que el campo Precio no esté vacío
+            Dim precioUnitario As Decimal
 
+            If Decimal.TryParse(txtTelefono.Text, precioUnitario) Then ' Intento convertir el texto a un número decimal
+
+                If precioUnitario <> 0 Then 'Verifico que el valor no sea 0
+                    validado = True
+                Else
+                    MessageBox.Show("El campo Telefono no debe ser 0.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                    validado = False
+
+                    Return validado
+                End If
+            Else
+                MessageBox.Show("El campo Telefono debe ser un número válido.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                 validado = False
 
                 Return validado
             End If
         Else
-            MessageBox.Show("El campo Teléfono no debe estar vacío.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-
+            MessageBox.Show("El campo Telefono no debe estar vacío.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             validado = False
 
             Return validado
         End If
+
+        Return validado
 
         If Not String.IsNullOrEmpty(txtCorreo.Text) Then 'Verifico que el campo Correo no este vacío'
             If Not txtCorreo.Text.Length > 255 Then 'Verifico que el campo no Correo más de 255 caracteres'

@@ -122,7 +122,6 @@ Public Class Cliente
     '''  Metodo que obtiene un string para la consulta de para obtener todos los clientes en la base de datos
     ''' </summary>
     ''' <returns>Devuelve un string con la consulta para obtener todos los clientes</returns>
-
     Public Function ObtenerTodosLosClientes() As String
         Dim cmd = "SELECT c.ID AS IDCLIENTE, c.Cliente AS CLIENTE, c.Telefono as TELEFONO, c.Correo AS CORREO, c.Activo AS ACTIVO FROM clientes AS c where c.Activo = 1"
 
@@ -138,6 +137,38 @@ Public Class Cliente
 
         Return cmd
     End Function
+
+    ''' <summary>
+    '''  Metodo que obtiene un string para la consulta que se genera de forma dinamica para obtener clientes con filtros en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un string con la consulta para obtener los clientes</returns>
+    Public Function ObtenerClientes(Optional idCliente As String = "", Optional cliente As String = "", Optional telefono As String = "", Optional correo As String = "") As String
+        ' Base de la consulta SQL
+        Dim sqlQuery As String = "SELECT c.ID AS IDCLIENTE, c.Cliente AS CLIENTE, c.Telefono AS TELEFONO, c.Correo AS CORREO, c.Activo AS ACTIVO FROM clientes AS c WHERE c.Activo = 1"
+
+        Dim condiciones As New List(Of String) 'Lista para agregar condiciones dinámicas
+
+        If Not String.IsNullOrEmpty(idCliente) Then 'Agrego condiciones solo si los parámetros tienen valor
+            condiciones.Add("CAST(c.ID AS VARCHAR) LIKE '%" & idCliente.Replace("'", "''") & "%'") 'Uso LIKE para buscar coincidencias parciales en ID
+        End If
+        If Not String.IsNullOrEmpty(cliente) Then
+            condiciones.Add("c.Cliente LIKE '%" & cliente.Replace("'", "''") & "%'") 'Uso LIKE para buscar coincidencias parciales en Cliente
+        End If
+        If Not String.IsNullOrEmpty(telefono) Then
+            condiciones.Add("CAST(c.Telefono AS VARCHAR) LIKE '%" & telefono.Replace("'", "''") & "%'") 'Uso LIKE para buscar coincidencias parciales en Teléfono
+        End If
+        If Not String.IsNullOrEmpty(correo) Then
+            condiciones.Add("c.Correo LIKE '%" & correo.Replace("'", "''") & "%'") 'Uso LIKE para buscar coincidencias parciales en Correo
+        End If
+
+        If condiciones.Count > 0 Then
+            sqlQuery &= " AND " & String.Join(" AND ", condiciones) 'Si hay condiciones, las agregamos a la consulta
+        End If
+
+
+        Return sqlQuery 'Retornamos el SQL formateado
+    End Function
+
 
     ''' <summary>
     '''  Método que obtiene un string para guardar los datos del cliente en la base de datos

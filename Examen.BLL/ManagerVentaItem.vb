@@ -45,11 +45,23 @@ Public Class ManagerVentaItem
     ''' <summary>
     '''  Método que elimina la ventaItem de manera logica en la base datos desde la capa de conexion a la base de datos //Reveer este texto
     ''' </summary>
-    ''' <returns>Devuelve un objeto tipo ventaItem con el resultado de la operacion de guardado en la base datos</returns>
+    ''' <returns>Devuelve un objeto tipo ventaItem con el resultado de la operacion de eliminación en la base datos</returns>
     Public Function EliminarVentaItemEnBd(ventaItem As VentaItem) As VentaItem
-        Dim ventaDal = New VentaItemDAL()
+        Dim ventaDAL = New VentaItemDAL()
 
-        ventaItem = ventaDal.EliminarVentaItemEnBd(ventaItem)
+        ventaItem = ventaDAL.EliminarVentaItemEnBd(ventaItem)
+
+        Return ventaItem
+    End Function
+
+    ''' <summary>
+    '''  Método que elimina la ventaItem por Id de venta de manera logica en la base datos desde la capa de conexion a la base de datos //Reveer este texto
+    ''' </summary>
+    ''' <returns>Devuelve un objeto tipo ventaItem con el resultado de la operacion de eliminación en la base datos</returns>
+    Public Function EliminarVentaItemPorIdVentaEnBd(ventaItem As VentaItem) As VentaItem
+        Dim ventaDAL = New VentaItemDAL()
+
+        ventaItem = ventaDAL.EliminarVentaItemPorVentaEnBd(ventaItem)
 
         Return ventaItem
     End Function
