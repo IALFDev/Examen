@@ -91,26 +91,35 @@ Public Class FormEditarCliente
         End If
 
         If Not String.IsNullOrEmpty(txtTelefono.Text) Then ' Verifico que el campo Precio no esté vacío
-            Dim precioUnitario As Decimal
+            Dim telefono As Decimal
 
-            If Decimal.TryParse(txtTelefono.Text, precioUnitario) Then ' Intento convertir el texto a un número decimal
+            If Not txtTelefono.Text.Length > 10 Then 'Verifico que el campo no tenga más de 10 caracteres'
+                If Decimal.TryParse(txtTelefono.Text, telefono) Then ' Intento convertir el texto a un número decimal
 
-                If precioUnitario <> 0 Then 'Verifico que el valor no sea 0
-                    validado = True
+                    If telefono <> 0 Then 'Verifico que el valor no sea 0
+                        validado = True
+                    Else
+                        MessageBox.Show("El campo Telefono no debe ser 0.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                        validado = False
+
+                        Return validado
+                    End If
                 Else
-                    MessageBox.Show("El campo Telefono no debe ser 0.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                    MessageBox.Show("El campo Telefono debe ser un número válido.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                     validado = False
 
                     Return validado
                 End If
             Else
-                MessageBox.Show("El campo Telefono debe ser un número válido.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                MessageBox.Show("El campo Teléfono no debe tener más de 10 caracteres.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+
                 validado = False
 
                 Return validado
             End If
         Else
-            MessageBox.Show("El campo Telefono no debe estar vacío.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            MessageBox.Show("El campo Teléfono no debe estar vacío.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+
             validado = False
 
             Return validado

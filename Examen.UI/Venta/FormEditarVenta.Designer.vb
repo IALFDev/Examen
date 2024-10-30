@@ -85,9 +85,10 @@ Partial Class FormEditarVenta
         'lbTotalVenta
         '
         Me.lbTotalVenta.AutoSize = True
+        Me.lbTotalVenta.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lbTotalVenta.Location = New System.Drawing.Point(569, 13)
         Me.lbTotalVenta.Name = "lbTotalVenta"
-        Me.lbTotalVenta.Size = New System.Drawing.Size(61, 13)
+        Me.lbTotalVenta.Size = New System.Drawing.Size(72, 13)
         Me.lbTotalVenta.TabIndex = 21
         Me.lbTotalVenta.Text = "Total venta"
         '
@@ -170,6 +171,10 @@ Partial Class FormEditarVenta
         Me.Controls.Add(Me.lbFecha)
         Me.Controls.Add(Me.cbCliente)
         Me.Controls.Add(Me.lbCliente)
+        Me.MaximizeBox = False
+        Me.MaximumSize = New System.Drawing.Size(816, 489)
+        Me.MinimizeBox = False
+        Me.MinimumSize = New System.Drawing.Size(816, 489)
         Me.Name = "FormEditarVenta"
         Me.Text = "Editar venta"
         CType(Me.dgvItemVenta, System.ComponentModel.ISupportInitialize).EndInit()

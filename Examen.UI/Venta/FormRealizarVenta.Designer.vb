@@ -199,6 +199,10 @@ Partial Class FormRealizarVenta
         Me.Controls.Add(Me.lbFecha)
         Me.Controls.Add(Me.cbCliente)
         Me.Controls.Add(Me.lbCliente)
+        Me.MaximizeBox = False
+        Me.MaximumSize = New System.Drawing.Size(816, 599)
+        Me.MinimizeBox = False
+        Me.MinimumSize = New System.Drawing.Size(816, 599)
         Me.Name = "FormRealizarVenta"
         Me.Text = "Realizar venta"
         CType(Me.dgvVentaProducto, System.ComponentModel.ISupportInitialize).EndInit()

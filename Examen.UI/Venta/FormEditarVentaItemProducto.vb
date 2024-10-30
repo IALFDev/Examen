@@ -54,7 +54,7 @@ Public Class FormEditarVentaItemProducto
             Dim itemVenta = New VentaItem()
             Dim producto = New Producto()
 
-            If Not EditarVentaItemEnBd(New VentaItem().GenerarObjetoVentaItemParaGuardarEnBd(IdventaItem, Idventa, IdProducto, Decimal.Parse(txtPrecioUnitario.Text), Integer.Parse(txtCantidad.Text))).Excepcion.Error Then
+            If Not EditarVentaItemEnBd(New VentaItem().GenerarObjetoVentaItemParaGuardarEnBd(IdventaItem, Idventa, IdProducto, txtPrecioUnitario.Text, txtCantidad.Text)).Excepcion.Error Then
                 If Not ActualizarTotalDeLaVenta(New Venta().GenerarObjetoVentaParaActualizarTotal(Idventa)).Excepcion.Error Then
                     MessageBox.Show("Producto guardado.", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si todo salio correcto muestro un MessageBox diciendo que el VentaItem se edito correctamente
                     FormEditarVenta.ActivarDataGridViewVentaItem() 'Refresco la grilla cada vez que haga click en el botón'
@@ -81,7 +81,7 @@ Public Class FormEditarVentaItemProducto
             If Integer.TryParse(txtCantidad.Text, cantidad) Then ' Intento convertir el texto a un número decimal
 
                 If cantidad <> 0 Then 'Verifico que el valor no sea 0
-                    validado = True
+
                 Else
                     MessageBox.Show("El campo Cantidad no debe ser 0.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
 
@@ -104,24 +104,7 @@ Public Class FormEditarVentaItemProducto
         End If
 
         If Not String.IsNullOrEmpty(txtPrecioUnitario.Text) Then ' Verifico que el campo Precio no esté vacío
-            Dim precioUnitario As Decimal
-
-            If Decimal.TryParse(txtPrecioUnitario.Text, precioUnitario) Then ' Intento convertir el texto a un número decimal
-
-                If precioUnitario <> 0 Then 'Verifico que el valor no sea 0
-                    validado = True
-                Else
-                    MessageBox.Show("El campo Precio Unitario no debe ser 0.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                    validado = False
-
-                    Return validado
-                End If
-            Else
-                MessageBox.Show("El campo Precio Unitario debe ser un número válido.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                validado = False
-
-                Return validado
-            End If
+            validado = True
         Else
             MessageBox.Show("El campo Precio Unitario no debe estar vacío.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             validado = False

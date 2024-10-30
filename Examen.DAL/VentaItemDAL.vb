@@ -100,10 +100,26 @@ Public Class VentaItemDAL
         Return resultado
     End Function
 
+    ''' <summary>
+    '''  Método que obtiene una collecion del tipo ArrayList de las ventas de productos en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un Arraylist de objetos tipo VentaItem</returns>
+    Public Function ObtenerVentasPoductos(itemVenta As VentaItem) As ArrayList
+        commandText = New VentaItem().ObtenerVentasPoductos(itemVenta)
+
+        tipoOp = 1
+
+        Dim resultado = AbstractFindAll()
+
+        Return resultado
+    End Function
+
     Public Overrides Function DoLoad(registers As IDataReader) As Object
         Select Case tipoOp
             Case 0
                 Return ObtenerTodasLasVentasItem(registers)
+            Case 1
+                Return ObtenerVentasPoductos(registers)
         End Select
 
         Return New Object
@@ -119,8 +135,24 @@ Public Class VentaItemDAL
         ventaItem.Id = Long.Parse(registers("IDVENTAITEM").ToString())
         ventaItem.Producto.Id = Long.Parse(registers("IDPRODUCTO").ToString())
         ventaItem.Producto.Nombre = registers("PRODUCTO").ToString()
+        ventaItem.Venta.Cliente.Cliente = registers("NOMBRECLIENTE").ToString()
+        ventaItem.Venta.Cliente.Telefono = Integer.Parse(registers("TELEFONOCLIENTE").ToString())
+        ventaItem.Venta.Cliente.Correo = registers("CORREOCLIENTE").ToString()
         ventaItem.PrecioUnitario = Decimal.Parse(registers("PRECIOUNITARIO").ToString())
         ventaItem.Cantidad = Integer.Parse(registers("CANTIDAD").ToString())
+
+        Return ventaItem
+    End Function
+
+    ''' <summary>
+    '''  Método que almacena todos los datos obtenidos en el objeto del tipo VentaItem
+    ''' </summary>
+    ''' <returns>Devuelve un objeto del tipo VentaItem</returns>
+    Protected Function ObtenerVentasPoductos(registers As IDataReader) As VentaItem
+        Dim ventaItem = New VentaItem()
+
+        ventaItem.Producto.Nombre = registers("PRODUCTO").ToString()
+        ventaItem.Cantidad = Integer.Parse(registers("CantidadTotalVendida").ToString())
 
         Return ventaItem
     End Function

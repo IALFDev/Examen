@@ -67,10 +67,10 @@ Public Class ManagerVenta
     '''  Método que obtiene una collecion tipo ArrayList los venta desde la capa de conexion a la base de datos
     ''' </summary>
     ''' <returns>Devuelve un Arraylist de objetos tipo Venta</returns>
-    Public Function ObtenerVentas(Optional idVenta As String = "", Optional clienteNombre As String = "", Optional fechaDesde As String = "", Optional fechaHasta As String = "") As ArrayList
+    Public Function ObtenerVentas(Optional idVenta As String = "", Optional clienteNombre As String = "", Optional fechaDesde As String = "", Optional fechaHasta As String = "", Optional totalMinimo As String = "", Optional totalMaximo As String = "") As ArrayList
         Dim ventaDAL = New VentaDAL()
 
-        Dim resultado = ventaDAL.ObtenerVentas(idVenta, clienteNombre, fechaDesde, fechaHasta)
+        Dim resultado = ventaDAL.ObtenerVentas(idVenta, clienteNombre, fechaDesde, fechaHasta, totalMinimo, totalMaximo)
 
         Return resultado
     End Function

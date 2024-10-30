@@ -6,7 +6,7 @@
     Private _venta As Venta
     Private _Producto As Producto
     Private _cliente As Cliente
-    Private _detalleVenta As VentaItem
+    Private _ventaItem As VentaItem
     Private _excepcion As Excepcion
 
     Public Property Nombre As String
@@ -85,16 +85,16 @@
     End Property
 
 
-    Public Property DetalleVenta As VentaItem
+    Public Property VentaItem As VentaItem
         Get
-            If _detalleVenta Is Nothing Then
-                _detalleVenta = New VentaItem()
+            If _ventaItem Is Nothing Then
+                _ventaItem = New VentaItem()
             End If
 
-            Return _detalleVenta
+            Return _ventaItem
         End Get
         Set(value As VentaItem)
-            _detalleVenta = value
+            _ventaItem = value
         End Set
     End Property
 
@@ -116,7 +116,7 @@
     '''  Metodo que devuelve un objeto del tipo Pdf con los datos necesarios para generación de un reporte en PDF
     ''' </summary>
     ''' <returns>Devuelve un objeto del tipo PDF para generar el PDF</returns>
-    Public Function GenerarObjetoParaReportePDF(nombre As String, ruta As String, tipoReporte As String, ultimaBusqueda As String, Optional venta As Venta = Nothing, Optional cliente As Cliente = Nothing, Optional producto As Producto = Nothing) As PDF
+    Public Function GenerarObjetoParaReportePDF(nombre As String, ruta As String, tipoReporte As String, ultimaBusqueda As String, Optional venta As Venta = Nothing, Optional cliente As Cliente = Nothing, Optional producto As Producto = Nothing, Optional ventaitem As VentaItem = Nothing) As PDF
         Dim pdf = New PDF()
 
         pdf.Nombre = nombre
@@ -126,6 +126,7 @@
         pdf.Venta = venta
         pdf.Cliente = cliente
         pdf.Producto = producto
+        pdf.VentaItem = ventaitem
 
         Return pdf
 

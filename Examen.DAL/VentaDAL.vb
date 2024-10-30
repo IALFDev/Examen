@@ -90,8 +90,8 @@ Public Class VentaDAL
     '''  Método que obtiene una collecion del tipo ArrayList las ventas en la base de datos
     ''' </summary>
     ''' <returns>Devuelve un Arraylist de objetos tipo Venta</returns>
-    Public Function ObtenerVentas(Optional idVenta As String = "", Optional clienteNombre As String = "", Optional fechaDesde As String = "", Optional fechaHasta As String = "") As ArrayList
-        commandText = New Venta().ObtenerVentas(idVenta, clienteNombre, fechaDesde, fechaHasta)
+    Public Function ObtenerVentas(Optional idVenta As String = "", Optional clienteNombre As String = "", Optional fechaDesde As String = "", Optional fechaHasta As String = "", Optional totalMinimo As String = "", Optional totalMaximo As String = "") As ArrayList
+        commandText = New Venta().ObtenerVentas(idVenta, clienteNombre, fechaDesde, fechaHasta, totalMinimo, totalMaximo)
 
         tipoOp = 1
 

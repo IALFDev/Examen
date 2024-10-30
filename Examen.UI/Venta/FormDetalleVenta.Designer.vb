@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class FormDetalleVenta
     Inherits System.Windows.Forms.Form
 
     'Form reemplaza a Dispose para limpiar la lista de componentes.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class FormDetalleVenta
     'NOTA: el Diseñador de Windows Forms necesita el siguiente procedimiento
     'Se puede modificar usando el Diseñador de Windows Forms.  
     'No lo modifique con el editor de código.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.dgvVentaItem = New System.Windows.Forms.DataGridView()
         Me.lbCliente = New System.Windows.Forms.Label()
@@ -71,7 +71,7 @@ Partial Class FormDetalleVenta
         'lbFechaVenta
         '
         Me.lbFechaVenta.AutoSize = True
-        Me.lbFechaVenta.Location = New System.Drawing.Point(203, 13)
+        Me.lbFechaVenta.Location = New System.Drawing.Point(191, 13)
         Me.lbFechaVenta.Name = "lbFechaVenta"
         Me.lbFechaVenta.Size = New System.Drawing.Size(68, 13)
         Me.lbFechaVenta.TabIndex = 18
@@ -80,7 +80,7 @@ Partial Class FormDetalleVenta
         'lbTotal
         '
         Me.lbTotal.AutoSize = True
-        Me.lbTotal.Location = New System.Drawing.Point(296, 13)
+        Me.lbTotal.Location = New System.Drawing.Point(265, 13)
         Me.lbTotal.Name = "lbTotal"
         Me.lbTotal.Size = New System.Drawing.Size(34, 13)
         Me.lbTotal.TabIndex = 19
@@ -89,9 +89,10 @@ Partial Class FormDetalleVenta
         'lbTotalVenta
         '
         Me.lbTotalVenta.AutoSize = True
-        Me.lbTotalVenta.Location = New System.Drawing.Point(337, 13)
+        Me.lbTotalVenta.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbTotalVenta.Location = New System.Drawing.Point(305, 13)
         Me.lbTotalVenta.Name = "lbTotalVenta"
-        Me.lbTotalVenta.Size = New System.Drawing.Size(61, 13)
+        Me.lbTotalVenta.Size = New System.Drawing.Size(72, 13)
         Me.lbTotalVenta.TabIndex = 20
         Me.lbTotalVenta.Text = "Total venta"
         '
@@ -117,6 +118,10 @@ Partial Class FormDetalleVenta
         Me.Controls.Add(Me.lbNombreCliente)
         Me.Controls.Add(Me.lbCliente)
         Me.Controls.Add(Me.dgvVentaItem)
+        Me.MaximizeBox = False
+        Me.MaximumSize = New System.Drawing.Size(816, 489)
+        Me.MinimizeBox = False
+        Me.MinimumSize = New System.Drawing.Size(816, 489)
         Me.Name = "FormDetalleVenta"
         Me.Text = "Detalle venta"
         CType(Me.dgvVentaItem, System.ComponentModel.ISupportInitialize).EndInit()

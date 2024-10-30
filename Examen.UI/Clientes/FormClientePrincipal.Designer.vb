@@ -167,6 +167,10 @@ Partial Class FormClientePrincipal
         Me.Controls.Add(Me.lbCliente)
         Me.Controls.Add(Me.txtIdCliente)
         Me.Controls.Add(Me.lbIdCliente)
+        Me.MaximizeBox = False
+        Me.MaximumSize = New System.Drawing.Size(816, 489)
+        Me.MinimizeBox = False
+        Me.MinimumSize = New System.Drawing.Size(816, 489)
         Me.Name = "FormClientePrincipal"
         Me.Text = "Clientes"
         CType(Me.dgvCliente, System.ComponentModel.ISupportInitialize).EndInit()

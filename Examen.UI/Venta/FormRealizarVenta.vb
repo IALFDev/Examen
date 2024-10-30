@@ -31,13 +31,8 @@ Public Class FormRealizarVenta
     End Sub
 
     Private Sub txtCantidad_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtCantidad.KeyPress
-        If Asc(e.KeyChar) <> 13 AndAlso Asc(e.KeyChar) <> 8 AndAlso Not IsNumeric(e.KeyChar) Then
-            ' Verifico que el campo Teléfono solo se ingresen números
+        If Not Char.IsDigit(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then
             MessageBox.Show("Debes ingresar solamente valores numéricos.", "Atención")
-            e.Handled = True
-        ElseIf e.KeyChar = "0"c Or sender.Text.Length = 0 Then
-            ' Verifico que el primer carácter no sea 0
-            MessageBox.Show("La cantidad debe ser mayor a 0.", "Atención")
             e.Handled = True
         End If
     End Sub

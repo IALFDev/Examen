@@ -89,4 +89,16 @@ Public Class ManagerVentaItem
 
         Return resultado
     End Function
+
+    ''' <summary>
+    '''  Método que obtiene una collecion tipo ArrayList de todos las ventas de prodcutos desde la capa de conexion a la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un Arraylist de objetos tipo VentaItem</returns>
+    Public Function ObtenerVentasPoductos(ventaItem As VentaItem) As ArrayList
+        Dim ventaItemDAL = New VentaItemDAL()
+
+        Dim resultado = ventaItemDAL.ObtenerVentasPoductos(ventaItem)
+
+        Return resultado
+    End Function
 End Class

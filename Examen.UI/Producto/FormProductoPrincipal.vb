@@ -19,46 +19,21 @@ Public Class FormProductoPrincipal
     End Sub
 
     Private Sub txtIdProducto_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtIdProducto.KeyPress
-        If Asc(e.KeyChar) = 13 Then 'Permite la tecla Enter
-            e.Handled = False
-        ElseIf Asc(e.KeyChar) = 8 Then 'Permite la tecla de retroceso (Backspace) solo si hay más de un carácter en el campo
-            If Not Char.IsDigit(e.KeyChar) Then 'Bloquea caracteres que no son números
-                MessageBox.Show("Debes ingresar solamente valores numéricos.", "Atención")
-                e.Handled = True
-            ElseIf sender.Text.Length = 0 And e.KeyChar = "0"c Then 'Bloquea el ingreso de "0" como primer carácter
-                MessageBox.Show("El primer dígito no puede ser 0.", "Atención")
-                e.Handled = True
-            End If
+        If Not Char.IsDigit(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then
+            MessageBox.Show("Debes ingresar solamente valores numéricos.", "Atención")
+            e.Handled = True
         End If
     End Sub
 
     Private Sub txtRangoDesde_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtRangoDesde.KeyPress
-        If Asc(e.KeyChar) = 13 Then 'Permite la tecla Enter
-            e.Handled = False
-        ElseIf Asc(e.KeyChar) = 8 Then 'Permite la tecla de retroceso (Backspace) solo si hay más de un carácter en el campo
-            If sender.Text.Length = 1 Then
-                MessageBox.Show("No se puede borrar el último carácter.", "Atención")
-                e.Handled = True
-            Else
-                e.Handled = False
-            End If
-        ElseIf Not Char.IsDigit(e.KeyChar) Then 'Bloquea caracteres que no son números
+        If Not Char.IsDigit(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then
             MessageBox.Show("Debes ingresar solamente valores numéricos.", "Atención")
             e.Handled = True
         End If
     End Sub
 
     Private Sub txtRangoHasta_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtRangoHasta.KeyPress
-        If Asc(e.KeyChar) = 13 Then 'Permite la tecla Enter
-            e.Handled = False
-        ElseIf Asc(e.KeyChar) = 8 Then 'Permite la tecla de retroceso (Backspace) solo si hay más de un carácter en el campo
-            If sender.Text.Length = 1 Then
-                MessageBox.Show("No se puede borrar el último carácter.", "Atención")
-                e.Handled = True
-            Else
-                e.Handled = False
-            End If
-        ElseIf Not Char.IsDigit(e.KeyChar) Then 'Bloquea caracteres que no son números
+        If Not Char.IsDigit(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then
             MessageBox.Show("Debes ingresar solamente valores numéricos.", "Atención")
             e.Handled = True
         End If
@@ -112,6 +87,7 @@ Public Class FormProductoPrincipal
             dgvProducto.DataSource = productos
             dgvProducto.Visible = True
             lbNoResultados.Visible = False
+            btnReporte.Enabled = True
 
             dgvProducto.ReadOnly = True 'Establesco que toda la grilla sea de solo lectura
 
@@ -150,6 +126,7 @@ Public Class FormProductoPrincipal
         Else
             dgvProducto.Visible = False
             lbNoResultados.Visible = True
+            btnReporte.Enabled = False
         End If
 
     End Sub
@@ -163,26 +140,28 @@ Public Class FormProductoPrincipal
             Dim categoriaProducto As String = dgvProducto.Rows(e.RowIndex).Cells("Categoria").Value.ToString()
 
 
-            If dgvProducto.Columns(e.ColumnIndex).Name = "Editar" Then 'Verifico si se hizo click en el botón "Editar"
-                Dim producto = New Producto() 'Creo un objeto Producto para almacenar los datos del producto que quiere editar
+            If e.ColumnIndex >= 0 Then 'Verifico si es una columna válida
+                If dgvProducto.Columns(e.ColumnIndex).Name = "Editar" Then 'Verifico si se hizo click en el botón "Editar"
+                    Dim producto = New Producto() 'Creo un objeto Producto para almacenar los datos del producto que quiere editar
 
-                producto.Id = idProducto
-                producto.Nombre = nombreProducto
-                producto.Precio = precioProducto
-                producto.Categoria = categoriaProducto
+                    producto.Id = idProducto
+                    producto.Nombre = nombreProducto
+                    producto.Precio = precioProducto
+                    producto.Categoria = categoriaProducto
 
-                FormEditarProducto.RellenarDatosProducto(producto) 'llamo al metodo en el otro form para ir almacenando los datos del producto 
+                    FormEditarProducto.RellenarDatosProducto(producto) 'llamo al metodo en el otro form para ir almacenando los datos del producto 
 
-                FormEditarProducto.ShowDialog() 'Muesto el form donde se puede editar los datos del producto
+                    FormEditarProducto.ShowDialog() 'Muesto el form donde se puede editar los datos del producto
 
-            ElseIf dgvProducto.Columns(e.ColumnIndex).Name = "Eliminar" Then 'Verifico si se hizo click en el botón "Eliminar"
-                Dim result As DialogResult = MessageBox.Show("¿Estás seguro de eliminar el producto " + nombreProducto + " ?", "Atención", MessageBoxButtons.YesNo) 'Verifico si es correcto que quiere eliminar el producto
-                If result = DialogResult.Yes Then
-                    If Not EliminarProductoEnBd(New Producto().GenerarObjetoProductoParaEliminarEnBd(idProducto)).Excepcion.Error Then 'Verifico que la eliminación en la base sea correcto de lo contrario muestro un MessageBox de error
-                        MessageBox.Show("Producto eliminado.", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si todo salio correcto muestro un MessageBox diciendo que el producto se elimino correctamente'
-                        ConfigurarContenido()
-                    Else
-                        MessageBox.Show("Error al eliminar el producto.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que el producto no se guardar correctamente'
+                ElseIf dgvProducto.Columns(e.ColumnIndex).Name = "Eliminar" Then 'Verifico si se hizo click en el botón "Eliminar"
+                    Dim result As DialogResult = MessageBox.Show("¿Estás seguro de eliminar el producto " + nombreProducto + " ?", "Atención", MessageBoxButtons.YesNo) 'Verifico si es correcto que quiere eliminar el producto
+                    If result = DialogResult.Yes Then
+                        If Not EliminarProductoEnBd(New Producto().GenerarObjetoProductoParaEliminarEnBd(idProducto)).Excepcion.Error Then 'Verifico que la eliminación en la base sea correcto de lo contrario muestro un MessageBox de error
+                            MessageBox.Show("Producto eliminado.", "Genial", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si todo salio correcto muestro un MessageBox diciendo que el producto se elimino correctamente'
+                            ConfigurarContenido()
+                        Else
+                            MessageBox.Show("Error al eliminar el producto.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que el producto no se guardar correctamente'
+                        End If
                     End If
                 End If
             End If
@@ -206,7 +185,7 @@ Public Class FormProductoPrincipal
         End If
     End Sub
 
-    Private Sub btnGenerarReporte_Click(sender As Object, e As EventArgs) Handles btnGenerarReporte.Click
+    Private Sub btnGenerarReporte_Click(sender As Object, e As EventArgs) Handles btnReporte.Click
         MostarSaveDialog()
     End Sub
 
@@ -243,7 +222,7 @@ Public Class FormProductoPrincipal
             Dim directory As String = New FileInfo(path).DirectoryName 'Separo la carpeta donde se va a guardar el reporte
             Dim file As String = New FileInfo(path).Name 'Separo la el nombre del reporte
 
-            If Not GenerarReportePDF(New PDF().GenerarObjetoParaReportePDF(file, directory, "Productos", ultimaBusqueda, Nothing, Nothing, producto)).Excepcion.Error Then 'Verifico que el reporte se haya generado correctamente
+            If Not GenerarReportePDF(New PDF().GenerarObjetoParaReportePDF(file, directory, "Productos", ultimaBusqueda, Nothing, Nothing, producto, Nothing)).Excepcion.Error Then 'Verifico que el reporte se haya generado correctamente
                 MessageBox.Show("Se genero el reporte correctamente", "Genial", MessageBoxButtons.OK, MessageBoxIcon.None) 'Si el reporte se genero correctamente muesto un MessageBox
 
             ElseIf diag = DialogResult.Cancel Then

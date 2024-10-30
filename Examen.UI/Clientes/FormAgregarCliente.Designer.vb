@@ -111,6 +111,10 @@ Partial Class FormAgregarCliente
         Me.Controls.Add(Me.txtTelefono)
         Me.Controls.Add(Me.txtCliente)
         Me.Controls.Add(Me.lbCliente)
+        Me.MaximizeBox = False
+        Me.MaximumSize = New System.Drawing.Size(392, 227)
+        Me.MinimizeBox = False
+        Me.MinimumSize = New System.Drawing.Size(392, 227)
         Me.Name = "FormAgregarCliente"
         Me.Text = "Agregar cliente"
         Me.ResumeLayout(False)

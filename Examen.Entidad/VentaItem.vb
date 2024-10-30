@@ -205,8 +205,17 @@
     ''' </summary>
     ''' <returns>Devuelve un string con la consulta para obtener los ventasItem</returns>
     Public Function ObtenerVentasItemId(ventaItem As VentaItem) As String
-        Dim cmd = String.Format("SELECT vi.ID AS IDVENTAITEM, p.ID AS IDPRODUCTO, p.Nombre AS PRODUCTO, vi.PrecioUnitario AS PRECIOUNITARIO, vi.Cantidad AS CANTIDAD, vi.PrecioTotal AS PRECIOTOTAL FROM ventasitems vi INNER JOIN productos AS p ON vi.IDProducto = p.ID WHERE vi.IDVenta = {0} AND vi.Activo = 1", ventaItem.Id)
+        Dim cmd = String.Format("SELECT vi.ID AS IDVENTAITEM, c.Cliente AS NOMBRECLIENTE, c.Telefono AS TELEFONOCLIENTE, c.Correo AS CORREOCLIENTE, p.ID AS IDPRODUCTO, p.Nombre AS PRODUCTO, vi.PrecioUnitario AS PRECIOUNITARIO, vi.Cantidad AS CANTIDAD, vi.PrecioTotal AS PRECIOTOTAL FROM ventasitems vi  INNER JOIN productos AS p ON vi.IDProducto = p.ID INNER JOIN ventas AS v ON vi.IDVenta = v.ID INNER JOIN clientes AS c ON v.IDCliente = c.ID WHERE vi.IDVenta = {0} AND vi.Activo = 1", ventaItem.Venta.Id)
 
+        Return cmd
+    End Function
+
+    ''' <summary>
+    '''  Metodo que obtiene un string para la consulta de para obtener las ventas de productos en la base de datos
+    ''' </summary>
+    ''' <returns>Devuelve un string con la consulta para obtener las ventas de productos</returns>
+    Public Function ObtenerVentasPoductos(ventaItem As VentaItem) As String
+        Dim cmd = String.Format("SELECT p.Nombre AS Producto, SUM(vi.Cantidad) AS CantidadTotalVendida FROM ventas v INNER JOIN ventasitems vi ON v.ID = vi.IDVenta INNER JOIN productos p ON vi.IDProducto = p.ID WHERE v.Fecha BETWEEN CONVERT(DATE, '{0}') AND CONVERT(DATE, '{1}') GROUP BY p.Nombre, YEAR(v.Fecha), MONTH(v.Fecha) ORDER BY Producto", ventaItem.Venta.FechaDesde.ToString("yyyy-MM-dd"), ventaItem.Venta.FechaHasta.ToString("yyyy-MM-dd"))
         Return cmd
     End Function
 End Class

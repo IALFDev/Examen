@@ -111,6 +111,10 @@ Partial Class FormEditarCliente
         Me.Controls.Add(Me.lbTelefono)
         Me.Controls.Add(Me.txtCliente)
         Me.Controls.Add(Me.lbCliente)
+        Me.MaximizeBox = False
+        Me.MaximumSize = New System.Drawing.Size(392, 227)
+        Me.MinimizeBox = False
+        Me.MinimumSize = New System.Drawing.Size(392, 227)
         Me.Name = "FormEditarCliente"
         Me.Text = "Editar cliente"
         Me.ResumeLayout(False)

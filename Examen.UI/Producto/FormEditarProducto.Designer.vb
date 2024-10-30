@@ -112,6 +112,10 @@ Partial Class FormEditarProducto
         Me.Controls.Add(Me.txtPrecio)
         Me.Controls.Add(Me.lbNombre)
         Me.Controls.Add(Me.txtNombre)
+        Me.MaximizeBox = False
+        Me.MaximumSize = New System.Drawing.Size(377, 265)
+        Me.MinimizeBox = False
+        Me.MinimumSize = New System.Drawing.Size(377, 265)
         Me.Name = "FormEditarProducto"
         Me.Text = "Edtiar producto"
         Me.ResumeLayout(False)

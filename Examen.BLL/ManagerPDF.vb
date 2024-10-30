@@ -16,7 +16,7 @@ Public Class ManagerPDF
                     Case "Todos"
                         aLista = ObtenerTodasLasVentas()
                     Case "Filtro"
-                        aLista = ObtenerVentas(If(String.IsNullOrEmpty(pdf.Venta.Id) Or pdf.Venta.Id = "0", "", pdf.Venta.Id), pdf.Venta.Cliente.Cliente, pdf.Venta.FechaDesde, pdf.Venta.FechaHasta)
+                        aLista = ObtenerVentas(If(String.IsNullOrEmpty(pdf.Venta.Id) Or pdf.Venta.Id = "0", "", pdf.Venta.Id), pdf.Venta.Cliente.Cliente, pdf.Venta.FechaDesde, pdf.Venta.FechaHasta, If(String.IsNullOrEmpty(pdf.Venta.TotalMinimo) Or pdf.Venta.TotalMinimo = "0", "", pdf.Venta.TotalMinimo), If(String.IsNullOrEmpty(pdf.Venta.TotalMaximo) Or pdf.Venta.TotalMaximo = "0", "", pdf.Venta.TotalMaximo))
                 End Select
             Case "Clientes"
                 Select Case pdf.UltimaBusqueda
@@ -30,12 +30,15 @@ Public Class ManagerPDF
                     Case "Todos"
                         aLista = ObtenerTodosLosProductos()
                     Case "Filtro"
-                        aLista = ObtenerProductos(If(String.IsNullOrEmpty(pdf.Producto.Id) Or pdf.Producto.Id = "0", "", pdf.Cliente.Id), pdf.Producto.Nombre, If(String.IsNullOrEmpty(pdf.Producto.PrecioDesde) Or pdf.Producto.PrecioDesde = "0", "", pdf.Cliente.Id), If(String.IsNullOrEmpty(pdf.Producto.PrecioHasta) Or pdf.Producto.PrecioHasta = "0", "", pdf.Producto.PrecioHasta))
+                        aLista = ObtenerProductos(If(String.IsNullOrEmpty(pdf.Producto.Id) Or pdf.Producto.Id = "0", "", pdf.Producto.Id), pdf.Producto.Nombre, pdf.Producto.Categoria, If(String.IsNullOrEmpty(pdf.Producto.PrecioDesde) Or pdf.Producto.PrecioDesde = "0", "", pdf.Producto.PrecioHasta), If(String.IsNullOrEmpty(pdf.Producto.PrecioHasta) Or pdf.Producto.PrecioHasta = "0", "", pdf.Producto.PrecioHasta))
+                    Case "ReporteVentas"
+                        aLista = ObtenerVentasPoductos(pdf.VentaItem)
                 End Select
+            Case "DetalleVenta"
+                aLista = ObtenerVentasItemId(pdf.VentaItem)
         End Select
 
         pdf = pdfDAL.GenerarPDF(pdf, aLista)
-
         Return pdf
     End Function
 
@@ -55,10 +58,10 @@ Public Class ManagerPDF
     '''  Método que obtiene una collecion los venta desde el "gestor" o "manager" de la capa de negocios
     ''' </summary>
     ''' <returns>Devuelve un Arraylist de objetos tipo Venta</returns>
-    Protected Function ObtenerVentas(Optional idVenta As String = "", Optional clienteNombre As String = "", Optional fechaDesde As String = "", Optional fechaHasta As String = "") As ArrayList
+    Protected Function ObtenerVentas(Optional idVenta As String = "", Optional clienteNombre As String = "", Optional fechaDesde As String = "", Optional fechaHasta As String = "", Optional totalMinimo As String = "", Optional totalMaximo As String = "") As ArrayList
         Dim manager = New ManagerVenta()
 
-        Dim resultado = manager.ObtenerVentas(idVenta, clienteNombre, fechaDesde, fechaHasta)
+        Dim resultado = manager.ObtenerVentas(idVenta, clienteNombre, fechaDesde, fechaHasta, totalMinimo, totalMaximo)
 
         Return resultado
     End Function
@@ -107,6 +110,30 @@ Public Class ManagerPDF
         Dim manager = New ManagerProducto()
 
         Dim resultado = manager.ObtenerProductos(idProducto, nombre, categoria, precioMin, precioMax)
+
+        Return resultado
+    End Function
+
+    ''' <summary>
+    '''  Método que obtiene una collecion de ventasItem por ID desde el "gestor" o "manager" de la capa de negocios
+    ''' </summary>
+    ''' <returns>Devuelve un Arraylist de objetos tipo VentaItem</returns>
+    Protected Function ObtenerVentasItemId(ventasItem As VentaItem) As ArrayList
+        Dim manager = New ManagerVentaItem()
+
+        Dim resultado = manager.ObtenerVentasItemId(ventasItem)
+
+        Return resultado
+    End Function
+
+    ''' <summary>
+    '''  Método que obtiene una collecion de ventasItem con las ventas de los productos "gestor" o "manager" de la capa de negocios
+    ''' </summary>
+    ''' <returns>Devuelve un Arraylist de objetos tipo VentaItem</returns>
+    Protected Function ObtenerVentasPoductos(ventasItem As VentaItem) As ArrayList
+        Dim manager = New ManagerVentaItem()
+
+        Dim resultado = manager.ObtenerVentasPoductos(ventasItem)
 
         Return resultado
     End Function

@@ -110,6 +110,12 @@
       <DependentUpon>FormPrincipal.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Venta\FormGenerarReporteProductos.Designer.vb">
+      <DependentUpon>FormGenerarReporteProductos.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Venta\FormGenerarReporteProductos.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Producto\FormProductoPrincipal.Designer.vb">
       <DependentUpon>FormProductoPrincipal.vb</DependentUpon>
     </Compile>
@@ -180,6 +186,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Producto\FormEditarProducto.resx">
       <DependentUpon>FormEditarProducto.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Venta\FormGenerarReporteProductos.resx">
+      <DependentUpon>FormGenerarReporteProductos.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Producto\FormProductoPrincipal.resx">
       <DependentUpon>FormProductoPrincipal.vb</DependentUpon>

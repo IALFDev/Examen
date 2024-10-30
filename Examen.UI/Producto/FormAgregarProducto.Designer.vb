@@ -112,6 +112,10 @@ Partial Class FormAgregarProducto
         Me.Controls.Add(Me.lbPrecio)
         Me.Controls.Add(Me.txtNombre)
         Me.Controls.Add(Me.lbNombre)
+        Me.MaximizeBox = False
+        Me.MaximumSize = New System.Drawing.Size(385, 280)
+        Me.MinimizeBox = False
+        Me.MinimumSize = New System.Drawing.Size(385, 280)
         Me.Name = "FormAgregarProducto"
         Me.Text = "Agregar producto"
         Me.ResumeLayout(False)

@@ -37,7 +37,7 @@ Public Class FormAgregarCliente
                     MessageBox.Show("Error al guardar el cliente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) 'Si todo salio mal muestro un MessageBox diciendo que el cliente no se guardar correctamente'
                 End If
             Else
-                MessageBox.Show("El cliente ya existe", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si el cliente ya existe muestro un MessageBox'
+                MessageBox.Show("El cliente existe ya con el email " + txtCorreo.Text + "", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information) 'Si el cliente ya existe muestro un MessageBox'
             End If
         End If
     End Sub
@@ -67,11 +67,28 @@ Public Class FormAgregarCliente
             Return validado
         End If
 
-        If Not String.IsNullOrEmpty(txtTelefono.Text) Then 'Verifico que el campo Teléfono no este vacío'
-            If Not txtTelefono.Text.Length > 255 Then 'Verifico que el campo no tenga más de 255 caracteres'
-                validado = True
+        If Not String.IsNullOrEmpty(txtTelefono.Text) Then ' Verifico que el campo Precio no esté vacío
+            Dim telefono As Decimal
+
+            If Not txtTelefono.Text.Length > 10 Then 'Verifico que el campo no tenga más de 10 caracteres'
+                If Decimal.TryParse(txtTelefono.Text, telefono) Then ' Intento convertir el texto a un número decimal
+
+                    If telefono <> 0 Then 'Verifico que el valor no sea 0
+                        validado = True
+                    Else
+                        MessageBox.Show("El campo Telefono no debe ser 0.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                        validado = False
+
+                        Return validado
+                    End If
+                Else
+                    MessageBox.Show("El campo Telefono debe ser un número válido.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                    validado = False
+
+                    Return validado
+                End If
             Else
-                MessageBox.Show("El campo Teléfono no debe tener más de 255 caracteres.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                MessageBox.Show("El campo Teléfono no debe tener más de 10 caracteres.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
 
                 validado = False
 

@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class FormProductoPrincipal
     Inherits System.Windows.Forms.Form
 
     'Form reemplaza a Dispose para limpiar la lista de componentes.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class FormProductoPrincipal
     'NOTA: el Diseñador de Windows Forms necesita el siguiente procedimiento
     'Se puede modificar usando el Diseñador de Windows Forms.  
     'No lo modifique con el editor de código.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.lbNombre = New System.Windows.Forms.Label()
         Me.txtNombreProducto = New System.Windows.Forms.TextBox()
@@ -35,7 +35,7 @@ Partial Class FormProductoPrincipal
         Me.txtRangoHasta = New System.Windows.Forms.TextBox()
         Me.lbA = New System.Windows.Forms.Label()
         Me.btnAgregarProducto = New System.Windows.Forms.Button()
-        Me.btnGenerarReporte = New System.Windows.Forms.Button()
+        Me.btnReporte = New System.Windows.Forms.Button()
         Me.lbNoResultados = New System.Windows.Forms.Label()
         CType(Me.dgvProducto, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -150,14 +150,14 @@ Partial Class FormProductoPrincipal
         Me.btnAgregarProducto.Text = "Agregar producto"
         Me.btnAgregarProducto.UseVisualStyleBackColor = True
         '
-        'btnGenerarReporte
+        'btnReporte
         '
-        Me.btnGenerarReporte.Location = New System.Drawing.Point(16, 415)
-        Me.btnGenerarReporte.Name = "btnGenerarReporte"
-        Me.btnGenerarReporte.Size = New System.Drawing.Size(120, 23)
-        Me.btnGenerarReporte.TabIndex = 14
-        Me.btnGenerarReporte.Text = "Generar reporte"
-        Me.btnGenerarReporte.UseVisualStyleBackColor = True
+        Me.btnReporte.Location = New System.Drawing.Point(16, 415)
+        Me.btnReporte.Name = "btnReporte"
+        Me.btnReporte.Size = New System.Drawing.Size(120, 23)
+        Me.btnReporte.TabIndex = 14
+        Me.btnReporte.Text = "Generar reporte"
+        Me.btnReporte.UseVisualStyleBackColor = True
         '
         'lbNoResultados
         '
@@ -176,7 +176,7 @@ Partial Class FormProductoPrincipal
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 450)
         Me.Controls.Add(Me.lbNoResultados)
-        Me.Controls.Add(Me.btnGenerarReporte)
+        Me.Controls.Add(Me.btnReporte)
         Me.Controls.Add(Me.btnAgregarProducto)
         Me.Controls.Add(Me.lbA)
         Me.Controls.Add(Me.txtRangoHasta)
@@ -190,6 +190,10 @@ Partial Class FormProductoPrincipal
         Me.Controls.Add(Me.lbIdProducto)
         Me.Controls.Add(Me.txtNombreProducto)
         Me.Controls.Add(Me.lbNombre)
+        Me.MaximizeBox = False
+        Me.MaximumSize = New System.Drawing.Size(816, 489)
+        Me.MinimizeBox = False
+        Me.MinimumSize = New System.Drawing.Size(816, 489)
         Me.Name = "FormProductoPrincipal"
         Me.Text = "Productos"
         CType(Me.dgvProducto, System.ComponentModel.ISupportInitialize).EndInit()
@@ -211,6 +215,6 @@ Partial Class FormProductoPrincipal
     Friend WithEvents txtRangoHasta As TextBox
     Friend WithEvents lbA As Label
     Friend WithEvents btnAgregarProducto As Button
-    Friend WithEvents btnGenerarReporte As Button
+    Friend WithEvents btnReporte As Button
     Friend WithEvents lbNoResultados As Label
 End Class

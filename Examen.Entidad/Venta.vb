@@ -5,6 +5,8 @@
     Private _fechaDesde As DateTime
     Private _fechaHasta As DateTime
     Private _total As Decimal
+    Private _totalMinimo As Decimal
+    Private _totalMaximo As Decimal
     Private _excepcion As Excepcion
 
     Public Property Id As Long
@@ -74,6 +76,24 @@
         End Get
         Set(value As Decimal)
             _total = value
+        End Set
+    End Property
+
+    Public Property TotalMinimo As Decimal
+        Get
+            Return _totalMinimo
+        End Get
+        Set(value As Decimal)
+            _totalMinimo = value
+        End Set
+    End Property
+
+    Public Property TotalMaximo As Decimal
+        Get
+            Return _totalMaximo
+        End Get
+        Set(value As Decimal)
+            _totalMaximo = value
         End Set
     End Property
 
@@ -196,31 +216,36 @@
         Return cmd
     End Function
 
-    Public Function ObtenerVentas(Optional idVenta As String = "", Optional clienteNombre As String = "", Optional fechaDesde As String = "", Optional fechaHasta As String = "") As String
-        Dim sqlQuery As String = "SELECT v.ID AS IDVENTA, c.ID AS IDCLIENTE, c.Cliente AS CLIENTE, v.Fecha AS FECHAVENTA, v.Total AS TOTALVENTA FROM ventas AS v INNER JOIN clientes AS c ON v.IDCliente = c.ID WHERE v.Activo = 1" ' Base de la consulta SQL
+    Public Function ObtenerVentas(Optional idVenta As String = "", Optional clienteNombre As String = "", Optional fechaDesde As String = "", Optional fechaHasta As String = "", Optional totalMinimo As String = "", Optional totalMaximo As String = "") As String
+        Dim sqlQuery As String = "SELECT v.ID AS IDVENTA, c.ID AS IDCLIENTE, c.Cliente AS CLIENTE, v.Fecha AS FECHAVENTA, v.Total AS TOTALVENTA FROM ventas AS v INNER JOIN clientes AS c ON v.IDCliente = c.ID WHERE v.Activo = 1"
 
         Dim condiciones As New List(Of String) 'Lista para agregar condiciones dinámicas
-
 
         If Not String.IsNullOrEmpty(idVenta) Then 'Agrego condiciones solo si los parámetros tienen valor
             condiciones.Add("CAST(v.Id AS VARCHAR) LIKE '%" & idVenta.Replace("'", "''") & "%'") 'Uso LIKE para buscar coincidencias parciales en ID venta
         End If
         If Not String.IsNullOrEmpty(clienteNombre) Then 'Uso LIKE para buscar coincidencias parciales en el nombre del cliente
-            condiciones.Add("v.Cliente LIKE '%" & clienteNombre.Replace("'", "''") & "%'")
+            condiciones.Add("c.Cliente LIKE '%" & clienteNombre.Replace("'", "''") & "%'")
         End If
         If Not String.IsNullOrEmpty(fechaDesde) AndAlso IsDate(fechaDesde) Then
-            condiciones.Add("CONVERT(DATE, v.Fecha) ='" & DateTime.Parse(fechaDesde).ToString("yyyy-MM-dd") & "'") 'Filtro por fecha desde si el valor es una fecha válida
+            condiciones.Add("CONVERT(DATE, v.Fecha) >= '" & DateTime.Parse(fechaDesde).ToString("yyyy-MM-dd") & "'") 'Filtro por fecha desde si el valor es una fecha válida
         End If
         If Not String.IsNullOrEmpty(fechaHasta) AndAlso IsDate(fechaHasta) Then
-            condiciones.Add("CONVERT(DATE, v.Fecha) ='" & DateTime.Parse(fechaHasta).ToString("yyyy-MM-dd") & "'") 'Filtramos por fecha hasta si el valor es una fecha válida
+            condiciones.Add("CONVERT(DATE, v.Fecha) <= '" & DateTime.Parse(fechaHasta).ToString("yyyy-MM-dd") & "'") 'Filtramos por fecha hasta si el valor es una fecha válida
+        End If
+        If Not String.IsNullOrEmpty(totalMinimo) AndAlso IsNumeric(totalMinimo) Then 'Filtro por total mínimo si el valor es numérico
+            condiciones.Add("v.Total >= " & Decimal.Parse(totalMinimo))
+        End If
+        If Not String.IsNullOrEmpty(totalMaximo) AndAlso IsNumeric(totalMaximo) Then 'Filtro por total máximo si el valor es numérico
+            condiciones.Add("v.Total <= " & Decimal.Parse(totalMaximo))
         End If
 
-        ' Si hay condiciones, las agregamos a la consulta
-        If condiciones.Count > 0 Then
+
+        If condiciones.Count > 0 Then 'Si hay condiciones, las agregamos a la consulta
             sqlQuery &= " AND " & String.Join(" AND ", condiciones)
         End If
 
-        ' Retornamos el SQL formateado
+
         Return sqlQuery
     End Function
 

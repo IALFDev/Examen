@@ -35,6 +35,11 @@ Partial Class FormVentaPrincipal
         Me.lbNoResultados = New System.Windows.Forms.Label()
         Me.dtpFechaDesde = New System.Windows.Forms.DateTimePicker()
         Me.dtpFechaHasta = New System.Windows.Forms.DateTimePicker()
+        Me.btnGenerarReporteProductos = New System.Windows.Forms.Button()
+        Me.lbRango = New System.Windows.Forms.Label()
+        Me.txtRangoDesde = New System.Windows.Forms.TextBox()
+        Me.lbA = New System.Windows.Forms.Label()
+        Me.txtRangoHasta = New System.Windows.Forms.TextBox()
         CType(Me.dgvVenta, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -153,11 +158,57 @@ Partial Class FormVentaPrincipal
         Me.dtpFechaHasta.Size = New System.Drawing.Size(85, 20)
         Me.dtpFechaHasta.TabIndex = 21
         '
+        'btnGenerarReporteProductos
+        '
+        Me.btnGenerarReporteProductos.Location = New System.Drawing.Point(642, 415)
+        Me.btnGenerarReporteProductos.Name = "btnGenerarReporteProductos"
+        Me.btnGenerarReporteProductos.Size = New System.Drawing.Size(146, 23)
+        Me.btnGenerarReporteProductos.TabIndex = 23
+        Me.btnGenerarReporteProductos.Text = "Generar reporte Productos"
+        Me.btnGenerarReporteProductos.UseVisualStyleBackColor = True
+        '
+        'lbRango
+        '
+        Me.lbRango.AutoSize = True
+        Me.lbRango.Location = New System.Drawing.Point(9, 57)
+        Me.lbRango.Name = "lbRango"
+        Me.lbRango.Size = New System.Drawing.Size(86, 13)
+        Me.lbRango.TabIndex = 24
+        Me.lbRango.Text = "Rango de precio"
+        '
+        'txtRangoDesde
+        '
+        Me.txtRangoDesde.Location = New System.Drawing.Point(101, 54)
+        Me.txtRangoDesde.Name = "txtRangoDesde"
+        Me.txtRangoDesde.Size = New System.Drawing.Size(100, 20)
+        Me.txtRangoDesde.TabIndex = 25
+        '
+        'lbA
+        '
+        Me.lbA.AutoSize = True
+        Me.lbA.Location = New System.Drawing.Point(207, 57)
+        Me.lbA.Name = "lbA"
+        Me.lbA.Size = New System.Drawing.Size(13, 13)
+        Me.lbA.TabIndex = 26
+        Me.lbA.Text = "a"
+        '
+        'txtRangoHasta
+        '
+        Me.txtRangoHasta.Location = New System.Drawing.Point(226, 54)
+        Me.txtRangoHasta.Name = "txtRangoHasta"
+        Me.txtRangoHasta.Size = New System.Drawing.Size(100, 20)
+        Me.txtRangoHasta.TabIndex = 27
+        '
         'FormVentaPrincipal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.Controls.Add(Me.txtRangoHasta)
+        Me.Controls.Add(Me.lbA)
+        Me.Controls.Add(Me.txtRangoDesde)
+        Me.Controls.Add(Me.lbRango)
+        Me.Controls.Add(Me.btnGenerarReporteProductos)
         Me.Controls.Add(Me.dtpFechaHasta)
         Me.Controls.Add(Me.dtpFechaDesde)
         Me.Controls.Add(Me.lbNoResultados)
@@ -171,6 +222,10 @@ Partial Class FormVentaPrincipal
         Me.Controls.Add(Me.lbCliente)
         Me.Controls.Add(Me.txtIdVenta)
         Me.Controls.Add(Me.lbIdCliente)
+        Me.MaximizeBox = False
+        Me.MaximumSize = New System.Drawing.Size(816, 489)
+        Me.MinimizeBox = False
+        Me.MinimumSize = New System.Drawing.Size(816, 489)
         Me.Name = "FormVentaPrincipal"
         Me.Text = "Ventas"
         CType(Me.dgvVenta, System.ComponentModel.ISupportInitialize).EndInit()
@@ -192,4 +247,9 @@ Partial Class FormVentaPrincipal
     Friend WithEvents lbNoResultados As Label
     Friend WithEvents dtpFechaDesde As DateTimePicker
     Friend WithEvents dtpFechaHasta As DateTimePicker
+    Friend WithEvents btnGenerarReporteProductos As Button
+    Friend WithEvents lbRango As Label
+    Friend WithEvents txtRangoDesde As TextBox
+    Friend WithEvents lbA As Label
+    Friend WithEvents txtRangoHasta As TextBox
 End Class

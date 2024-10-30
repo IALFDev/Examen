@@ -78,7 +78,7 @@ Public Class FormEditarVenta
     '''  Método que rellena una Grilla (DataGridView)
     ''' </summary>''
     Public Sub ActivarDataGridViewVentaItem()
-        Dim ventasItem = ObtenerVentasItemId(New VentaItem() With {.Id = IdVenta})
+        Dim ventasItem = ObtenerVentasItemId(New VentaItem() With {.Venta = New Venta() With {.Id = IdVenta}})
         If ventasItem IsNot Nothing AndAlso ventasItem.Count > 0 Then
             dgvItemVenta.DataSource = ventasItem
             dgvItemVenta.Visible = True
@@ -305,29 +305,8 @@ Public Class FormEditarVenta
             validado = False
         End If
 
-        Return validado
-
-
         If Not String.IsNullOrEmpty(txtCantidad.Text) Then 'Verifico que el campo Precio no este vacío'
-            Dim cantidad As Integer
-
-            If Integer.TryParse(txtCantidad.Text, cantidad) Then ' Intento convertir el texto a un número decimal
-
-                If cantidad <> 0 Then 'Verifico que el valor no sea 0
-                    validado = True
-                Else
-                    MessageBox.Show("El campo Cantidad no debe ser 0.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-
-                    validado = False
-
-                    Return validado
-                End If
-            Else
-                MessageBox.Show("El campo Cantidad debe ser un número válido.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                validado = False
-
-                Return validado
-            End If
+            validado = True
         Else
             MessageBox.Show("El campo Cantidad no debe estar vacío.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
 

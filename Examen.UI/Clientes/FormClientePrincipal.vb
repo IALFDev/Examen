@@ -12,39 +12,15 @@ Public Class FormClientePrincipal
     End Sub
 
     Private Sub txtIdCliente_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtIdCliente.KeyPress
-        If Asc(e.KeyChar) = 13 Then 'Permite la tecla Enter
-            e.Handled = False
-        ElseIf Asc(e.KeyChar) = 8 Then 'Permite la tecla de retroceso (Backspace) solo si hay más de un carácter en el campo
-            If sender.Text.Length = 1 Then
-                MessageBox.Show("No se puede borrar el último carácter.", "Atención")
-                e.Handled = True
-            Else
-                e.Handled = False
-            End If
-        ElseIf Not Char.IsDigit(e.KeyChar) Then 'Bloquea caracteres que no son números
+        If Not Char.IsDigit(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then
             MessageBox.Show("Debes ingresar solamente valores numéricos.", "Atención")
-            e.Handled = True
-        ElseIf sender.Text.Length = 0 And e.KeyChar = "0"c Then 'Bloquea el ingreso de "0" como primer carácter
-            MessageBox.Show("El primer dígito no puede ser 0.", "Atención")
             e.Handled = True
         End If
     End Sub
 
     Private Sub txtTelefonoCliente_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtTelefonoCliente.KeyPress
-        If Asc(e.KeyChar) = 13 Then 'Permite la tecla Enter
-            e.Handled = False
-        ElseIf Asc(e.KeyChar) = 8 Then 'Permite la tecla de retroceso (Backspace) solo si hay más de un carácter en el campo
-            If sender.Text.Length = 1 Then
-                MessageBox.Show("No se puede borrar el último carácter.", "Atención")
-                e.Handled = True
-            Else
-                e.Handled = False
-            End If
-        ElseIf Not Char.IsDigit(e.KeyChar) Then 'Bloquea caracteres que no son números
+        If Not Char.IsDigit(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then
             MessageBox.Show("Debes ingresar solamente valores numéricos.", "Atención")
-            e.Handled = True
-        ElseIf sender.Text.Length = 0 And e.KeyChar = "0"c Then 'Bloquea el ingreso de "0" como primer carácter
-            MessageBox.Show("El primer dígito no puede ser 0.", "Atención")
             e.Handled = True
         End If
     End Sub
@@ -141,20 +117,20 @@ Public Class FormClientePrincipal
             Dim correoCliente As String = dgvCliente.Rows(e.RowIndex).Cells("Correo").Value.ToString()
 
 
-            If dgvCliente.Columns(e.ColumnIndex).Name = "Editar" Then 'Verifico si se hizo click en el botón "Editar"
-                Dim cliente = New Cliente() 'Creo un objeto Cliente para almacenar los datos del cliente que quiere editar
+            If e.ColumnIndex >= 0 Then 'Verifico si es una columna válida
+                If dgvCliente.Columns(e.ColumnIndex).Name = "Editar" Then 'Verifico si se hizo click en el botón "Editar"
+                    Dim cliente = New Cliente() 'Creo un objeto Cliente para almacenar los datos del cliente que quiere editar
 
-                cliente.Id = idCliente
-                cliente.Cliente = nombreCliente
-                cliente.Telefono = Integer.Parse(telefonoPrecio)
-                cliente.Correo = correoCliente
+                    cliente.Id = idCliente
+                    cliente.Cliente = nombreCliente
+                    cliente.Telefono = Integer.Parse(telefonoPrecio)
+                    cliente.Correo = correoCliente
 
-                FormEditarCliente.RellenarDatosCliente(cliente) 'llamo al metodo en el otro form para ir almacenando los datos del cliente 
+                    FormEditarCliente.RellenarDatosCliente(cliente) 'llamo al metodo en el otro form para ir almacenando los datos del cliente 
 
-                FormEditarCliente.ShowDialog() 'Muesto el form donde se puede editar los datos del cliente
+                    FormEditarCliente.ShowDialog() 'Muesto el form donde se puede editar los datos del cliente
 
-
-                If dgvCliente.Columns(e.ColumnIndex).Name = "Eliminar" Then 'Verifico si se hizo click en el botón "Eliminar"
+                ElseIf dgvCliente.Columns(e.ColumnIndex).Name = "Eliminar" Then 'Verifico si se hizo click en el botón "Eliminar"
                     Dim result As DialogResult = MessageBox.Show("¿Estás seguro de eliminar el cliente " + nombreCliente + " ?", "Atención", MessageBoxButtons.YesNo) 'Verifico si es correcto que quiere eliminar el cliente
                     If result = DialogResult.Yes Then
                         If Not EliminarClienteEnBd(New Cliente().GenerarObjetoClienteParaEliminarEnBd(idCliente)).Excepcion.Error Then 'Verifico que la eliminación en la base sea correcto de lo contrario muestro un MessageBox de error
